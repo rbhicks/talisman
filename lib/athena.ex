@@ -3,16 +3,13 @@ defmodule Athena do
   Documentation for `Athena`.
   """
 
-  @doc """
-  Hello world.
+  def start(_type, _args) do
 
-  ## Examples
-
-      iex> Athena.hello()
-      :world
-
-  """
-  def hello do
-    :world
+    ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" |> IO.puts
+    "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<" |> IO.puts
+    ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" |> IO.puts
+    
+    children = []
+    Supervisor.start_link(children, strategy: :one_for_one)
   end
 end
