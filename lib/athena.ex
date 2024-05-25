@@ -102,20 +102,21 @@ defmodule Athena do
 
 
 
-  def jbe([[]], [[[]|stack_head_tail]|stack_tail] = stack, [current_head|current_tail] = current, product) do
+#  def jbe([[]], [[[]|stack_head_tail]|stack_tail] = stack, [current_head|current_tail] = current, product) do
+  def jbe([[]], [[[]|_]|stack_tail], [current_head|current_tail] = current, product) do
 
     "***************************************************" |> IO.puts
     "***************************************************" |> IO.puts
     "***************************************************" |> IO.puts
-    # stack_head_tail |> IO.inspect(limit: :infinity, charlists: :as_lists)
-    # stack_tail |> IO.inspect(limit: :infinity, charlists: :as_lists)
-    # current |> IO.inspect(limit: :infinity, charlists: :as_lists)
-    # product |> IO.inspect(limit: :infinity, charlists: :as_lists)
-    stack |> IO.inspect(limit: :infinity, charlists: :as_lists)
-    "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" |> IO.puts
-    "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" |> IO.puts
-    "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" |> IO.puts
-    
+#    stack_head_tail |> IO.inspect(limit: :infinity, charlists: :as_lists)
+    stack_tail |> IO.inspect(limit: :infinity, charlists: :as_lists)
+#    stack |> IO.inspect(limit: :infinity, charlists: :as_lists)
+    current |> IO.inspect(limit: :infinity, charlists: :as_lists)
+    product |> IO.inspect(limit: :infinity, charlists: :as_lists)
+    "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" |> IO.puts
+    "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" |> IO.puts
+    "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" |> IO.puts
+    jbe(stack_tail, stack_tail, [], product)
   end
   
   # the first parameter has another enclosing list, unlike the
@@ -126,11 +127,11 @@ defmodule Athena do
     ",.p,.p.,p,.p,.p.,p.,p,.p,.p,.p,.p,p,.p,p" |> IO.puts
     ",.p,.p.,p,.p,.p.,p.,p,.p,.p,.p,.p,p,.p,p" |> IO.puts
     ",.p,.p.,p,.p,.p.,p.,p,.p,.p,.p,.p,p,.p,p" |> IO.puts
-    # stack_head |> IO.inspect(limit: :infinity, charlists: :as_lists)
-    # stack_tail |> IO.inspect(limit: :infinity, charlists: :as_lists)
-    # current_head |> IO.inspect(limit: :infinity, charlists: :as_lists)
-    # current_tail |> IO.inspect(limit: :infinity, charlists: :as_lists)
-    # product |> IO.inspect(limit: :infinity, charlists: :as_lists)
+    stack_head |> IO.inspect(limit: :infinity, charlists: :as_lists)
+    stack_tail |> IO.inspect(limit: :infinity, charlists: :as_lists)
+    current_head |> IO.inspect(limit: :infinity, charlists: :as_lists)
+    current_tail |> IO.inspect(limit: :infinity, charlists: :as_lists)
+    product |> IO.inspect(limit: :infinity, charlists: :as_lists)
     stack |> IO.inspect(limit: :infinity, charlists: :as_lists)
     ")(*)(*)(*)(*)(*)(*)(*)(*)(*)(*)(*)(*)(*)" |> IO.puts
     ")(*)(*)(*)(*)(*)(*)(*)(*)(*)(*)(*)(*)(*)" |> IO.puts
@@ -142,13 +143,13 @@ defmodule Athena do
     "@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@" |> IO.puts
     "@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@" |> IO.puts
     "@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@" |> IO.puts
-    # stack_head |> IO.inspect(limit: :infinity, charlists: :as_lists)
-    # stack_tail |> IO.inspect(limit: :infinity, charlists: :as_lists)
-    # current_head |> IO.inspect(limit: :infinity, charlists: :as_lists)
-    # current_tail |> IO.inspect(limit: :infinity, charlists: :as_lists)
-    # product |> IO.inspect(limit: :infinity, charlists: :as_lists)
-    # [current |> Enum.reverse|product] |> IO.inspect(limit: :infinity, charlists: :as_lists)
-#    current |> IO.inspect(limit: :infinity, charlists: :as_lists)
+    stack_head |> IO.inspect(limit: :infinity, charlists: :as_lists)
+    stack_tail |> IO.inspect(limit: :infinity, charlists: :as_lists)
+    current_head |> IO.inspect(limit: :infinity, charlists: :as_lists)
+    current_tail |> IO.inspect(limit: :infinity, charlists: :as_lists)
+    product |> IO.inspect(limit: :infinity, charlists: :as_lists)
+    [current |> Enum.reverse|product] |> IO.inspect(limit: :infinity, charlists: :as_lists)
+    current |> IO.inspect(limit: :infinity, charlists: :as_lists)
     stack |> IO.inspect(limit: :infinity, charlists: :as_lists)
     "§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§" |> IO.puts
     "§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§" |> IO.puts
@@ -161,14 +162,14 @@ defmodule Athena do
     "oateuhaoseutnhaoesutaeohusaeotuhaousuaoeu" |> IO.puts
     "oateuhaoseutnhaoesutaeohusaeotuhaousuaoeu" |> IO.puts
     "oateuhaoseutnhaoesutaeohusaeotuhaousuaoeu" |> IO.puts
-    # head |> IO.inspect(limit: :infinity, charlists: :as_tail)
-    # tail_0 |> IO.inspect(limit: :infinity, charlists: :as_lists)
-    # tail_1 |> IO.inspect(limit: :infinity, charlists: :as_lists)
-    # stack |> IO.inspect(limit: :infinity, charlists: :as_lists)
-    # current |> IO.inspect(limit: :infinity, charlists: :as_lists)
-    # product |> IO.inspect(limit: :infinity, charlists: :as_lists)
-    # [[tail_0|tail_1]|stack] |> IO.inspect(limit: :infinity, charlists: :as_lists)
-    # [head|current] |> IO.inspect(limit: :infinity, charlists: :as_lists)
+    head |> IO.inspect(limit: :infinity, charlists: :as_tail)
+    tail_0 |> IO.inspect(limit: :infinity, charlists: :as_lists)
+    tail_1 |> IO.inspect(limit: :infinity, charlists: :as_lists)
+    stack |> IO.inspect(limit: :infinity, charlists: :as_lists)
+    current |> IO.inspect(limit: :infinity, charlists: :as_lists)
+    product |> IO.inspect(limit: :infinity, charlists: :as_lists)
+    [[tail_0|tail_1]|stack] |> IO.inspect(limit: :infinity, charlists: :as_lists)
+    [head|current] |> IO.inspect(limit: :infinity, charlists: :as_lists)
     stack |> IO.inspect(limit: :infinity, charlists: :as_lists)
     "32902392039230920392039203920390293023990" |> IO.puts
     "32902392039230920392039203920390293023990" |> IO.puts
@@ -176,146 +177,6 @@ defmodule Athena do
     jbe(tail_1, [[tail_0|tail_1]|stack], [head|current], product)
   end
 
-#   def jbe([[head|[]]|[]], current, stuff) do
-#     "@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@" |> IO.puts
-#     "@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@" |> IO.puts
-#     "@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@" |> IO.puts
-#     head |> IO.inspect(limit: :infinity, charlists: :as_lists)
-#     current |> IO.inspect(limit: :infinity, charlists: :as_lists)
-#     stuff |> IO.inspect(limit: :infinity, charlists: :as_lists)
-#     [current ++ [head]|stuff] |> Enum.reverse() |> IO.inspect(limit: :infinity, charlists: :as_lists)
-#     "§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§" |> IO.puts
-#     "§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§" |> IO.puts
-#     "§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§" |> IO.puts    
-# #    jbe([tail], current, [current ++ [head]|stuff] |> Enum.reverse())
-#   end
-  
-#   def jbe([[head|tail]|[]], current, stuff) do
-#     "kbxbxbxbxbxbxbxbxbxbxbxbxbxbxbxbxbxbxbx" |> IO.puts
-#     "kbxbxbxbxbxbxbxbxbxbxbxbxbxbxbxbxbxbxbx" |> IO.puts
-#     "kbxbxbxbxbxbxbxbxbxbxbxbxbxbxbxbxbxbxbx" |> IO.puts
-#     head |> IO.inspect(limit: :infinity, charlists: :as_lists)
-#     tail |> IO.inspect(limit: :infinity, charlists: :as_lists)
-#     current |> IO.inspect(limit: :infinity, charlists: :as_lists)
-#     stuff |> IO.inspect(limit: :infinity, charlists: :as_lists)
-#     [tail] |> IO.inspect(limit: :infinity, charlists: :as_lists)
-#     [current ++ [head]|stuff] |> Enum.reverse() |> IO.inspect(limit: :infinity, charlists: :as_lists)
-#     "!@!@!@!@!@!@!@!@!@!@!@!@!@!@!@!@!@!@!@!" |> IO.puts
-#     "!@!@!@!@!@!@!@!@!@!@!@!@!@!@!@!@!@!@!@!" |> IO.puts
-#     "!@!@!@!@!@!@!@!@!@!@!@!@!@!@!@!@!@!@!@!" |> IO.puts
-#     jbe([tail], current, [current ++ [head]|stuff] |> Enum.reverse())
-#   end
-
-#   def jbe([[head_0|_tail]|[[head_1|_]|tail]], current, stuff) do
-#     "oateuhaoseutnhaoesutaeohusaeotuhaousuaoeu" |> IO.puts
-#     "oateuhaoseutnhaoesutaeohusaeotuhaousuaoeu" |> IO.puts
-#     "oateuhaoseutnhaoesutaeohusaeotuhaousuaoeu" |> IO.puts
-#     head_0|> IO.inspect(limit: :infinity, charlists: :as_lists)
-#     head_1|> IO.inspect(limit: :infinity, charlists: :as_lists)
-#     tail |> IO.inspect(limit: :infinity, charlists: :as_lists)
-#     stuff |> IO.inspect(limit: :infinity, charlists: :as_lists)
-#     "32902392039230920392039203920390293023990" |> IO.puts
-#     "32902392039230920392039203920390293023990" |> IO.puts
-#     "32902392039230920392039203920390293023990" |> IO.puts    
-#     jbe(tail, stuff ++ [head_0] ++ [head_1], stuff)
-#   end
-
-  # def ack([], [], current, product) do
-  #   "oateuhaoseutnhaoesutaeohusaeotuhaousuaoeu" |> IO.puts
-  #   "oateuhaoseutnhaoesutaeohusaeotuhaousuaoeu" |> IO.puts
-  #   "oateuhaoseutnhaoesutaeohusaeotuhaousuaoeu" |> IO.puts
-  #   current |> IO.inspect(limit: :infinity)
-  #   product |> IO.inspect(limit: :infinity)
-  #   [current|product] |> Enum.reverse() |> IO.inspect(limit: :infinity)
-  #   "32902392039230920392039203920390293023990" |> IO.puts
-  #   "32902392039230920392039203920390293023990" |> IO.puts
-  #   "32902392039230920392039203920390293023990" |> IO.puts    
-  # end
-
-  # def ack([], rest, current, product) do
-  #   "kbxbxbxbxbxbxbxbxbxbxbxbxbxbxbxbxbxbxbx" |> IO.puts
-  #   "kbxbxbxbxbxbxbxbxbxbxbxbxbxbxbxbxbxbxbx" |> IO.puts
-  #   "kbxbxbxbxbxbxbxbxbxbxbxbxbxbxbxbxbxbxbx" |> IO.puts
-  #   rest |> IO.inspect(limit: :infinity)
-  #   current |> IO.inspect(limit: :infinity)
-  #   [current|product] |> Enum.reverse() |> IO.inspect(limit: :infinity)
-  #   "!@!@!@!@!@!@!@!@!@!@!@!@!@!@!@!@!@!@!@!" |> IO.puts
-  #   "!@!@!@!@!@!@!@!@!@!@!@!@!@!@!@!@!@!@!@!" |> IO.puts
-  #   "!@!@!@!@!@!@!@!@!@!@!@!@!@!@!@!@!@!@!@!" |> IO.puts
-  #   ack(rest, [], [], [current|product] |> Enum.reverse())
-  # end
-  
-  # def ack([[head|tail_0]|tail_1], rest, current, product) do
-  #   "@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@" |> IO.puts
-  #   "@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@" |> IO.puts
-  #   "@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@" |> IO.puts
-  #   head |> IO.inspect(limit: :infinity)
-  #   tail_0 |> IO.inspect(limit: :infinity)
-  #   tail_1 |> IO.inspect(limit: :infinity)
-  #   rest |>  IO.inspect(limit: :infinity)
-  #   current |> IO.inspect(limit: :infinity)
-  #   product |> IO.inspect(limit: :infinity)
-  #   "§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§" |> IO.puts
-  #   "§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§" |> IO.puts
-  #   "§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§" |> IO.puts
-  #   ack(tail_1, append_to_rest(tail_0, rest), current ++ [head], product)
-    
-  # end
-
-
-  # def append_to_rest([], rest), do: rest
-  # def append_to_rest(next, rest), do: rest ++ [next]
-
-  
-  # def build_product([[head_0|tail_0]|[head_1|tail_1]], current, unprocessed, product) do
-  #   "kbxbxbxbxbxbxbxbxbxbxbxbxbxbxbxbxbxbxbx" |> IO.puts
-  #   "kbxbxbxbxbxbxbxbxbxbxbxbxbxbxbxbxbxbxbx" |> IO.puts
-  #   "kbxbxbxbxbxbxbxbxbxbxbxbxbxbxbxbxbxbxbx" |> IO.puts
-  #   head_0 |> IO.inspect(limit: :infinity)
-  #   tail_0 |> IO.inspect(limit: :infinity)
-  #   head_1 |> IO.inspect(limit: :infinity)
-  #   tail_1 |> IO.inspect(limit: :infinity)
-  #   current |> IO.inspect(limit: :infinity)
-  #   unprocessed |> IO.inspect(limit: :infinity)
-  #   product |> IO.inspect(limit: :infinity)
-  #   "!@!@!@!@!@!@!@!@!@!@!@!@!@!@!@!@!@!@!@!" |> IO.puts
-  #   "!@!@!@!@!@!@!@!@!@!@!@!@!@!@!@!@!@!@!@!" |> IO.puts
-  #   "!@!@!@!@!@!@!@!@!@!@!@!@!@!@!@!@!@!@!@!" |> IO.puts
-  # end
-
-
-  # def cartesian_product(lists) do
-  #   tco_map(lists, [])
-  # end
-
-
-  # def tco_map([[head_0|tail_0]|[]]) do
-    
-  # end
-
-  # def process_list([], cartesian_product), do: cartesian_product
-  
-  # def process_list([[head_0|tail_0]|[head_1|tail_1]], [], cartesian_product) do
-  #   ack = cartesian_product ++ [[head_0|head_1]]
-
-  #   rest = [tail_0|[head_1|tail_1]]
-  #   "oateuhaoseutnhaoesutaeohusaeotuhaousuaoeu" |> IO.puts
-  #   "oateuhaoseutnhaoesutaeohusaeotuhaousuaoeu" |> IO.puts
-  #   "oateuhaoseutnhaoesutaeohusaeotuhaousuaoeu" |> IO.puts
-  #   ack |> IO.inspect(limit: :infinity)
-  #   "=========================================" |> IO.puts
-  #   rest |> IO.inspect(limit: :infinity)
-  #   "32902392039230920392039203920390293023990" |> IO.puts
-  #   "32902392039230920392039203920390293023990" |> IO.puts
-  #   "32902392039230920392039203920390293023990" |> IO.puts
-  #   process_list([tail_0|[head_1|tail_1]], rest, ack)
-  # end
-
-  # def process_list([[head|tail_0]|[head_1|tail_1]], rest, cartesian_product) do
-  #   "§1§1§1§1§1§1§1§1§1§1§1§1§1§1§11§1" |> IO.puts
-  #   "§1§1§1§1§1§1§1§1§1§1§1§1§1§1§11§1" |> IO.puts
-  #   "§1§1§1§1§1§1§1§1§1§1§1§1§1§1§11§1" |> IO.puts
-  # end
 
 
 
@@ -326,20 +187,6 @@ defmodule Athena do
 
 
   
-# [
-#   [1, 3, 5],
-#   [1, 3, 6],
-#   [1, 4, 5],
-#   [1, 4, 6],
-#   [2, 3, 5],
-#   [2, 3, 6],
-#   [2, 4, 5],
-#   [2, 4, 6]
-# ]
-  
-
-
-
 
   #########################################################
   # rule prototypes
@@ -382,80 +229,80 @@ defmodule Athena do
   #the match functions also need to be changed
   #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-  @facts [
-    %{
-      "type" => "ordered",
-      "values" => ["fox_1", "something"]
-    },
-    %{
-      "type" => "ordered",
-      "values" => ["fox_1", "bloo"]
-    },
-    %{
-      "type" => "non_ordered",
-      "template" => "ack",
-      "key_value_pairs" => [
-        {"oop", "fzzzt"}
-      ]
-    },
-    %{
-      "type" => "non_ordered",
-      "template" => "jbe",
-      "key_value_pairs" => [
-        {"zorg", "fzzzt"}
-      ]
-    },
-    %{
-      "type" => "non_ordered",
-      "template" => "ack",
-      "key_value_pairs" => [
-        {"oop", "zoom"}
-      ]
-    },
-    %{
-      "type" => "non_ordered",
-      "template" => "jbe",
-      "key_value_pairs" => [
-        {"zorg", "bang"}
-      ]
-    },
-    %{
-      "type" => "non_ordered",
-      "template" => "jbe",
-      "key_value_pairs" => [
-        {"zorg", "something"}
-      ]
-    },
-    %{
-      "type" => "non_ordered",
-      "template" => "jbe",
-      "key_value_pairs" => [
-        {"zorg", "wat"}
-      ]
-    }
-  ]
+  # @facts [
+  #   %{
+  #     "type" => "ordered",
+  #     "values" => ["fox_1", "something"]
+  #   },
+  #   %{
+  #     "type" => "ordered",
+  #     "values" => ["fox_1", "bloo"]
+  #   },
+  #   %{
+  #     "type" => "non_ordered",
+  #     "template" => "ack",
+  #     "key_value_pairs" => [
+  #       {"oop", "fzzzt"}
+  #     ]
+  #   },
+  #   %{
+  #     "type" => "non_ordered",
+  #     "template" => "jbe",
+  #     "key_value_pairs" => [
+  #       {"zorg", "fzzzt"}
+  #     ]
+  #   },
+  #   %{
+  #     "type" => "non_ordered",
+  #     "template" => "ack",
+  #     "key_value_pairs" => [
+  #       {"oop", "zoom"}
+  #     ]
+  #   },
+  #   %{
+  #     "type" => "non_ordered",
+  #     "template" => "jbe",
+  #     "key_value_pairs" => [
+  #       {"zorg", "bang"}
+  #     ]
+  #   },
+  #   %{
+  #     "type" => "non_ordered",
+  #     "template" => "jbe",
+  #     "key_value_pairs" => [
+  #       {"zorg", "something"}
+  #     ]
+  #   },
+  #   %{
+  #     "type" => "non_ordered",
+  #     "template" => "jbe",
+  #     "key_value_pairs" => [
+  #       {"zorg", "wat"}
+  #     ]
+  #   }
+  # ]
   
-  @rules [
-    %{
-      "name" => "internal_binding_match",
-      "lhs" => %{
-        "clauses" => [
-          ["fox_1", "gensym_ack_000000"],
-          {"ack", "oop", "gensym_ack_000001"},
-          {"jbe", "zorg", "gensym_ack_000001"},
-          {"jbe", "zorg", "gensym_ack_000000"}
-        ]
-      },
-      "rhs" => %{
-        "actions" => [{&IO.puts/1, ["gensym_ack_000000"]}]
-      }
-    }
-  ]
+  # @rules [
+  #   %{
+  #     "name" => "internal_binding_match",
+  #     "lhs" => %{
+  #       "clauses" => [
+  #         ["fox_1", "gensym_ack_000000"],
+  #         {"ack", "oop", "gensym_ack_000001"},
+  #         {"jbe", "zorg", "gensym_ack_000001"},
+  #         {"jbe", "zorg", "gensym_ack_000000"}
+  #       ]
+  #     },
+  #     "rhs" => %{
+  #       "actions" => [{&IO.puts/1, ["gensym_ack_000000"]}]
+  #     }
+  #   }
+  # ]
   
-  def inference_engine_check_lhs_for_rule_activation() do
-    @rules
-    |> Enum.map(fn rule ->
-      nil
-    end)
-  end  
+  # def inference_engine_check_lhs_for_rule_activation() do
+  #   @rules
+  #   |> Enum.map(fn rule ->
+  #     nil
+  #   end)
+  # end  
 end
