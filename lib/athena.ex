@@ -26,8 +26,8 @@ defmodule Athena do
     # cartesian_product([[1, 2], [3, 4], [5, 6]])
     # |> IO.inspect(limit: :infinity)
 
-
-    [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+    [[1, 2], [3, 4], [5, 6]]
+#    [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
 #    |> ack([], [], [])
     |> jbe([], [], [])
 #    |> cartesian_product()
