@@ -33,16 +33,26 @@ defmodule Athena do
 #    [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
 #    [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]]
 #     [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]]
-    [[1, 2, 3], [4, 5, 6], [7, 8, 9], [10, 11, 12]]
+#    [[1, 2, 3], [4, 5, 6], [7, 8, 9], [10, 11, 12]]
 #    |> ack([], [], [])
 #    |> jbe([], [], [])
 #     |> jbe([])
 #    fox_3([[1], [2]], [3, 4], [])
 #    fox_3([[1, 3], [1, 4], [2, 3], [2, 4]], [5, 6], [])
     
-     |> fox_1()
+#     |> fox_1()
 #    |> cartesian_product()
 #    |> IO.inspect(limit: :infinity)
+
+    Benchee.run(
+      %{
+        "fox_n" => fn -> [[1, 2, 3], [4, 5, 6], [7, 8, 9], [10, 11, 12]] |> fox_1() end,
+        "cartesian_product" => fn -> [[1, 2, 3], [4, 5, 6], [7, 8, 9], [10, 11, 12]] |> cartesian_product() end
+        },
+      time: 10,
+      memory_time: 2
+    )
+
     
     "}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}" |> IO.puts
     "{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{" |> IO.puts
@@ -52,13 +62,21 @@ defmodule Athena do
     Supervisor.start_link(children, strategy: :one_for_one)
   end
 
+  def cartesian_product(lists) do
+    lists
+    |> Enum.reduce([[]], fn list, acc ->
+      for x <- acc, y <- list, do: x ++ [y]
+    end)
+  end
+
+
   def jumpstart_acc([], acc), do: acc
   def jumpstart_acc([head|tail], acc), do: jumpstart_acc(tail, acc ++ [[] ++ [head]])
   
   def fox_1([head|tail]) do
     fox_1(tail, jumpstart_acc(head, []))
   end
-  def fox_1([], acc), do: acc |> IO.inspect(limit: :infinity, charlists: :as_lists)
+  def fox_1([], acc), do: acc
   def fox_1([head|tail], acc) do
     fox_1(tail, fox_2(acc, head, []))
   end
