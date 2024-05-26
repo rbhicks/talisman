@@ -70,6 +70,25 @@ defmodule Athena do
   end
 
 
+  # bailing on this and going with the above. i'm putting in the stats and
+  # comments into a commit for history record.
+  
+# Name                        ips        average  deviation         median         99th %
+# cartesian_product      547.85 K        1.83 μs   ±685.95%        1.71 μs        2.13 μs
+# fox_n                  151.24 K        6.61 μs   ±126.97%        6.21 μs       13.79 μs
+
+# Comparison:
+# cartesian_product      547.85 K
+# fox_n                  151.24 K - 3.62x slower +4.79 μs
+
+# Memory usage statistics:
+
+# Name                 Memory usage
+# cartesian_product        11.73 KB
+# fox_n                    63.14 KB - 5.38x memory usage +51.41 KB
+
+# **All measurements for memory usage were the same**
+
   def jumpstart_acc([], acc), do: acc
   def jumpstart_acc([head|tail], acc), do: jumpstart_acc(tail, acc ++ [[] ++ [head]])
   
@@ -89,7 +108,53 @@ defmodule Athena do
   def fox_3(_sidewinder, [], acc), do: acc
   def fox_3(sidewinder, [head|tail], acc) do
     fox_3(sidewinder, tail, acc ++ [sidewinder ++ [head]])
-  end  
+  end
+
+  # this version isn't sorted properly, but rather than deal with that
+  # i ran the bench mark since fixing the sort would only make it take
+  # longer. thus, if there was significant improvement, that would
+  # justify fixing it. (no joy. all it fucking did was flip the memory
+  # usage and speed performance (roughly). i.e., this was even slower.
+
+# Name                        ips        average  deviation         median         99th %
+# fox_n                    2.78 M        0.36 μs ±11986.44%        0.25 μs        0.42 μs
+# cartesian_product        0.55 M        1.83 μs   ±862.80%        1.71 μs        2.17 μs
+
+# Comparison:
+# fox_n                    2.78 M
+# cartesian_product        0.55 M - 5.08x slower +1.47 μs
+
+# Memory usage statistics:
+
+# Name                 Memory usage
+# fox_n                     3.75 KB
+# cartesian_product        11.73 KB - 3.13x memory usage +7.98 KB
+
+# **All measurements for memory usage were the same**
+
+
+  # def jumpstart_acc([], acc), do: acc
+  # def jumpstart_acc([head|tail], acc), do: jumpstart_acc(tail, [[head]|acc])
+
+  
+  # def fox_1([head|tail]) do
+  #   fox_1(tail, jumpstart_acc(head, []))
+  # end
+  # def fox_1([], acc), do: acc
+  # def fox_1([head|tail], acc) do
+  #   fox_1(tail, fox_2(acc, head, []))
+  # end
+  
+  # def fox_2([], _hellfire, acc), do: acc
+  # def fox_2([head|tail], hellfire, acc) do
+  #   fox_2(tail, hellfire, fox_3(head, hellfire, acc)) 
+  # end
+  
+  # def fox_3(_sidewinder, [], acc), do: acc
+  # def fox_3(sidewinder, [head|tail] = hellfire, acc) do
+  #   fox_3(sidewinder, tail, [[head|sidewinder]|acc])
+  # end  
+
   
 
   #########################################################
