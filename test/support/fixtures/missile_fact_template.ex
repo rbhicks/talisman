@@ -4,3 +4,4 @@ defmodule Athena.Test.Fixtures.MissileFactTemplate do
 
   defstruct type: nil, propulsion: nil, seeker: nil, warhead: nil
 end
+
