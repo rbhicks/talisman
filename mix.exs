@@ -22,7 +22,8 @@ defmodule Athena.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:benchee, "~> 1.3"}
+      {:benchee, "~> 1.3"},
+      {:ex_spec, "~> 2.0"}
     ]
   end
 end
