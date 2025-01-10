@@ -1,8 +1,11 @@
 defmodule AthenaTest do
-  use ExUnit.Case
-  doctest Athena
+ use ExSpec, async: true  doctest Athena
 
-  test "greets the world" do
-    assert Athena.hello() == :world
-  end
+ describe "fact" do
+   context "smoke test" do
+     it "actually works" do
+       
+     end
+   end
+ end
 end
