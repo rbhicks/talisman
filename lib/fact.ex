@@ -18,6 +18,14 @@ defmodule Athena.Fact do
       end
 
       def start_link(_opts) do
+        "mqvjkmbqvjkmb;qvjkmbqjvkmbqvjkmb;qvjkmb;vqjkmbq;jk" |> IO.puts
+        "mqvjkmbqvjkmb;qvjkmbqjvkmbqvjkmb;qvjkmb;vqjkmbq;jk" |> IO.puts
+        "mqvjkmbqvjkmb;qvjkmbqjvkmbqvjkmb;qvjkmb;vqjkmbq;jk" |> IO.puts
+        __MODULE__.__struct__() |> Map.from_struct() |> Map.keys() |> IO.inspect(limit: :infinity)
+        "(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*" |> IO.puts
+        "(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*" |> IO.puts
+        "(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*" |> IO.puts
+        
         GenServer.start_link(__MODULE__, [], name: __MODULE__)
       end
 
