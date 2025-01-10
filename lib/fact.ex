@@ -9,12 +9,12 @@ defmodule Athena.Fact do
         GenServer.cast(pid, :set_field_values)
       end
 
-      def handle_call(:get_field_values, _from, {fields_values: fields_values}) do
+      def handle_call(:get_field_values, _from, %{fields_values: fields_values}) do
         {:reply, {:ok, fields_values}}
       end
 
       def handle_cast({:set_field_values, field_values}, _from, state) do
-        {:no_reply, Map.set(state, :field_values, field_values}
+        {:no_reply, Map.put(state, :field_values, field_values)}
       end
     end
   end
