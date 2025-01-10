@@ -16,6 +16,14 @@ defmodule Athena.Fact do
       def handle_cast({:set_field_values, field_values}, _from, state) do
         {:no_reply, Map.put(state, :field_values, field_values)}
       end
+
+      def start_link(_opts) do
+        GenServer.start_link(__MODULE__, [], name: __MODULE__)
+      end
+
+      def init(_params) do
+        {:ok, %{}}
+      end
     end
   end
 end
