@@ -15,6 +15,7 @@ defmodule AthenaTest do
            {
              MissileFactTemplate,
              %MissileFactTemplate{
+               name: :minuteman_ii,
                type: :icbm,
                propulsion: :solid_propellant,
                guidance: :ballistic_trajectory,
