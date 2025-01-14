@@ -22,14 +22,13 @@ defmodule Athena.Fact do
   end
 
   def init(params) do
-    "mqvjkmbqvjkmb;qvjkmbqjvkmbqvjkmb;qvjkmb;vqjkmbq;jk" |> IO.puts
-    "mqvjkmbqvjkmb;qvjkmbqjvkmbqvjkmb;qvjkmb;vqjkmbq;jk" |> IO.puts
-    "mqvjkmbqvjkmb;qvjkmbqjvkmbqvjkmb;qvjkmb;vqjkmbq;jk" |> IO.puts
-    params |> IO.inspect(limit: :infinity)
-    "(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*" |> IO.puts
-    "(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*" |> IO.puts
-    "(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*" |> IO.puts
-
-    {:ok, %{}}
+    {
+      :ok,
+      {
+        elem(params, 0),
+        %{}
+        |> Enum.into(Map.from_struct(elem(params, 1)))
+      }
+    }
   end
 end
