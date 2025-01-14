@@ -17,20 +17,19 @@ defmodule Athena.Fact do
     {:no_reply, Map.put(state, :field_values, field_values)}
   end
 
-  def start_link(opts) do
-    "mqvjkmbqvjkmb;qvjkmbqjvkmbqvjkmb;qvjkmb;vqjkmbq;jk" |> IO.puts
-    "mqvjkmbqvjkmb;qvjkmbqjvkmbqvjkmb;qvjkmb;vqjkmbq;jk" |> IO.puts
-    "mqvjkmbqvjkmb;qvjkmbqjvkmbqvjkmb;qvjkmb;vqjkmbq;jk" |> IO.puts
-#    __MODULE__.__struct__() |> Map.from_struct() |> Map.keys() |> IO.inspect(limit: :infinity)
-    opts |> IO.inspect(limit: :infinity)
-    "(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*" |> IO.puts
-    "(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*" |> IO.puts
-    "(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*" |> IO.puts
-        
-    GenServer.start_link(__MODULE__, [], name: __MODULE__)
+  def start_link(opts) do        
+    GenServer.start_link(__MODULE__, opts, name: __MODULE__)
   end
 
-  def init(_params) do
+  def init(params) do
+    "mqvjkmbqvjkmb;qvjkmbqjvkmbqvjkmb;qvjkmb;vqjkmbq;jk" |> IO.puts
+    "mqvjkmbqvjkmb;qvjkmbqjvkmbqvjkmb;qvjkmb;vqjkmbq;jk" |> IO.puts
+    "mqvjkmbqvjkmb;qvjkmbqjvkmbqvjkmb;qvjkmb;vqjkmbq;jk" |> IO.puts
+    params |> IO.inspect(limit: :infinity)
+    "(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*" |> IO.puts
+    "(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*" |> IO.puts
+    "(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*&(*" |> IO.puts
+
     {:ok, %{}}
   end
 end
