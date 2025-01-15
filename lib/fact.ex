@@ -17,38 +17,18 @@ defmodule Athena.Fact do
     {:no_reply, Map.put(state, :field_values, field_values)}
   end
 
-#  def start_link({module, fact, fact_id} = opts) do
   def start(fact_instance, fact_id) do
-
-    "**********************************************" |> IO.puts
-    "**********************************************" |> IO.puts
-    "**********************************************" |> IO.puts
-    fact_instance |> IO.inspect(limit: :infinity)
-    "==============================================" |> IO.puts
-    fact_id |> IO.inspect(limit: :infinity)
-    "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^" |> IO.puts
-    "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^" |> IO.puts
-    "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^" |> IO.puts
-#    {:ok, self()}
     GenServer.start_link(__MODULE__, {fact_instance, fact_id}, name: {:global, fact_id})
   end
 
-  def init(params) do
-
-    "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" |> IO.puts
-    "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" |> IO.puts
-    "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" |> IO.puts
-    params |> IO.inspect(limit: :infinity)
-    "#################################################" |> IO.puts
-    "#################################################" |> IO.puts
-    "#################################################" |> IO.puts
+  def init({fact_instance, fact_id}) do
     {
       :ok,
       {
-        elem(params, 0),
+        fact_instance.__struct__,
         %{}
-        |> Enum.into(Map.from_struct(elem(params, 1))),
-        elem(params, 2)
+        |> Enum.into(Map.from_struct(fact_instance)),
+        fact_id
       }
     }
   end
