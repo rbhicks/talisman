@@ -27,7 +27,8 @@ defmodule Athena.Fact do
       {
         elem(params, 0),
         %{}
-        |> Enum.into(Map.from_struct(elem(params, 1)))
+        |> Enum.into(Map.from_struct(elem(params, 1))),
+        elem(params, 2)
       }
     }
   end
