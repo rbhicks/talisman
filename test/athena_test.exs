@@ -20,7 +20,8 @@ defmodule AthenaTest do
                propulsion: :solid_propellant,
                guidance: :ballistic_trajectory,
                warhead: :mirv
-             }
+             },
+             "MissileFactTemplate->#{DateTime.utc_now(:microsecond)}"
            }
          }
        ) |> IO.inspect(limit: :infinity)
