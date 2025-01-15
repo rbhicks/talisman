@@ -11,11 +11,13 @@ defmodule Athen.Test.Support.Fixtures.FoundIcbm do
     {:ok}
   end
 
-  # @impl Rule
-  # def evaluate_lhs_for_instances do
-  # end
+  @impl Rule
+  def evaluate_lhs_for_instances do
+    {:ok, []}
+  end
 
-  # @impl
-  # def execute_rule do
-  # end
+  @impl Rule
+  def execute_rule do
+    {:ok}
+  end
 end
