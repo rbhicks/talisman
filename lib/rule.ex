@@ -21,7 +21,8 @@ defmodule Athena.Rule do
     {
       :ok,
       {
-        get_lhs_fact_templates, evaluate_lhs_function, execute_rule_function
+        # fact ids are the list at the end. init to empty. to be added by inference_engine
+        get_lhs_fact_templates, evaluate_lhs_function, execute_rule_function, []
       }
     }
   end
