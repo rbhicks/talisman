@@ -5,6 +5,7 @@ defmodule AthenaTest do
  alias Athena.Test.Support.Fixtures.BombFactTemplate
  alias Athena.Fact
  alias Athena.Rule
+ alias Athena.Mapper
 
  describe "fact" do
    context "smoke test" do
@@ -76,12 +77,24 @@ defmodule AthenaTest do
            }
          }
 
+       mapper_child_spec =
+       %{
+         id: :mapper,
+         start: {
+           Mapper,
+           :start,
+           [
+             :mapper
+           ]
+         }
+       }
        "uoansteuhosaetuhosaetnuhoaseuthoasutnohausoeuthau" |> IO.puts
        "uoansteuhosaetuhosaetnuhoaseuthoasutnohausoeuthau" |> IO.puts
        "uoansteuhosaetuhosaetnuhoaseuthoasutnohausoeuthau" |> IO.puts
        start_supervised!(missile_fact_child_spec) |> IO.inspect(limit: :infinity)
        start_supervised!(bomb_fact_child_spec) |> IO.inspect(limit: :infinity)
        start_supervised!(found_icbm_rule_child_spec) |> IO.inspect(limit: :infinity)
+       start_supervised!(mapper_child_spec) |> IO.inspect(limit: :infinity)
        "0394850349583045983405985039485034598304593840593" |> IO.puts
        "0394850349583045983405985039485034598304593840593" |> IO.puts
        "0394850349583045983405985039485034598304593840593" |> IO.puts
