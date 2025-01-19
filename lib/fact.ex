@@ -1,16 +1,16 @@
 defmodule Athena.Fact do
   use GenServer
   
-  def get_field_values(pid) do
-    GenServer.call(pid, :get_field_values)
+  def get_field_values(server) do
+    GenServer.call({:global, server}, :get_field_values)
   end
 
-  def set_field_values(pid, field_values) do
-    GenServer.cast(pid, :set_field_values)
+  def set_field_values(server, field_values) do
+    GenServer.cast(server, :set_field_values)
   end
 
-  def handle_call(:get_field_values, _from, %{fields_values: fields_values}) do
-    {:reply, {:ok, fields_values}}
+  def handle_call(:get_field_values, _from, {fact_instance, field_values, fact_id} = state) do
+    {:reply, {:ok, field_values}, state}
   end
 
   def handle_cast({:set_field_values, field_values}, _from, state) do
