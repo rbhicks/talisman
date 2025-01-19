@@ -3,7 +3,6 @@ defmodule AthenaTest do
 
  alias Athena.Test.Support.Fixtures.MissileFactTemplate
  alias Athena.Test.Support.Fixtures.BombFactTemplate
- alias Athen.Test.Support.Fixtures.FoundIcbm
  alias Athena.Fact
  alias Athena.Rule
 
@@ -51,15 +50,28 @@ defmodule AthenaTest do
        
        found_icbm_rule_child_spec =
          %{
-           id: FoundIcbm,
+           id: :found_icbm,
            start: {
              Rule,
              :start,
              [
-               FoundIcbm,
-               &FoundIcbm.get_lhs_fact_templates/0,
-               &FoundIcbm.evaluate_lhs/1,
-               &FoundIcbm.execute_rhs/0
+               :found_icbm,
+               fn -> [MissileFactTemplate] end,
+               fn fact_instances ->
+                 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
+                 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
+                 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
+                 fact_instances |> IO.inspect(limit: :infinity)
+                 "+++++++++++++++++++++++++++++++++++" |> IO.puts
+                 "+++++++++++++++++++++++++++++++++++" |> IO.puts
+                 "+++++++++++++++++++++++++++++++++++" |> IO.puts
+                 {:ok}
+               end,
+               fn -> 
+                 "()()()()()()()()()()()()()()()()()()" |> IO.puts
+                 "fox-1" |> IO.puts
+                 "()()()()()()()()()()()()()()()()()()" |> IO.puts
+               end
              ]
            }
          }
