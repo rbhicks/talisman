@@ -1,5 +1,28 @@
 defmodule Athena.Rule do
-  @callback add_fact_instance(%{:__struct__ => atom(), optional(atom()) => any()}) :: {:ok}
-  @callback evaluate_lhs_for_instances :: {:ok, list(String.t)}
-  @callback execute_rule :: {:ok}
+  use GenServer
+
+  def add_fact_id(fact_id) do
+    {:ok}
+  end
+  
+  def evaluate_lhs_for_fact_instances do
+    {:ok, []}
+  end
+  
+  def execute_rule do
+    {:ok}
+  end
+
+  def start(rule_name, get_lhs_fact_templates, evaluate_lhs_function, execute_rule_function) do
+    GenServer.start_link(__MODULE__, {get_lhs_fact_templates, evaluate_lhs_function, execute_rule_function}, name: {:global, rule_name})
+  end
+
+  def init({get_lhs_fact_templates, evaluate_lhs_function, execute_rule_function}) do
+    {
+      :ok,
+      {
+        get_lhs_fact_templates, evaluate_lhs_function, execute_rule_function
+      }
+    }
+  end
 end

@@ -3,6 +3,9 @@ defmodule AthenaTest do
 
  alias Athena.Test.Support.Fixtures.MissileFactTemplate
  alias Athena.Test.Support.Fixtures.BombFactTemplate
+ alias Athen.Test.Support.Fixtures.FoundIcbm
+ alias Athena.Fact
+ alias Athena.Rule
 
  describe "fact" do
    context "smoke test" do
@@ -13,7 +16,7 @@ defmodule AthenaTest do
          %{
            id: missile_fact_identity,
            start: {
-             Athena.Fact,
+             Fact,
              :start,
              [
                %MissileFactTemplate{
@@ -32,7 +35,7 @@ defmodule AthenaTest do
          %{
            id: bomb_fact_identity,
            start: {
-             Athena.Fact,
+             Fact,
              :start,
              [
                %BombFactTemplate{
@@ -45,11 +48,28 @@ defmodule AthenaTest do
              ]
            }
          }
+       
+       found_icbm_rule_child_spec =
+         %{
+           id: FoundIcbm,
+           start: {
+             Rule,
+             :start,
+             [
+               FoundIcbm,
+               &FoundIcbm.get_lhs_fact_templates/0,
+               &FoundIcbm.evaluate_lhs/1,
+               &FoundIcbm.execute_rhs/0
+             ]
+           }
+         }
+
        "uoansteuhosaetuhosaetnuhoaseuthoasutnohausoeuthau" |> IO.puts
        "uoansteuhosaetuhosaetnuhoaseuthoasutnohausoeuthau" |> IO.puts
        "uoansteuhosaetuhosaetnuhoaseuthoasutnohausoeuthau" |> IO.puts
        start_supervised!(missile_fact_child_spec) |> IO.inspect(limit: :infinity)
        start_supervised!(bomb_fact_child_spec) |> IO.inspect(limit: :infinity)
+       start_supervised!(found_icbm_rule_child_spec) |> IO.inspect(limit: :infinity)
        "0394850349583045983405985039485034598304593840593" |> IO.puts
        "0394850349583045983405985039485034598304593840593" |> IO.puts
        "0394850349583045983405985039485034598304593840593" |> IO.puts
