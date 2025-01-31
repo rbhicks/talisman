@@ -12,6 +12,48 @@ defmodule AthenaTest do
      it "actually works" do
        missile_fact_identity = "MissileFactTemplate->#{DateTime.utc_now(:microsecond)}"
        bomb_fact_identity = "BombFactTemplate->#{DateTime.utc_now(:microsecond)}"
+
+       facts = %{
+         missile_fact_identity => %{
+           template: %MissileFactTemplate{
+             name: :minuteman_ii,
+             type: :icbm,
+             propulsion: :solid_propellant,
+             guidance: :ballistic_trajectory,
+             warhead: :mirv
+           }
+         },
+         bomb_fact_identity => %{
+           template: %BombFactTemplate{
+             name: :b61,
+             type: :gravity_bomb,
+             guidance: :glide,
+             warhead: :thermonuclear
+           }
+         }
+       }
+              
+       rules = %{
+         found_icbm: %{
+           get_lhs_fact_templates_function: fn -> [MissileFactTemplate] end,
+           evaluate_lhs_function: fn fact_instances ->
+             "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
+             "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
+             "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
+             fact_instances |> IO.inspect(limit: :infinity)
+             "+++++++++++++++++++++++++++++++++++" |> IO.puts
+             "+++++++++++++++++++++++++++++++++++" |> IO.puts
+             "+++++++++++++++++++++++++++++++++++" |> IO.puts
+             {:ok}
+           end,
+           execute_rule_function: fn -> 
+             "()()()()()()()()()()()()()()()()()()" |> IO.puts
+             "fox-1" |> IO.puts
+             "()()()()()()()()()()()()()()()()()()" |> IO.puts
+           end
+         }
+       }
+       
        missile_fact_child_spec =
          %{
            id: missile_fact_identity,
@@ -19,13 +61,7 @@ defmodule AthenaTest do
              Fact,
              :start,
              [
-               %MissileFactTemplate{
-                 name: :minuteman_ii,
-                 type: :icbm,
-                 propulsion: :solid_propellant,
-                 guidance: :ballistic_trajectory,
-                 warhead: :mirv
-               },
+               Map.get(facts, missile_fact_identity).template,
                missile_fact_identity
              ]
            }
@@ -38,12 +74,7 @@ defmodule AthenaTest do
              Fact,
              :start,
              [
-               %BombFactTemplate{
-                 name: :b61,
-                 type: :gravity_bomb,
-                 guidance: :glide,
-                 warhead: :thermonuclear
-               },
+               Map.get(facts, bomb_fact_identity).template,
                bomb_fact_identity
              ]
            }
@@ -57,22 +88,9 @@ defmodule AthenaTest do
              :start,
              [
                :found_icbm,
-               fn -> [MissileFactTemplate] end,
-               fn fact_instances ->
-                 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
-                 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
-                 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
-                 fact_instances |> IO.inspect(limit: :infinity)
-                 "+++++++++++++++++++++++++++++++++++" |> IO.puts
-                 "+++++++++++++++++++++++++++++++++++" |> IO.puts
-                 "+++++++++++++++++++++++++++++++++++" |> IO.puts
-                 {:ok}
-               end,
-               fn -> 
-                 "()()()()()()()()()()()()()()()()()()" |> IO.puts
-                 "fox-1" |> IO.puts
-                 "()()()()()()()()()()()()()()()()()()" |> IO.puts
-               end
+               rules.found_icbm.get_lhs_fact_templates_function,
+               rules.found_icbm.evaluate_lhs_function,
+               rules.found_icbm.execute_rule_function,
              ]
            }
          }
