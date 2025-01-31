@@ -13,16 +13,16 @@ defmodule Athena.Rule do
     {:ok}
   end
 
-  def start(rule_name, get_lhs_fact_templates, evaluate_lhs_function, execute_rule_function) do
-    GenServer.start_link(__MODULE__, {get_lhs_fact_templates, evaluate_lhs_function, execute_rule_function}, name: {:global, rule_name})
+  def start(rule_name, get_lhs_fact_templates_function, evaluate_lhs_function, execute_rule_function) do
+    GenServer.start_link(__MODULE__, {get_lhs_fact_templates_function, evaluate_lhs_function, execute_rule_function}, name: {:global, rule_name})
   end
 
-  def init({get_lhs_fact_templates, evaluate_lhs_function, execute_rule_function}) do
+  def init({get_lhs_fact_templates_function, evaluate_lhs_function, execute_rule_function}) do
     {
       :ok,
       {
         # fact ids are the list at the end. init to empty. to be added by inference_engine
-        get_lhs_fact_templates, evaluate_lhs_function, execute_rule_function, []
+        get_lhs_fact_templates_function, evaluate_lhs_function, execute_rule_function, []
       }
     }
   end
