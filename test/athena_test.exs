@@ -32,7 +32,10 @@ defmodule AthenaTest do
            }
          }
        }
-              
+
+       # @#$%@#$%@#$%@#$%@#$%@#$%@#$%@#$%@$
+       # add to mapper
+       # @#$%@#$%@#$%@#$%@#$%@#$%@#$%@#$%@$
        rules = %{
          found_icbm: %{
            get_lhs_fact_templates_function: fn -> [MissileFactTemplate] end,
