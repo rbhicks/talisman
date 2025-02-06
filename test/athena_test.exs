@@ -35,6 +35,11 @@ defmodule AthenaTest do
 
        # @#$%@#$%@#$%@#$%@#$%@#$%@#$%@#$%@$
        # add to mapper
+       # fact templates can be added from the
+       # rules, instead of a separate enumeration
+       # because should a fact template not be
+       # referenced by a rule, it's pointless
+       # (should be pruned anyway)
        # @#$%@#$%@#$%@#$%@#$%@#$%@#$%@#$%@$
        rules = %{
          found_icbm: %{
