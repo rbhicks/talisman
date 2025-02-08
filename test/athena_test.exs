@@ -110,7 +110,6 @@ defmodule AthenaTest do
            Mapper,
            :start,
            [
-             :mapper
            ]
          }
        }

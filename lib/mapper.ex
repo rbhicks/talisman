@@ -5,11 +5,17 @@ defmodule Athena.Mapper do
   # because should a fact template not be
   # referenced by a rule, it's pointless
   # (should be pruned anyway)
-  #  def add_rule_fact_templates ...
+  def add_rule_fact_templates(rule_fact_templates) do
+    GenServer.call(self(), {:add_rule_fact_templates, rule_fact_templates})
+  end
   #  def create_fact_template_to_rule_lhs_mapping ...
 
-  def start(mapper_name) do
-        GenServer.start_link(__MODULE__, [], name: {:global, mapper_name})
+  def handle_call({:add_rule_fact_templates, rule_fact_templates}, _from, state) do
+    nil
+  end
+  
+  def start() do
+    GenServer.start_link(__MODULE__, [])
   end
 
   def init(_) do
