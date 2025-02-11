@@ -119,7 +119,13 @@ defmodule AthenaTest do
        start_supervised!(missile_fact_child_spec) |> IO.inspect(limit: :infinity)
        start_supervised!(bomb_fact_child_spec) |> IO.inspect(limit: :infinity)
        start_supervised!(found_icbm_rule_child_spec) |> IO.inspect(limit: :infinity)
-       start_supervised!(mapper_child_spec) |> IO.inspect(limit: :infinity)
+       mapper = start_supervised!(mapper_child_spec) |> IO.inspect(limit: :infinity)
+
+       for {rule_name, rule} <- rules do
+         GenServer.call(mapper, {:add_rule_fact_templates, rule_name, rule.get_lhs_fact_templates_function.()})
+       end
+      
+       
        "0394850349583045983405985039485034598304593840593" |> IO.puts
        "0394850349583045983405985039485034598304593840593" |> IO.puts
        "0394850349583045983405985039485034598304593840593" |> IO.puts

@@ -1,5 +1,7 @@
 defmodule Athena.Mapper do
   use GenServer
+  #  def create_fact_template_to_rule_lhs_mapping ...
+
   # fact templates can be added from the
   # rules, instead of a separate enumeration
   # because should a fact template not be
@@ -7,14 +9,12 @@ defmodule Athena.Mapper do
   # (should be pruned anyway)
   #
   # a batch version can be created later if needed
-  def add_rule_fact_templates(rule_name, rule_fact_templates) do
-    GenServer.call(self(), {:add_rule_fact_templates, rule_name, rule_fact_templates})
-  end
-  #  def create_fact_template_to_rule_lhs_mapping ...
-
   def handle_call({:add_rule_fact_templates, rule_name, rule_fact_templates}, _from, state) do
 
-    {:reply, %{rule_fact_templates: rule_fact_templates ++ {rule_name, rule_fact_templates}}}
+    "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^" |> IO.puts
+    "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^" |> IO.puts
+    "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^" |> IO.puts
+    {:reply, :ok, %{rule_fact_templates: rule_fact_templates ++ {rule_name, rule_fact_templates}}}
   end
   
   def start() do
