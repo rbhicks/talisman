@@ -122,7 +122,7 @@ defmodule AthenaTest do
        mapper = start_supervised!(mapper_child_spec) |> IO.inspect(limit: :infinity)
 
        for {rule_name, rule} <- rules do
-         GenServer.call(mapper, {:add_rule_fact_templates, rule_name, rule.get_lhs_fact_templates_function.()})
+         Mapper.add_rule_fact_templates(mapper, rule_name, rule.get_lhs_fact_templates_function.())
        end
       
        
