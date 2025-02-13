@@ -17,6 +17,13 @@ defmodule Athena.Mapper do
     "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^" |> IO.puts
     "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^" |> IO.puts
     "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^" |> IO.puts
+
+    #093458034958304958340598340598340p5983g
+    #093458034958304958340598340598340p5983g
+    # add a fact_templates state item: a mapset populated from the added rule_fact_templates
+    #093458034958304958340598340598340p5983g
+    #093458034958304958340598340598340p5983g
+    
     {:reply, :ok, %{rule_fact_templates: rule_fact_templates ++ {rule_name, rule_fact_templates}}}
   end
   
