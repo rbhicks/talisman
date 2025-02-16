@@ -1,12 +1,17 @@
 defmodule Athena.Mapper do
   use GenServer
+
+  # @moduledoc """
   # fact templates can be added from the
   # rules, instead of a separate enumeration
   # because should a fact template not be
   # referenced by a rule, it's pointless
   # (should be pruned anyway)
-  #
+  # """
+  
+  # @doc """
   # a batch version can be created later if needed
+  # """
   def add_rule_fact_templates(server, rule_name, rule_fact_templates) do
     GenServer.call(server, {:add_rule_fact_templates, rule_name, rule_fact_templates})
   end
