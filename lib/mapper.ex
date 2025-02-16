@@ -15,7 +15,10 @@ defmodule Athena.Mapper do
   def add_rule_fact_templates(server, rule_name, rule_fact_templates) do
     GenServer.call(server, {:add_rule_fact_templates, rule_name, rule_fact_templates})
   end
-  #  def create_fact_template_to_rule_lhs_mapping ...
+
+  def create_fact_template_to_rule_lhs_mapping(server) do
+    GenServer.call(server, :create_fact_template_to_rule_lhs_mapping)
+  end
 
   def handle_call(
     {:add_rule_fact_templates, rule_name, rule_fact_templates},
@@ -33,11 +36,26 @@ defmodule Athena.Mapper do
         |> MapSet.to_list()
         |> Enum.concat(rule_fact_templates)
         |> MapSet.new(),
-        rule_fact_templates: current_rule_fact_templates ++ {rule_name, rule_fact_templates}
+        rule_fact_templates: current_rule_fact_templates ++ {rule_name, rule_fact_templates},
+        fact_template_to_rule_lhs_mapping: %{}
       }
     }
   end
-  
+
+  def handle_call(
+    :create_fact_template_to_rule_lhs_mapping,
+    _from,
+    %{fact_templates: fact_templates, rule_fact_templates: rule_fact_templates} = state) do
+
+#    fact_template_to_rule_lhs_mapping = 
+    
+    {
+      :reply,
+      :ok,
+      Map.put(state, :fact_template_to_rule_lhs_mapping, fact_template_to_rule_lhs_mapping)
+    }
+  end
+      
   def start() do
     GenServer.start_link(__MODULE__, nil)
   end
