@@ -9,12 +9,17 @@ defmodule AthenaTest do
 
  describe "fact" do
    context "smoke test" do
+     @tag :skip
      it "white sands" do
        "fzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzt!" |> IO.puts
        "fzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzt!" |> IO.puts
        "fzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzt!" |> IO.puts
+       nil |> IO.inspect(limit: :infinity)
+       "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" |> IO.puts
+       "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" |> IO.puts
+       "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" |> IO.puts
      end
-     @tag :skip
+
      it "actually works" do
        missile_fact_identity = "MissileFactTemplate->#{DateTime.utc_now(:microsecond)}"
        bomb_fact_identity = "BombFactTemplate->#{DateTime.utc_now(:microsecond)}"
@@ -130,7 +135,8 @@ defmodule AthenaTest do
        for {rule_name, rule} <- rules do
          Mapper.add_rule_fact_templates(mapper, rule_name, rule.get_lhs_fact_templates_function.())
        end
-      
+
+       Mapper.create_fact_template_to_rule_lhs_mapping(mapper)
        
        "0394850349583045983405985039485034598304593840593" |> IO.puts
        "0394850349583045983405985039485034598304593840593" |> IO.puts
