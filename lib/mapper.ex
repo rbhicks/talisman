@@ -36,7 +36,7 @@ defmodule Athena.Mapper do
         |> MapSet.to_list()
         |> Enum.concat(rule_fact_templates)
         |> MapSet.new(),
-        rule_fact_templates: current_rule_fact_templates ++ {rule_name, rule_fact_templates},
+        rule_fact_templates: [{rule_name, rule_fact_templates}|current_rule_fact_templates],
         fact_template_to_rule_lhs_mapping: %{}
       }
     }
@@ -46,9 +46,22 @@ defmodule Athena.Mapper do
     :create_fact_template_to_rule_lhs_mapping,
     _from,
     %{fact_templates: fact_templates, rule_fact_templates: rule_fact_templates} = state) do
-
-    fact_template_to_rule_lhs_mapping = nil
-    
+    fact_template_to_rule_lhs_mapping = fact_templates
+    |> MapSet.to_list()
+    |> Enum.reduce(%{}, fn fact_template, acc ->
+      acc
+      |> Map.put(
+        fact_template, 
+        rule_fact_templates
+        |> Enum.reduce([], fn {rule_name, current_rule_fact_templates}, acc ->
+          if Enum.member?(current_rule_fact_templates, fact_template) do
+            [rule_name|acc]
+          else
+            acc
+          end
+        end)
+      )
+    end)
     {
       :reply,
       :ok,
