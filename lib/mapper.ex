@@ -47,7 +47,7 @@ defmodule Athena.Mapper do
     _from,
     %{fact_templates: fact_templates, rule_fact_templates: rule_fact_templates} = state) do
 
-#    fact_template_to_rule_lhs_mapping = 
+    fact_template_to_rule_lhs_mapping = nil
     
     {
       :reply,

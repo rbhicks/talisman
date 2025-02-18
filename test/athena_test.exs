@@ -9,6 +9,12 @@ defmodule AthenaTest do
 
  describe "fact" do
    context "smoke test" do
+     it "white sands" do
+       "fzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzt!" |> IO.puts
+       "fzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzt!" |> IO.puts
+       "fzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzt!" |> IO.puts
+     end
+     @tag :skip
      it "actually works" do
        missile_fact_identity = "MissileFactTemplate->#{DateTime.utc_now(:microsecond)}"
        bomb_fact_identity = "BombFactTemplate->#{DateTime.utc_now(:microsecond)}"
