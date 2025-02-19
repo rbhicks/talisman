@@ -3,6 +3,9 @@ defmodule AthenaTest do
 
  alias Athena.Test.Support.Fixtures.MissileFactTemplate
  alias Athena.Test.Support.Fixtures.BombFactTemplate
+ alias Athena.Test.Support.Fixtures.GuidanceFactTemplate
+ alias Athena.Test.Support.Fixtures.WarheadFactTemplate
+ alias Athena.Test.Support.Fixtures.PropulsionFactTemplate
  alias Athena.Fact
  alias Athena.Rule
  alias Athena.Mapper
@@ -70,6 +73,24 @@ defmodule AthenaTest do
              "fox-1" |> IO.puts
              "()()()()()()()()()()()()()()()()()()" |> IO.puts
            end
+         },
+         assess_total_missile_yield: %{
+           get_lhs_fact_templates_function: fn -> [MissileFactTemplate, WarheadFactTemplate] end,
+           evaluate_lhs_function: fn fact_instances ->
+             "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
+             "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
+             "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
+             fact_instances |> IO.inspect(limit: :infinity)
+             "+++++++++++++++++++++++++++++++++++" |> IO.puts
+             "+++++++++++++++++++++++++++++++++++" |> IO.puts
+             "+++++++++++++++++++++++++++++++++++" |> IO.puts
+             {:ok}
+           end,
+           execute_rule_function: fn -> 
+             "()()()()()()()()()()()()()()()()()()" |> IO.puts
+             "fox-1" |> IO.puts
+             "()()()()()()()()()()()()()()()()()()" |> IO.puts
+           end
          }
        }
        
@@ -114,22 +135,38 @@ defmodule AthenaTest do
            }
          }
 
-       mapper_child_spec =
-       %{
-         id: :mapper,
-         start: {
-           Mapper,
-           :start,
-           [
-           ]
+       assess_total_missile_yield_rule_child_spec =
+         %{
+           id: :assess_total_missile_yield,
+           start: {
+             Rule,
+             :start,
+             [
+               :assess_total_missile_yield,
+               rules.assess_total_missile_yield.get_lhs_fact_templates_function,
+               rules.assess_total_missile_yield.evaluate_lhs_function,
+               rules.assess_total_missile_yield.execute_rule_function,
+             ]
+           }
          }
-       }
+
+       mapper_child_spec =
+         %{
+           id: :mapper,
+           start: {
+             Mapper,
+             :start,
+             [
+             ]
+           }
+         }
        "uoansteuhosaetuhosaetnuhoaseuthoasutnohausoeuthau" |> IO.puts
        "uoansteuhosaetuhosaetnuhoaseuthoasutnohausoeuthau" |> IO.puts
        "uoansteuhosaetuhosaetnuhoaseuthoasutnohausoeuthau" |> IO.puts
        start_supervised!(missile_fact_child_spec) |> IO.inspect(limit: :infinity)
        start_supervised!(bomb_fact_child_spec) |> IO.inspect(limit: :infinity)
        start_supervised!(found_icbm_rule_child_spec) |> IO.inspect(limit: :infinity)
+       start_supervised!(assess_total_missile_yield_rule_child_spec) |> IO.inspect(limit: :infinity)
        mapper = start_supervised!(mapper_child_spec) |> IO.inspect(limit: :infinity)
 
        for {rule_name, rule} <- rules do
