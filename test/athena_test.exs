@@ -10,19 +10,88 @@ defmodule AthenaTest do
  alias Athena.Rule
  alias Athena.Mapper
 
+ def create_fact_rule_lhs_cartesian_product([]), do: [[]]
+  
+ def create_fact_rule_lhs_cartesian_product(facts) do
+   facts
+   |> Enum.reduce([[]], fn current_fact_list, acc ->
+     for x <- acc, y <- current_fact_list do
+       [y | x]
+     end
+   end)
+   |> Enum.map(&Enum.reverse/1)
+ end
+
  describe "fact" do
    context "smoke test" do
-     @tag :skip
+#     @tag :skip
      it "white sands" do
+
+       ack = [:ack_0, :ack_1, :ack_2, :ack_3, :ack_4]
+       oop = [:oop_0, :oop_1]
+       jbe = [:jbe_0, :jbe_1, :jbe_2]
+
+       zorg = [ack, oop, jbe]
+
+       # ack_0, oop_0, jbe_0
+       # ack_0, oop_0, jbe_1
+       # ack_0, oop_0, jbe_2
+       # ack_0, oop_1, jbe_0
+       # ack_0, oop_1, jbe_1
+       # ack_0, oop_1, jbe_2
+
+       # ack_1, oop_0, jbe_0
+       # ack_1, oop_0, jbe_1
+       # ack_1, oop_0, jbe_2
+       # ack_1, oop_1, jbe_0
+       # ack_1, oop_1, jbe_1
+       # ack_1, oop_1, jbe_2
+
+       # ack_2, oop_0, jbe_0
+       # ack_2, oop_0, jbe_1
+       # ack_2, oop_0, jbe_2
+       # ack_2, oop_1, jbe_0
+       # ack_2, oop_1, jbe_1
+       # ack_2, oop_1, jbe_2
+
+       # ack_3, oop_0, jbe_0
+       # ack_3, oop_0, jbe_1
+       # ack_3, oop_0, jbe_2
+       # ack_3, oop_1, jbe_0
+       # ack_3, oop_1, jbe_1
+       # ack_3, oop_1, jbe_2
+
+       # ack_4, oop_0, jbe_0
+       # ack_4, oop_0, jbe_1
+       # ack_4, oop_0, jbe_2
+       # ack_4, oop_1, jbe_0
+       # ack_4, oop_1, jbe_1
+       # ack_4, oop_1, jbe_2
+
+       # ===============================================
+
+       # [
+       #   [:ack_0, :ack_1, :ack_2, :ack_3, :ack_4],
+       #   [:oop_0, :oop_1],
+       #   [:jbe_0, :jbe_1, :jbe_2]
+       # ]
        "fzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzt!" |> IO.puts
        "fzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzt!" |> IO.puts
        "fzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzt!" |> IO.puts
-       nil |> IO.inspect(limit: :infinity)
+       # # for i <- ack, j <- oop, k <- jbe, reduce: [] do
+       # #   acc -> [{i, j, k}|acc]
+       # # end
+       # # |> IO.inspect(limit: :infinity)
+       # # zorg
+       # # |> IO.inspect(limit: :infinity)
+       create_fact_rule_lhs_cartesian_product(zorg)
+       |> IO.inspect(limit: :infinity)
        "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" |> IO.puts
        "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" |> IO.puts
        "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" |> IO.puts
      end
 
+     @tag :skip
      it "actually works" do
        missile_fact_identity = "MissileFactTemplate->#{DateTime.utc_now(:microsecond)}"
        bomb_fact_identity = "BombFactTemplate->#{DateTime.utc_now(:microsecond)}"
