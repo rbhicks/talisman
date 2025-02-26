@@ -1,4 +1,4 @@
-defmodule Athena.Mapper do
+defmodule Talisman.Mapper do
   use GenServer
 
   # @moduledoc """

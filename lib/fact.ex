@@ -1,4 +1,4 @@
-defmodule Athena.Fact do
+defmodule Talisman.Fact do
   use GenServer
   
   def get_field_values(server) do

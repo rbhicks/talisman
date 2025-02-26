@@ -1,14 +1,14 @@
-defmodule AthenaTest do
+defmodule TalismanTest do
  use ExSpec, async: true
 
- alias Athena.Test.Support.Fixtures.MissileFactTemplate
- alias Athena.Test.Support.Fixtures.BombFactTemplate
- alias Athena.Test.Support.Fixtures.GuidanceFactTemplate
- alias Athena.Test.Support.Fixtures.WarheadFactTemplate
- alias Athena.Test.Support.Fixtures.PropulsionFactTemplate
- alias Athena.Fact
- alias Athena.Rule
- alias Athena.Mapper
+ alias Talisman.Test.Support.Fixtures.MissileFactTemplate
+ alias Talisman.Test.Support.Fixtures.BombFactTemplate
+ alias Talisman.Test.Support.Fixtures.GuidanceFactTemplate
+ alias Talisman.Test.Support.Fixtures.WarheadFactTemplate
+ alias Talisman.Test.Support.Fixtures.PropulsionFactTemplate
+ alias Talisman.Fact
+ alias Talisman.Rule
+ alias Talisman.Mapper
 
  def create_fact_rule_lhs_cartesian_product([]), do: [[]]
   

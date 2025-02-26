@@ -1,21 +1,21 @@
-# Athena
+# Talisman
 
 **TODO: Add description**
 
 ## Installation
 
 If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `athena` to your list of dependencies in `mix.exs`:
+by adding `talisman` to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
   [
-    {:athena, "~> 0.1.0"}
+    {:talisman, "~> 0.1.0"}
   ]
 end
 ```
 
 Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
 and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/athena>.
+be found at <https://hexdocs.pm/talisman>.
 

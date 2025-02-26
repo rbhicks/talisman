@@ -1,6 +1,6 @@
-defmodule Athena do
+defmodule Talisman do
   @moduledoc """
-  Documentation for `Athena`.
+  Documentation for `Talisman`.
   """
 
   def start(_type, _args) do

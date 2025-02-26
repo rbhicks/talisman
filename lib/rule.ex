@@ -1,4 +1,4 @@
-defmodule Athena.Rule do
+defmodule Talisman.Rule do
   use GenServer
 
   def add_fact_id(fact_id) do
