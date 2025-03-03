@@ -24,7 +24,7 @@ defmodule TalismanTest do
 
  describe "fact" do
    context "smoke test" do
-#     @tag :skip
+     @tag :skip
      it "white sands" do
 
        ack = [:ack_0, :ack_1, :ack_2, :ack_3, :ack_4]
@@ -91,7 +91,7 @@ defmodule TalismanTest do
        "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" |> IO.puts
      end
 
-     @tag :skip
+   #  @tag :skip
      it "actually works" do
        missile_fact_identity = "MissileFactTemplate->#{DateTime.utc_now(:microsecond)}"
        bomb_fact_identity = "BombFactTemplate->#{DateTime.utc_now(:microsecond)}"
@@ -243,6 +243,7 @@ defmodule TalismanTest do
        end
 
        Mapper.create_fact_template_to_rule_lhs_mapping(mapper)
+       Mapper.get_fact_template_to_rule_lhs_mapping(mapper) |> IO.inspect(limit: :infinity)
        
        "0394850349583045983405985039485034598304593840593" |> IO.puts
        "0394850349583045983405985039485034598304593840593" |> IO.puts
