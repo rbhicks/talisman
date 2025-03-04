@@ -1,4 +1,4 @@
-defmodule Talisman.FactProcessor do
+defmodule Talisman.Facts do
   def assert(server, fact_template_name, fact_template) do
     GenServer.call({:assert, fact_template_name, fact_template})
     
@@ -15,7 +15,7 @@ defmodule Talisman.FactProcessor do
     # instead changed to using a dynamic supervisor
 
     updated_facts = facts
-    |> Map.put("#{fact_template_name}->#{DateTime.utc_now(:microsecond)}", fact_template}
+    |> Map.put("#{fact_template_name}->#{DateTime.utc_now(:microsecond)}", fact_template)
 
 
     "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts

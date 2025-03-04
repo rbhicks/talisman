@@ -9,6 +9,8 @@ defmodule TalismanTest do
  alias Talisman.Fact
  alias Talisman.Rule
  alias Talisman.Mapper
+ alias Talisman.Facts
+ alias Talisman.Rules
 
  def create_fact_rule_lhs_cartesian_product([]), do: [[]]
   
