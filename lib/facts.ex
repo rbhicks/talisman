@@ -7,15 +7,22 @@ defmodule Talisman.Facts do
 #  def retract ...
 #  def update ...
 
-  def handle_call({:assert, fact_template_name, fact_template}, _from, %{facts: facts} = state) do
+  def handle_call({:assert, fact_template_name, fact_template}, _from, %{facts_supervisor: facts_supervisor, facts} = state) do
     #!!!!!!!!!111!!!!!!!!!!!!!!!
     #!!!!!!!!!111!!!!!!!!!!!!!!!
     #!!!!!!!!!111!!!!!!!!!!!!!!!
-    # need to adjust later when not using the test harness
-    # instead changed to using a dynamic supervisor
+    # need to adjuts to pass in dynamic supervisor so fact servers can be added
 
     updated_facts = facts
     |> Map.put("#{fact_template_name}->#{DateTime.utc_now(:microsecond)}", fact_template)
+
+    
+    
+    #!!!!!!!!!111!!!!!!!!!!!!!!!
+    #!!!!!!!!!111!!!!!!!!!!!!!!!
+    #!!!!!!!!!111!!!!!!!!!!!!!!!
+
+    
 
 
     "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
@@ -34,14 +41,17 @@ defmodule Talisman.Facts do
     }
   end
 
-  def start() do
-    GenServer.start_link(__MODULE__, nil)
+  def start([facts_supervisor]) do
+    GenServer.start_link(__MODULE__, facts_supervisor)
   end
   
-  def init(_) do
+  def init(facts_supervisor) do
     {
       :ok,
-       %{facts: %{}}
+       %{
+         facts_supervisor: facts_supervisor,
+         facts: %{}
+       }
     }
   end
 end

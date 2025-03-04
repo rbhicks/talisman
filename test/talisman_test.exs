@@ -251,13 +251,17 @@ defmodule TalismanTest do
        mapper = start_supervised!(mapper_child_spec) |> IO.inspect(limit: :infinity)
        facts_supervisor = start_supervised!(facts_supervisor_child_spec) |> IO.inspect(limit: :infinity)
 
-       "```````````````````````````````````````````````" |> IO.puts
-       "```````````````````````````````````````````````" |> IO.puts
-       "```````````````````````````````````````````````" |> IO.puts
-       facts_supervisor |> IO.inspect(limit: :infinity)
-       "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" |> IO.puts
-       "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" |> IO.puts
-       "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" |> IO.puts
+       facts_child_spec =
+         %{
+           id: :facts,
+           start: {
+             Facts,
+             :start,
+             [[facts_supervisor: facts_supervisor]]
+           }
+         }
+
+       facts = start_supervised!(facts_child_spec) |> IO.inspect(limit: :infinity)
 
        for {rule_name, rule} <- rules do
          Mapper.add_rule_fact_templates(mapper, rule_name, rule.get_lhs_fact_templates_function.())
