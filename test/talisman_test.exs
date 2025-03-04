@@ -231,6 +231,16 @@ defmodule TalismanTest do
              ]
            }
          }
+
+       facts_supervisor_child_spec =
+         %{
+           id: :facts_supervisor,
+           start: {
+             DynamicSupervisor,
+             :start_link,
+             [[name: :facts_supervisor]]
+           }
+         }
        "uoansteuhosaetuhosaetnuhoaseuthoasutnohausoeuthau" |> IO.puts
        "uoansteuhosaetuhosaetnuhoaseuthoasutnohausoeuthau" |> IO.puts
        "uoansteuhosaetuhosaetnuhoaseuthoasutnohausoeuthau" |> IO.puts
@@ -239,6 +249,15 @@ defmodule TalismanTest do
        start_supervised!(found_icbm_rule_child_spec) |> IO.inspect(limit: :infinity)
        start_supervised!(assess_total_missile_yield_rule_child_spec) |> IO.inspect(limit: :infinity)
        mapper = start_supervised!(mapper_child_spec) |> IO.inspect(limit: :infinity)
+       facts_supervisor = start_supervised!(facts_supervisor_child_spec) |> IO.inspect(limit: :infinity)
+
+       "```````````````````````````````````````````````" |> IO.puts
+       "```````````````````````````````````````````````" |> IO.puts
+       "```````````````````````````````````````````````" |> IO.puts
+       facts_supervisor |> IO.inspect(limit: :infinity)
+       "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" |> IO.puts
+       "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" |> IO.puts
+       "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" |> IO.puts
 
        for {rule_name, rule} <- rules do
          Mapper.add_rule_fact_templates(mapper, rule_name, rule.get_lhs_fact_templates_function.())
