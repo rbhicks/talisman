@@ -7,7 +7,7 @@ defmodule Talisman.Facts do
 #  def retract ...
 #  def update ...
 
-  def handle_call({:assert, fact_template_name, fact_template}, _from, %{facts_supervisor: facts_supervisor, facts} = state) do
+  def handle_call({:assert, fact_template_name, fact_template}, _from, %{facts_supervisor: facts_supervisor, facts: facts} = state) do
     #!!!!!!!!!111!!!!!!!!!!!!!!!
     #!!!!!!!!!111!!!!!!!!!!!!!!!
     #!!!!!!!!!111!!!!!!!!!!!!!!!
