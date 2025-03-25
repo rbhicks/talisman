@@ -95,28 +95,6 @@ defmodule TalismanTest do
 
    #  @tag :skip
      it "actually works" do
-       missile_fact_identity = "MissileFactTemplate->#{DateTime.utc_now(:microsecond)}"
-       bomb_fact_identity = "BombFactTemplate->#{DateTime.utc_now(:microsecond)}"
-
-       facts = %{
-         missile_fact_identity => %{
-           template: %MissileFactTemplate{
-             name: :minuteman_ii,
-             type: :icbm,
-             propulsion: :solid_propellant,
-             guidance: :ballistic_trajectory,
-             warhead: :mirv
-           }
-         },
-         bomb_fact_identity => %{
-           template: %BombFactTemplate{
-             name: :b61,
-             type: :gravity_bomb,
-             guidance: :glide,
-             warhead: :thermonuclear
-           }
-         }
-       }
 
        # @#$%@#$%@#$%@#$%@#$%@#$%@#$%@#$%@$
        # add to mapper
@@ -164,33 +142,7 @@ defmodule TalismanTest do
            end
          }
        }
-       
-       missile_fact_child_spec =
-         %{
-           id: missile_fact_identity,
-           start: {
-             Fact,
-             :start,
-             [
-               Map.get(facts, missile_fact_identity).template,
-               missile_fact_identity
-             ]
-           }
-         }
-
-       bomb_fact_child_spec =
-         %{
-           id: bomb_fact_identity,
-           start: {
-             Fact,
-             :start,
-             [
-               Map.get(facts, bomb_fact_identity).template,
-               bomb_fact_identity
-             ]
-           }
-         }
-       
+               
        found_icbm_rule_child_spec =
          %{
            id: :found_icbm,
@@ -244,8 +196,6 @@ defmodule TalismanTest do
        "uoansteuhosaetuhosaetnuhoaseuthoasutnohausoeuthau" |> IO.puts
        "uoansteuhosaetuhosaetnuhoaseuthoasutnohausoeuthau" |> IO.puts
        "uoansteuhosaetuhosaetnuhoaseuthoasutnohausoeuthau" |> IO.puts
-#       start_supervised!(missile_fact_child_spec) |> IO.inspect(limit: :infinity)
-       start_supervised!(bomb_fact_child_spec) |> IO.inspect(limit: :infinity)
        start_supervised!(found_icbm_rule_child_spec) |> IO.inspect(limit: :infinity)
        start_supervised!(assess_total_missile_yield_rule_child_spec) |> IO.inspect(limit: :infinity)
        mapper = start_supervised!(mapper_child_spec) |> IO.inspect(limit: :infinity)
@@ -270,25 +220,19 @@ defmodule TalismanTest do
        Mapper.create_fact_template_to_rule_lhs_mapping(mapper)
        Mapper.get_fact_template_to_rule_lhs_mapping(mapper) |> IO.inspect(limit: :infinity)
 
-       # "VWVWVWWVWVWVWVWVWVWVWVWVWVW" |> IO.puts
-       # "VWVWVWWVWVWVWVWVWVWVWVWVWVW" |> IO.puts
-       # "VWVWVWWVWVWVWVWVWVWVWVWVWVW" |> IO.puts
-       # facts_supervisor |> IO.inspect(limit: :infinity)
-       # "^^^^^^^^^^^^^^^^^^^^^^^^^^^" |> IO.puts
-       # missile_fact_child_spec |> IO.inspect(limit: :infinity)
-       # "^^^^^^^^^^^^^^^^^^^^^^^^^^^" |> IO.puts
-       # DynamicSupervisor.start_child(facts_supervisor, missile_fact_child_spec)
-       # |> IO.inspect(limit: :infinity)
-       # "_S_S_S_S_S_S_S_S_S_S_S_S_S_" |> IO.puts
-       # "_S_S_S_S_S_S_S_S_S_S_S_S_S_" |> IO.puts
-       # "_S_S_S_S_S_S_S_S_S_S_S_S_S_" |> IO.puts
-
        Facts.assert(facts, %MissileFactTemplate{
              name: :minuteman_ii,
              type: :icbm,
              propulsion: :solid_propellant,
              guidance: :ballistic_trajectory,
              warhead: :mirv
+           })
+
+       Facts.assert(facts, %BombFactTemplate{
+             name: :b61,
+             type: :gravity_bomb,
+             guidance: :glide,
+             warhead: :thermonuclear
            })
        
        "0394850349583045983405985039485034598304593840593" |> IO.puts
