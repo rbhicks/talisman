@@ -8,6 +8,12 @@ defmodule Talisman.Facts do
 #  def retract ...
 #  def update ...
 
+  def get_asserted_facts(server) do
+    {:ok, asserted_facts} = GenServer.call(server, :get_asserted_facts)
+
+    asserted_facts
+  end
+
   def handle_call({:assert, %fact_template_name{} = fact_template}, _from, %{facts_supervisor: facts_supervisor, facts: facts} = state) do
 
     asserted_fact_identity = "#{fact_template_name}->#{DateTime.utc_now(:microsecond)}"
@@ -24,13 +30,21 @@ defmodule Talisman.Facts do
       }
     }
     |> then(fn asserted_fact_child_spec -> DynamicSupervisor.start_child(facts_supervisor, asserted_fact_child_spec) end)
-    |> then(fn {_, asserted_fact_pid} -> Map.put(facts, asserted_fact_identity, asserted_fact_pid) end)
+    |> then(fn {_, asserted_fact_pid} -> Map.put(facts, asserted_fact_identity, {fact_template_name, asserted_fact_pid}) end)
 
     {
       :reply,
       :ok,
       state
       |> Map.put(:facts, updated_facts)
+    }
+  end
+
+  def handle_call(:get_asserted_facts, _from, %{facts: facts} = state) do
+    {
+      :reply,
+      {:ok, facts},
+      state
     }
   end
 
