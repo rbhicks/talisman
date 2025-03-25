@@ -244,7 +244,7 @@ defmodule TalismanTest do
        "uoansteuhosaetuhosaetnuhoaseuthoasutnohausoeuthau" |> IO.puts
        "uoansteuhosaetuhosaetnuhoaseuthoasutnohausoeuthau" |> IO.puts
        "uoansteuhosaetuhosaetnuhoaseuthoasutnohausoeuthau" |> IO.puts
-       start_supervised!(missile_fact_child_spec) |> IO.inspect(limit: :infinity)
+#       start_supervised!(missile_fact_child_spec) |> IO.inspect(limit: :infinity)
        start_supervised!(bomb_fact_child_spec) |> IO.inspect(limit: :infinity)
        start_supervised!(found_icbm_rule_child_spec) |> IO.inspect(limit: :infinity)
        start_supervised!(assess_total_missile_yield_rule_child_spec) |> IO.inspect(limit: :infinity)
@@ -269,6 +269,27 @@ defmodule TalismanTest do
 
        Mapper.create_fact_template_to_rule_lhs_mapping(mapper)
        Mapper.get_fact_template_to_rule_lhs_mapping(mapper) |> IO.inspect(limit: :infinity)
+
+       # "VWVWVWWVWVWVWVWVWVWVWVWVWVW" |> IO.puts
+       # "VWVWVWWVWVWVWVWVWVWVWVWVWVW" |> IO.puts
+       # "VWVWVWWVWVWVWVWVWVWVWVWVWVW" |> IO.puts
+       # facts_supervisor |> IO.inspect(limit: :infinity)
+       # "^^^^^^^^^^^^^^^^^^^^^^^^^^^" |> IO.puts
+       # missile_fact_child_spec |> IO.inspect(limit: :infinity)
+       # "^^^^^^^^^^^^^^^^^^^^^^^^^^^" |> IO.puts
+       # DynamicSupervisor.start_child(facts_supervisor, missile_fact_child_spec)
+       # |> IO.inspect(limit: :infinity)
+       # "_S_S_S_S_S_S_S_S_S_S_S_S_S_" |> IO.puts
+       # "_S_S_S_S_S_S_S_S_S_S_S_S_S_" |> IO.puts
+       # "_S_S_S_S_S_S_S_S_S_S_S_S_S_" |> IO.puts
+
+       Facts.assert(facts, %MissileFactTemplate{
+             name: :minuteman_ii,
+             type: :icbm,
+             propulsion: :solid_propellant,
+             guidance: :ballistic_trajectory,
+             warhead: :mirv
+           })
        
        "0394850349583045983405985039485034598304593840593" |> IO.puts
        "0394850349583045983405985039485034598304593840593" |> IO.puts
