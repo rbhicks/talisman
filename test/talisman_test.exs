@@ -104,74 +104,74 @@ defmodule TalismanTest do
        # referenced by a rule, it's pointless
        # (should be pruned anyway)
        # @#$%@#$%@#$%@#$%@#$%@#$%@#$%@#$%@$
-       rules = %{
-         found_icbm: %{
-           get_lhs_fact_templates_function: fn -> [MissileFactTemplate] end,
-           evaluate_lhs_function: fn fact_instances ->
-             "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
-             "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
-             "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
-             fact_instances |> IO.inspect(limit: :infinity)
-             "+++++++++++++++++++++++++++++++++++" |> IO.puts
-             "+++++++++++++++++++++++++++++++++++" |> IO.puts
-             "+++++++++++++++++++++++++++++++++++" |> IO.puts
-             {:ok}
-           end,
-           execute_rule_function: fn -> 
-             "()()()()()()()()()()()()()()()()()()" |> IO.puts
-             "fox-1" |> IO.puts
-             "()()()()()()()()()()()()()()()()()()" |> IO.puts
-           end
-         },
-         assess_total_missile_yield: %{
-           get_lhs_fact_templates_function: fn -> [MissileFactTemplate, WarheadFactTemplate] end,
-           evaluate_lhs_function: fn fact_instances ->
-             "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
-             "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
-             "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
-             fact_instances |> IO.inspect(limit: :infinity)
-             "+++++++++++++++++++++++++++++++++++" |> IO.puts
-             "+++++++++++++++++++++++++++++++++++" |> IO.puts
-             "+++++++++++++++++++++++++++++++++++" |> IO.puts
-             {:ok}
-           end,
-           execute_rule_function: fn -> 
-             "()()()()()()()()()()()()()()()()()()" |> IO.puts
-             "fox-1" |> IO.puts
-             "()()()()()()()()()()()()()()()()()()" |> IO.puts
-           end
-         }
-       }
+       # rules = %{
+       #   found_icbm: %{
+       #     get_lhs_fact_templates_function: fn -> [MissileFactTemplate] end,
+       #     evaluate_lhs_function: fn fact_instances ->
+       #       "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
+       #       "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
+       #       "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
+       #       fact_instances |> IO.inspect(limit: :infinity)
+       #       "+++++++++++++++++++++++++++++++++++" |> IO.puts
+       #       "+++++++++++++++++++++++++++++++++++" |> IO.puts
+       #       "+++++++++++++++++++++++++++++++++++" |> IO.puts
+       #       {:ok}
+       #     end,
+       #     execute_rule_function: fn -> 
+       #       "()()()()()()()()()()()()()()()()()()" |> IO.puts
+       #       "fox-1" |> IO.puts
+       #       "()()()()()()()()()()()()()()()()()()" |> IO.puts
+       #     end
+       #   },
+       #   assess_total_missile_yield: %{
+       #     get_lhs_fact_templates_function: fn -> [MissileFactTemplate, WarheadFactTemplate] end,
+       #     evaluate_lhs_function: fn fact_instances ->
+       #       "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
+       #       "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
+       #       "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
+       #       fact_instances |> IO.inspect(limit: :infinity)
+       #       "+++++++++++++++++++++++++++++++++++" |> IO.puts
+       #       "+++++++++++++++++++++++++++++++++++" |> IO.puts
+       #       "+++++++++++++++++++++++++++++++++++" |> IO.puts
+       #       {:ok}
+       #     end,
+       #     execute_rule_function: fn -> 
+       #       "()()()()()()()()()()()()()()()()()()" |> IO.puts
+       #       "fox-1" |> IO.puts
+       #       "()()()()()()()()()()()()()()()()()()" |> IO.puts
+       #     end
+       #   }
+       # }
                
-       found_icbm_rule_child_spec =
-         %{
-           id: :found_icbm,
-           start: {
-             Rule,
-             :start,
-             [
-               :found_icbm,
-               rules.found_icbm.get_lhs_fact_templates_function,
-               rules.found_icbm.evaluate_lhs_function,
-               rules.found_icbm.execute_rule_function,
-             ]
-           }
-         }
+       # found_icbm_rule_child_spec =
+       #   %{
+       #     id: :found_icbm,
+       #     start: {
+       #       Rule,
+       #       :start,
+       #       [
+       #         :found_icbm,
+       #         rules.found_icbm.get_lhs_fact_templates_function,
+       #         rules.found_icbm.evaluate_lhs_function,
+       #         rules.found_icbm.execute_rule_function,
+       #       ]
+       #     }
+       #   }
 
-       assess_total_missile_yield_rule_child_spec =
-         %{
-           id: :assess_total_missile_yield,
-           start: {
-             Rule,
-             :start,
-             [
-               :assess_total_missile_yield,
-               rules.assess_total_missile_yield.get_lhs_fact_templates_function,
-               rules.assess_total_missile_yield.evaluate_lhs_function,
-               rules.assess_total_missile_yield.execute_rule_function,
-             ]
-           }
-         }
+       # assess_total_missile_yield_rule_child_spec =
+       #   %{
+       #     id: :assess_total_missile_yield,
+       #     start: {
+       #       Rule,
+       #       :start,
+       #       [
+       #         :assess_total_missile_yield,
+       #         rules.assess_total_missile_yield.get_lhs_fact_templates_function,
+       #         rules.assess_total_missile_yield.evaluate_lhs_function,
+       #         rules.assess_total_missile_yield.execute_rule_function,
+       #       ]
+       #     }
+       #   }
 
        mapper_child_spec =
          %{
@@ -193,13 +193,24 @@ defmodule TalismanTest do
              [[name: :facts_supervisor]]
            }
          }
+
+       rules_supervisor_child_spec =
+         %{
+           id: :rules_supervisor,
+           start: {
+             DynamicSupervisor,
+             :start_link,
+             [[name: :rules_supervisor]]
+           }
+         }
        "uoansteuhosaetuhosaetnuhoaseuthoasutnohausoeuthau" |> IO.puts
        "uoansteuhosaetuhosaetnuhoaseuthoasutnohausoeuthau" |> IO.puts
        "uoansteuhosaetuhosaetnuhoaseuthoasutnohausoeuthau" |> IO.puts
-       start_supervised!(found_icbm_rule_child_spec) |> IO.inspect(limit: :infinity)
-       start_supervised!(assess_total_missile_yield_rule_child_spec) |> IO.inspect(limit: :infinity)
+       # start_supervised!(found_icbm_rule_child_spec) |> IO.inspect(limit: :infinity)
+       # start_supervised!(assess_total_missile_yield_rule_child_spec) |> IO.inspect(limit: :infinity)
        mapper = start_supervised!(mapper_child_spec) |> IO.inspect(limit: :infinity)
        facts_supervisor = start_supervised!(facts_supervisor_child_spec) |> IO.inspect(limit: :infinity)
+       rules_supervisor = start_supervised!(rules_supervisor_child_spec) |> IO.inspect(limit: :infinity)
 
        facts_child_spec =
          %{
@@ -211,14 +222,25 @@ defmodule TalismanTest do
            }
          }
 
+       rules_child_spec =
+         %{
+           id: :rules,
+           start: {
+             Rules,
+             :start,
+             [[rules_supervisor: rules_supervisor]]
+           }
+         }
+
        facts = start_supervised!(facts_child_spec) |> IO.inspect(limit: :infinity)
+       rules = start_supervised!(rules_child_spec) |> IO.inspect(limit: :infinity)
 
-       for {rule_name, rule} <- rules do
-         Mapper.add_rule_fact_templates(mapper, rule_name, rule.get_lhs_fact_templates_function.())
-       end
+       # for {rule_name, rule} <- rules do
+       #   Mapper.add_rule_fact_templates(mapper, rule_name, rule.get_lhs_fact_templates_function.())
+       # end
 
-       Mapper.create_fact_template_to_rule_lhs_mapping(mapper)
-       Mapper.get_fact_template_to_rule_lhs_mapping(mapper) |> IO.inspect(limit: :infinity)
+       # Mapper.create_fact_template_to_rule_lhs_mapping(mapper)
+       # Mapper.get_fact_template_to_rule_lhs_mapping(mapper) |> IO.inspect(limit: :infinity)
 
        Facts.assert(facts, %MissileFactTemplate{
              name: :minuteman_ii,
@@ -235,10 +257,49 @@ defmodule TalismanTest do
              warhead: :thermonuclear
            })
 
+       Rules.add_rule(rules, :found_icbm, %{
+           get_lhs_fact_templates_function: fn -> [MissileFactTemplate] end,
+           evaluate_lhs_function: fn fact_instances ->
+             "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
+             "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
+             "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
+             fact_instances |> IO.inspect(limit: :infinity)
+             "+++++++++++++++++++++++++++++++++++" |> IO.puts
+             "+++++++++++++++++++++++++++++++++++" |> IO.puts
+             "+++++++++++++++++++++++++++++++++++" |> IO.puts
+             {:ok}
+           end,
+           execute_rule_function: fn -> 
+             "()()()()()()()()()()()()()()()()()()" |> IO.puts
+             "fox-1" |> IO.puts
+             "()()()()()()()()()()()()()()()()()()" |> IO.puts
+           end
+         })
+       
+       Rules.add_rule(rules, :assess_total_missile_yield, %{
+           get_lhs_fact_templates_function: fn -> [MissileFactTemplate, WarheadFactTemplate] end,
+           evaluate_lhs_function: fn fact_instances ->
+             "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
+             "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
+             "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
+             fact_instances |> IO.inspect(limit: :infinity)
+             "+++++++++++++++++++++++++++++++++++" |> IO.puts
+             "+++++++++++++++++++++++++++++++++++" |> IO.puts
+             "+++++++++++++++++++++++++++++++++++" |> IO.puts
+             {:ok}
+           end,
+           execute_rule_function: fn -> 
+             "()()()()()()()()()()()()()()()()()()" |> IO.puts
+             "fox-1" |> IO.puts
+             "()()()()()()()()()()()()()()()()()()" |> IO.puts
+           end
+         })
        "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" |> IO.puts
        "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" |> IO.puts
        "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" |> IO.puts
        Facts.get_asserted_facts(facts) |> IO.inspect(limit: :infinity)
+       "====================================================" |> IO.puts
+       Rules.get_rules(rules) |> IO.inspect(limit: :infinity)
        "))))))))))))))))))))))))))))))))))))))))))))))))))))" |> IO.puts
        "))))))))))))))))))))))))))))))))))))))))))))))))))))" |> IO.puts
        "))))))))))))))))))))))))))))))))))))))))))))))))))))" |> IO.puts
