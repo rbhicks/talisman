@@ -3,9 +3,6 @@ defmodule Talisman.Rules do
     GenServer.call({:add_rule, rule_name, rule})
     
   end
-  
-#  def retract ...
-#  def update ...
 
   def handle_call({:add_rule, rule_name, rule}, _from, %{rules: rules} = state) do
     #!!!!!!!!!111!!!!!!!!!!!!!!!
