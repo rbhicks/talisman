@@ -20,7 +20,7 @@ defmodule Talisman.Rules do
         :start,
         [
           rule_name,
-          rule.get_lhs_fact_templates_function,
+          rule.lhs_fact_templates,
           rule.evaluate_lhs_function,
           rule.execute_rule_function
         ]

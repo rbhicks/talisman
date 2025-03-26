@@ -15,6 +15,25 @@ defmodule TalismanTest do
 
  describe "fact" do
    context "smoke test" do
+
+     @tag :skip
+     it "china lake" do
+
+       "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" |> IO.puts
+       "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" |> IO.puts
+       "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" |> IO.puts
+     
+       [MissileFactTemplate, WarheadFactTemplate]
+       |> Enum.sort()
+       |> Enum.reduce("", fn template_name_atom, acc -> acc <> Atom.to_string(template_name_atom) end )
+       |> then(fn template_names -> :crypto.hash(:sha256, template_names) end)
+       |> Base.encode16()
+       |> IO.inspect(limit: :infinity)
+
+       "****************************************" |> IO.puts
+       "****************************************" |> IO.puts
+       "****************************************" |> IO.puts
+     end
      @tag :skip
      it "white sands" do
 
@@ -69,12 +88,6 @@ defmodule TalismanTest do
        "fzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzt!" |> IO.puts
        "fzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzt!" |> IO.puts
        "fzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzt!" |> IO.puts
-       # # for i <- ack, j <- oop, k <- jbe, reduce: [] do
-       # #   acc -> [{i, j, k}|acc]
-       # # end
-       # # |> IO.inspect(limit: :infinity)
-       # # zorg
-       # # |> IO.inspect(limit: :infinity)
        InferenceEngine.create_fact_rule_lhs_cartesian_product(zorg)
        |> IO.inspect(limit: :infinity)
        "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" |> IO.puts
@@ -84,17 +97,6 @@ defmodule TalismanTest do
 
 #     @tag :skip
      it "actually works" do
-
-       mapper_child_spec =
-         %{
-           id: :mapper,
-           start: {
-             Mapper,
-             :start,
-             [
-             ]
-           }
-         }
 
        facts_supervisor_child_spec =
          %{
@@ -118,7 +120,6 @@ defmodule TalismanTest do
        "uoansteuhosaetuhosaetnuhoaseuthoasutnohausoeuthau" |> IO.puts
        "uoansteuhosaetuhosaetnuhoaseuthoasutnohausoeuthau" |> IO.puts
        "uoansteuhosaetuhosaetnuhoaseuthoasutnohausoeuthau" |> IO.puts
-       mapper = start_supervised!(mapper_child_spec) |> IO.inspect(limit: :infinity)
        facts_supervisor = start_supervised!(facts_supervisor_child_spec) |> IO.inspect(limit: :infinity)
        rules_supervisor = start_supervised!(rules_supervisor_child_spec) |> IO.inspect(limit: :infinity)
 
@@ -161,7 +162,7 @@ defmodule TalismanTest do
            })
 
        Rules.add_rule(rules, :found_icbm, %{
-           get_lhs_fact_templates_function: fn -> [MissileFactTemplate] end,
+           lhs_fact_templates: [MissileFactTemplate],
            evaluate_lhs_function: fn fact_instances ->
              "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
              "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
@@ -180,7 +181,7 @@ defmodule TalismanTest do
          })
        
        Rules.add_rule(rules, :assess_total_missile_yield, %{
-           get_lhs_fact_templates_function: fn -> [MissileFactTemplate, WarheadFactTemplate] end,
+           lhs_fact_templates: [MissileFactTemplate, WarheadFactTemplate],
            evaluate_lhs_function: fn fact_instances ->
              "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
              "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
@@ -198,21 +199,6 @@ defmodule TalismanTest do
            end
          })
 
-       # @#$%@#$%@#$%@#$%@#$%@#$%@#$%@#$%@$
-       # add to mapper
-       # fact templates can be added from the
-       # rules, instead of a separate enumeration
-       # because should a fact template not be
-       # referenced by a rule, it's pointless
-       # (should be pruned anyway)
-       # @#$%@#$%@#$%@#$%@#$%@#$%@#$%@#$%@$
-       for {_, {rule_name, rule_pid}} <- Rules.get_rules(rules) do
-         Mapper.add_rule_fact_templates(mapper, rule_name, Rule.get_lhs_fact_templates(rule_pid))
-       end
-
-       Mapper.create_fact_template_to_rule_lhs_mapping(mapper)
-
-
        "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" |> IO.puts
        "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" |> IO.puts
        "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" |> IO.puts
@@ -220,7 +206,10 @@ defmodule TalismanTest do
        "====================================================" |> IO.puts
        Rules.get_rules(rules) |> IO.inspect(limit: :infinity)
        "====================================================" |> IO.puts
-       Mapper.get_fact_template_to_rule_lhs_mapping(mapper) |> IO.inspect(limit: :infinity)
+       for {_, {_, rule_pid}} <- Rules.get_rules(rules) do
+         Rule.get_lhs_fact_templates_hash(rule_pid)
+         |> IO.inspect(limit: :infinity)
+       end
        "))))))))))))))))))))))))))))))))))))))))))))))))))))" |> IO.puts
        "))))))))))))))))))))))))))))))))))))))))))))))))))))" |> IO.puts
        "))))))))))))))))))))))))))))))))))))))))))))))))))))" |> IO.puts
