@@ -16,12 +16,13 @@ defmodule Talisman.InferenceEngine do
     GenServer.start_link(__MODULE__, facts_and_rules)
   end
   
-  def init(facts_and_rules) do
+  def init([facts: facts, rules: rules]) do
 
     "kxxkxkxkxkxkxkxkxkxkxkxkxkxkxkxxkxkxkxkxkkxkxkxkkx" |> IO.puts
     "kxxkxkxkxkxkxkxkxkxkxkxkxkxkxkxxkxkxkxkxkkxkxkxkkx" |> IO.puts
     "kxxkxkxkxkxkxkxkxkxkxkxkxkxkxkxxkxkxkxkxkkxkxkxkkx" |> IO.puts
-    facts_and_rules |> IO.inspect(limit: :infinity)
+    facts |> IO.inspect(limit: :infinity)
+    rules |> IO.inspect(limit: :infinity)
     "32232323232323232323232324234234234234234234234234" |> IO.puts
     "32232323232323232323232324234234234234234234234234" |> IO.puts
     "32232323232323232323232324234234234234234234234234" |> IO.puts
@@ -29,6 +30,8 @@ defmodule Talisman.InferenceEngine do
     {
       :ok,
        %{
+         facts: facts,
+         rules: rules
        }
     }
   end
