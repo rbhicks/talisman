@@ -11,18 +11,7 @@ defmodule TalismanTest do
  alias Talisman.Mapper
  alias Talisman.Facts
  alias Talisman.Rules
-
- def create_fact_rule_lhs_cartesian_product([]), do: [[]]
-  
- def create_fact_rule_lhs_cartesian_product(facts) do
-   facts
-   |> Enum.reduce([[]], fn current_fact_list, acc ->
-     for x <- acc, y <- current_fact_list do
-       [y | x]
-     end
-   end)
-   |> Enum.map(&Enum.reverse/1)
- end
+ alias Talisman.InferenceEngine
 
  describe "fact" do
    context "smoke test" do
@@ -86,14 +75,14 @@ defmodule TalismanTest do
        # # |> IO.inspect(limit: :infinity)
        # # zorg
        # # |> IO.inspect(limit: :infinity)
-       create_fact_rule_lhs_cartesian_product(zorg)
+       InferenceEngine.create_fact_rule_lhs_cartesian_product(zorg)
        |> IO.inspect(limit: :infinity)
        "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" |> IO.puts
        "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" |> IO.puts
        "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" |> IO.puts
      end
 
-   #  @tag :skip
+#     @tag :skip
      it "actually works" do
 
        mapper_child_spec =
