@@ -36,6 +36,9 @@ defmodule Talisman.InferenceEngine do
         |> Enum.flat_map(fn lhs_fact_template_names -> lhs_fact_template_names end)
         |> Enum.uniq()
         |> Utilities.generate_powerset()
+        |> Enum.map(fn fact_template_names_powerset_element ->
+          Utilities.generate_fact_template_names_hash(fact_template_names_powerset_element)
+        end)
       },
       state}
   end
