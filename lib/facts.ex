@@ -1,5 +1,7 @@
 defmodule Talisman.Facts do
-   alias Talisman.Fact
+  use GenServer
+  
+  alias Talisman.Fact
    alias Talisman.Utilities
    
   def assert(server, fact_template) do

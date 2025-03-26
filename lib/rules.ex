@@ -1,4 +1,6 @@
 defmodule Talisman.Rules do
+  use GenServer
+
   alias Talisman.Rule
   alias Talisman.Utilities
   
