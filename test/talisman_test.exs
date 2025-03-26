@@ -12,9 +12,70 @@ defmodule TalismanTest do
  alias Talisman.Facts
  alias Talisman.Rules
  alias Talisman.InferenceEngine
+ alias Talisman.Utilities
 
  describe "fact" do
    context "smoke test" do
+
+     @tag :skip
+     it "aberdeen" do
+        jbe = [:jbe_0, :jbe_1, :jbe_2]
+
+        # [:jbe_0,]
+        # [:jbe_1,]
+        # [:jbe_2,]
+        # [:jbe_0, :jbe_1]
+        # [:jbe_0, :jbe_2]
+        # [:jbe_1, :jbe_2]
+        # [:jbe_0, :jbe_1, :jbe_2]
+
+        ack = [:ack_0, :ack_1, :ack_2, :ack_3, :ack_4]
+
+        # [:ack_0]
+        # [:ack_1]
+        # [:ack_2]
+        # [:ack_3]
+        # [:ack_4]
+
+        # [:ack_0, :ack_1]
+        # [:ack_0, :ack_2]
+        # [:ack_0, :ack_3]
+        # [:ack_0, :ack_4]
+
+        # [:ack_1, :ack_2]
+        # [:ack_1, :ack_3]
+        # [:ack_1, :ack_4]
+
+        # [:ack_2, :ack_3]
+        # [:ack_2, :ack_4]
+
+        # [:ack_3, :ack_4]
+
+        # [:ack_0, :ack_1, :ack_2]
+        # [:ack_0, :ack_1, :ack_3]
+        # [:ack_0, :ack_1, :ack_4]
+
+        # [:ack_1, :ack_2, :ack_3]
+        # [:ack_1, :ack_3, :ack_4]
+
+        # [:ack_2, :ack_3, :ack_4]
+
+        # [:ack_0, :ack_1, :ack_2, :ack_3]
+        # [:ack_0, :ack_1, :ack_2, :ack_4]
+
+        # [:ack_1, :ack_2, :ack_3, :ack_4]
+
+        # [:ack_0, :ack_1, :ack_2, :ack_3, :ack_4]
+
+        "fffffffffffffffffffffffffffffffffffffffff" |> IO.puts
+        "fffffffffffffffffffffffffffffffffffffffff" |> IO.puts
+        "fffffffffffffffffffffffffffffffffffffffff" |> IO.puts
+        Utilities.generate_powerset(ack)
+        |> IO.inspect(limit: :infinity)
+        "kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk" |> IO.puts
+        "kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk" |> IO.puts
+        "kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk" |> IO.puts
+     end
 
      @tag :skip
      it "china lake" do
@@ -33,66 +94,6 @@ defmodule TalismanTest do
        "****************************************" |> IO.puts
        "****************************************" |> IO.puts
        "****************************************" |> IO.puts
-     end
-     @tag :skip
-     it "white sands" do
-
-       ack = [:ack_0, :ack_1, :ack_2, :ack_3, :ack_4]
-       oop = [:oop_0, :oop_1]
-       jbe = [:jbe_0, :jbe_1, :jbe_2]
-
-       zorg = [ack, oop, jbe]
-
-       # ack_0, oop_0, jbe_0
-       # ack_0, oop_0, jbe_1
-       # ack_0, oop_0, jbe_2
-       # ack_0, oop_1, jbe_0
-       # ack_0, oop_1, jbe_1
-       # ack_0, oop_1, jbe_2
-
-       # ack_1, oop_0, jbe_0
-       # ack_1, oop_0, jbe_1
-       # ack_1, oop_0, jbe_2
-       # ack_1, oop_1, jbe_0
-       # ack_1, oop_1, jbe_1
-       # ack_1, oop_1, jbe_2
-
-       # ack_2, oop_0, jbe_0
-       # ack_2, oop_0, jbe_1
-       # ack_2, oop_0, jbe_2
-       # ack_2, oop_1, jbe_0
-       # ack_2, oop_1, jbe_1
-       # ack_2, oop_1, jbe_2
-
-       # ack_3, oop_0, jbe_0
-       # ack_3, oop_0, jbe_1
-       # ack_3, oop_0, jbe_2
-       # ack_3, oop_1, jbe_0
-       # ack_3, oop_1, jbe_1
-       # ack_3, oop_1, jbe_2
-
-       # ack_4, oop_0, jbe_0
-       # ack_4, oop_0, jbe_1
-       # ack_4, oop_0, jbe_2
-       # ack_4, oop_1, jbe_0
-       # ack_4, oop_1, jbe_1
-       # ack_4, oop_1, jbe_2
-
-       # ===============================================
-
-       # [
-       #   [:ack_0, :ack_1, :ack_2, :ack_3, :ack_4],
-       #   [:oop_0, :oop_1],
-       #   [:jbe_0, :jbe_1, :jbe_2]
-       # ]
-       "fzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzt!" |> IO.puts
-       "fzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzt!" |> IO.puts
-       "fzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzt!" |> IO.puts
-       InferenceEngine.create_fact_rule_lhs_cartesian_product(zorg)
-       |> IO.inspect(limit: :infinity)
-       "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" |> IO.puts
-       "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" |> IO.puts
-       "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" |> IO.puts
      end
 
 #     @tag :skip
@@ -207,7 +208,7 @@ defmodule TalismanTest do
        Rules.get_rules(rules) |> IO.inspect(limit: :infinity)
        "====================================================" |> IO.puts
        for {_, {_, rule_pid}} <- Rules.get_rules(rules) do
-         Rule.get_lhs_fact_templates_hash(rule_pid)
+         Rule.get_lhs_fact_template_names_hash(rule_pid)
          |> IO.inspect(limit: :infinity)
        end
        "))))))))))))))))))))))))))))))))))))))))))))))))))))" |> IO.puts
