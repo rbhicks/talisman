@@ -20,12 +20,12 @@ defmodule Talisman.InferenceEngine do
   # by rules which are unnecssary. not meally an opetimization, but also reduces
   # complexity by not explicitly tracking fact templates. should this become
   # needed later, we will.
-  def generate_fact_template_name_hashes_powerset(server) do
-    {:ok, fact_template_name_hashes_powerset} = GenServer.call(server, :generate_fact_template_name_hashes_powerset)
-    fact_template_name_hashes_powerset
+  def generate_lhs_fact_template_name_hashes_powerset(server) do
+    {:ok, lhs_fact_template_name_hashes_powerset} = GenServer.call(server, :generate_lhs_fact_template_name_hashes_powerset)
+    lhs_fact_template_name_hashes_powerset
   end
 
-  def handle_call(:generate_fact_template_name_hashes_powerset, _from, %{rules: rules} = state) do    
+  def handle_call(:generate_lhs_fact_template_name_hashes_powerset, _from, %{rules: rules} = state) do    
     {
       :reply,
       {

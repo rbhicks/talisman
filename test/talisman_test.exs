@@ -224,7 +224,7 @@ defmodule TalismanTest do
          |> IO.inspect(limit: :infinity)
        end
        "====================================================" |> IO.puts
-       InferenceEngine.generate_fact_template_name_hashes_powerset(inference_engine) |> IO.inspect(limit: :infinity)
+       InferenceEngine.generate_lhs_fact_template_name_hashes_powerset(inference_engine) |> IO.inspect(limit: :infinity)
        "))))))))))))))))))))))))))))))))))))))))))))))))))))" |> IO.puts
        "))))))))))))))))))))))))))))))))))))))))))))))))))))" |> IO.puts
        "))))))))))))))))))))))))))))))))))))))))))))))))))))" |> IO.puts
