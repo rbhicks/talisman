@@ -147,6 +147,18 @@ defmodule TalismanTest do
        facts = start_supervised!(facts_child_spec) |> IO.inspect(limit: :infinity)
        rules = start_supervised!(rules_child_spec) |> IO.inspect(limit: :infinity)
 
+       inference_engine_child_spec =
+         %{
+           id: :inference_engine,
+           start: {
+             InferenceEngine,
+             :start,
+             [[facts: facts, rules: rules]]
+           }
+         }
+
+       inference_engine = start_supervised!(inference_engine_child_spec) |> IO.inspect(limit: :infinity)
+
        Facts.assert(facts, %MissileFactTemplate{
              name: :minuteman_ii,
              type: :icbm,
