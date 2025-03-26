@@ -21,7 +21,8 @@ defmodule Talisman.Mapper do
   end
 
   def get_fact_template_to_rule_lhs_mapping(server) do
-    GenServer.call(server, :get_fact_template_to_rule_lhs_mapping)
+    {:ok, fact_template_to_rule_lhs_mapping} = GenServer.call(server, :get_fact_template_to_rule_lhs_mapping)
+    fact_template_to_rule_lhs_mapping
   end
 
   def handle_call(
