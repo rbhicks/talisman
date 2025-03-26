@@ -231,6 +231,11 @@ defmodule TalismanTest do
        "))))))))))))))))))))))))))))))))))))))))))))))))))))" |> IO.puts
        "))))))))))))))))))))))))))))))))))))))))))))))))))))" |> IO.puts
 
+       "expert_system ('orchestrator'?) server to tie evyrthing together" |> IO.puts
+       "expert_system ('orchestrator'?) server to tie evyrthing together" |> IO.puts
+       "expert_system ('orchestrator'?) server to tie evyrthing together" |> IO.puts
+       "expert_system ('orchestrator'?) server to tie evyrthing together" |> IO.puts
+       "expert_system ('orchestrator'?) server to tie evyrthing together" |> IO.puts
        
        "0394850349583045983405985039485034598304593840593" |> IO.puts
        "0394850349583045983405985039485034598304593840593" |> IO.puts
