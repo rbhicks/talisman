@@ -3,6 +3,11 @@ defmodule Talisman.Rule do
 
   alias Talisman.Utilities
 
+  def get_lhs_fact_template_names(rule_pid) do
+    {:ok, lhs_fact_template_names} = GenServer.call(rule_pid, :get_lhs_fact_template_names)
+    lhs_fact_template_names
+  end
+  
   def get_lhs_fact_template_names_hash(rule_pid) do
     {:ok, lhs_fact_template_names_hash} = GenServer.call(rule_pid, :get_lhs_fact_template_names_hash)
     lhs_fact_template_names_hash
@@ -20,12 +25,23 @@ defmodule Talisman.Rule do
     {:ok}
   end
 
-  def handle_call(:get_lhs_fact_template_names_hash, _from, {lhs_fact_templates_hash, _, _, _, _} = state) do
+  def handle_call(:get_lhs_fact_template_names, _from, {_, lhs_fact_template_names, _, _, _} = state) do
     {
       :reply,
       {
         :ok,
-        lhs_fact_templates_hash
+        lhs_fact_template_names
+      },
+      state
+    }
+  end
+    
+  def handle_call(:get_lhs_fact_template_names_hash, _from, {lhs_fact_template_names_hash, _, _, _, _} = state) do
+    {
+      :reply,
+      {
+        :ok,
+        lhs_fact_template_names_hash
       },
       state
     }
