@@ -96,83 +96,6 @@ defmodule TalismanTest do
    #  @tag :skip
      it "actually works" do
 
-       # @#$%@#$%@#$%@#$%@#$%@#$%@#$%@#$%@$
-       # add to mapper
-       # fact templates can be added from the
-       # rules, instead of a separate enumeration
-       # because should a fact template not be
-       # referenced by a rule, it's pointless
-       # (should be pruned anyway)
-       # @#$%@#$%@#$%@#$%@#$%@#$%@#$%@#$%@$
-       # rules = %{
-       #   found_icbm: %{
-       #     get_lhs_fact_templates_function: fn -> [MissileFactTemplate] end,
-       #     evaluate_lhs_function: fn fact_instances ->
-       #       "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
-       #       "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
-       #       "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
-       #       fact_instances |> IO.inspect(limit: :infinity)
-       #       "+++++++++++++++++++++++++++++++++++" |> IO.puts
-       #       "+++++++++++++++++++++++++++++++++++" |> IO.puts
-       #       "+++++++++++++++++++++++++++++++++++" |> IO.puts
-       #       {:ok}
-       #     end,
-       #     execute_rule_function: fn -> 
-       #       "()()()()()()()()()()()()()()()()()()" |> IO.puts
-       #       "fox-1" |> IO.puts
-       #       "()()()()()()()()()()()()()()()()()()" |> IO.puts
-       #     end
-       #   },
-       #   assess_total_missile_yield: %{
-       #     get_lhs_fact_templates_function: fn -> [MissileFactTemplate, WarheadFactTemplate] end,
-       #     evaluate_lhs_function: fn fact_instances ->
-       #       "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
-       #       "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
-       #       "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
-       #       fact_instances |> IO.inspect(limit: :infinity)
-       #       "+++++++++++++++++++++++++++++++++++" |> IO.puts
-       #       "+++++++++++++++++++++++++++++++++++" |> IO.puts
-       #       "+++++++++++++++++++++++++++++++++++" |> IO.puts
-       #       {:ok}
-       #     end,
-       #     execute_rule_function: fn -> 
-       #       "()()()()()()()()()()()()()()()()()()" |> IO.puts
-       #       "fox-1" |> IO.puts
-       #       "()()()()()()()()()()()()()()()()()()" |> IO.puts
-       #     end
-       #   }
-       # }
-               
-       # found_icbm_rule_child_spec =
-       #   %{
-       #     id: :found_icbm,
-       #     start: {
-       #       Rule,
-       #       :start,
-       #       [
-       #         :found_icbm,
-       #         rules.found_icbm.get_lhs_fact_templates_function,
-       #         rules.found_icbm.evaluate_lhs_function,
-       #         rules.found_icbm.execute_rule_function,
-       #       ]
-       #     }
-       #   }
-
-       # assess_total_missile_yield_rule_child_spec =
-       #   %{
-       #     id: :assess_total_missile_yield,
-       #     start: {
-       #       Rule,
-       #       :start,
-       #       [
-       #         :assess_total_missile_yield,
-       #         rules.assess_total_missile_yield.get_lhs_fact_templates_function,
-       #         rules.assess_total_missile_yield.evaluate_lhs_function,
-       #         rules.assess_total_missile_yield.execute_rule_function,
-       #       ]
-       #     }
-       #   }
-
        mapper_child_spec =
          %{
            id: :mapper,
@@ -206,8 +129,6 @@ defmodule TalismanTest do
        "uoansteuhosaetuhosaetnuhoaseuthoasutnohausoeuthau" |> IO.puts
        "uoansteuhosaetuhosaetnuhoaseuthoasutnohausoeuthau" |> IO.puts
        "uoansteuhosaetuhosaetnuhoaseuthoasutnohausoeuthau" |> IO.puts
-       # start_supervised!(found_icbm_rule_child_spec) |> IO.inspect(limit: :infinity)
-       # start_supervised!(assess_total_missile_yield_rule_child_spec) |> IO.inspect(limit: :infinity)
        mapper = start_supervised!(mapper_child_spec) |> IO.inspect(limit: :infinity)
        facts_supervisor = start_supervised!(facts_supervisor_child_spec) |> IO.inspect(limit: :infinity)
        rules_supervisor = start_supervised!(rules_supervisor_child_spec) |> IO.inspect(limit: :infinity)
@@ -287,23 +208,34 @@ defmodule TalismanTest do
              "()()()()()()()()()()()()()()()()()()" |> IO.puts
            end
          })
+
+       # @#$%@#$%@#$%@#$%@#$%@#$%@#$%@#$%@$
+       # add to mapper
+       # fact templates can be added from the
+       # rules, instead of a separate enumeration
+       # because should a fact template not be
+       # referenced by a rule, it's pointless
+       # (should be pruned anyway)
+       # @#$%@#$%@#$%@#$%@#$%@#$%@#$%@#$%@$
+       for {_, {rule_name, rule_pid}} <- Rules.get_rules(rules) do
+         Mapper.add_rule_fact_templates(mapper, rule_name, Rule.get_lhs_fact_templates(rule_pid))
+       end
+
+       Mapper.create_fact_template_to_rule_lhs_mapping(mapper)
+
+
        "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" |> IO.puts
        "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" |> IO.puts
        "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" |> IO.puts
        Facts.get_asserted_facts(facts) |> IO.inspect(limit: :infinity)
        "====================================================" |> IO.puts
        Rules.get_rules(rules) |> IO.inspect(limit: :infinity)
-       "))))))))))))))))))))))))))))))))))))))))))))))))))))" |> IO.puts
-       "))))))))))))))))))))))))))))))))))))))))))))))))))))" |> IO.puts
-       "))))))))))))))))))))))))))))))))))))))))))))))))))))" |> IO.puts
-
-       for {_, {rule_name, rule_pid}} <- Rules.get_rules(rules) do
-#         Mapper.add_rule_fact_templates(mapper, rule_name, rule.get_lhs_fact_templates_function.())
-         Mapper.add_rule_fact_templates(mapper, rule_name, Rule.get_lhs_fact_templates(rule_pid))
-       end
-
-       Mapper.create_fact_template_to_rule_lhs_mapping(mapper)
+       "====================================================" |> IO.puts
        Mapper.get_fact_template_to_rule_lhs_mapping(mapper) |> IO.inspect(limit: :infinity)
+       "))))))))))))))))))))))))))))))))))))))))))))))))))))" |> IO.puts
+       "))))))))))))))))))))))))))))))))))))))))))))))))))))" |> IO.puts
+       "))))))))))))))))))))))))))))))))))))))))))))))))))))" |> IO.puts
+
        
        "0394850349583045983405985039485034598304593840593" |> IO.puts
        "0394850349583045983405985039485034598304593840593" |> IO.puts
