@@ -153,7 +153,7 @@ defmodule TalismanTest do
            start: {
              InferenceEngine,
              :start,
-             [[rules: rules]]
+             [[facts: facts, rules: rules]]
            }
          }
 
@@ -225,6 +225,8 @@ defmodule TalismanTest do
        end
        "====================================================" |> IO.puts
        InferenceEngine.generate_lhs_fact_template_name_hashes_powerset(inference_engine) |> IO.inspect(limit: :infinity)
+       "====================================================" |> IO.puts
+       InferenceEngine.generate_asserted_facts_template_name_hashes_powerset(inference_engine) |> IO.inspect(limit: :infinity)
        "))))))))))))))))))))))))))))))))))))))))))))))))))))" |> IO.puts
        "))))))))))))))))))))))))))))))))))))))))))))))))))))" |> IO.puts
        "))))))))))))))))))))))))))))))))))))))))))))))))))))" |> IO.puts
