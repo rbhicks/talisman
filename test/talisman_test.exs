@@ -236,6 +236,12 @@ defmodule TalismanTest do
        "expert_system ('orchestrator'?) server to tie evyrthing together" |> IO.puts
        "expert_system ('orchestrator'?) server to tie evyrthing together" |> IO.puts
        "expert_system ('orchestrator'?) server to tie evyrthing together" |> IO.puts
+       "====================================================" |> IO.puts
+       "make sure first stage filters on fact_template in LHS before hash compare" |> IO.puts
+       "make sure first stage filters on fact_template in LHS before hash compare" |> IO.puts
+       "make sure first stage filters on fact_template in LHS before hash compare" |> IO.puts
+       "make sure first stage filters on fact_template in LHS before hash compare" |> IO.puts
+       "make sure first stage filters on fact_template in LHS before hash compare" |> IO.puts
        
        "0394850349583045983405985039485034598304593840593" |> IO.puts
        "0394850349583045983405985039485034598304593840593" |> IO.puts
