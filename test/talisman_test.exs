@@ -144,8 +144,20 @@ defmodule TalismanTest do
            }
          }
 
+       mapper_child_spec =
+         %{
+           id: :mapper,
+           start: {
+             Mapper,
+             :start,
+             [
+             ]
+           }
+         }
+
        facts = start_supervised!(facts_child_spec) |> IO.inspect(limit: :infinity)
        rules = start_supervised!(rules_child_spec) |> IO.inspect(limit: :infinity)
+       mapper = start_supervised!(mapper_child_spec) |> IO.inspect(limit: :infinity)
 
        inference_engine_child_spec =
          %{
@@ -231,6 +243,12 @@ defmodule TalismanTest do
        "))))))))))))))))))))))))))))))))))))))))))))))))))))" |> IO.puts
        "))))))))))))))))))))))))))))))))))))))))))))))))))))" |> IO.puts
 
+       # for {_, {rule_name, rule_pid}} <- Rules.get_rules(rules) do
+       #   Mapper.add_rule_fact_templates(mapper, rule_name, Rule.get_lhs_fact_templates(rule_pid))
+       # end
+ 
+       # Mapper.create_fact_template_to_rule_lhs_mapping(mapper)
+       # Mapper.get_fact_template_to_rule_lhs_mapping(mapper) |> IO.inspect(limit: :infinity)
        "expert_system ('orchestrator'?) server to tie evyrthing together" |> IO.puts
        "expert_system ('orchestrator'?) server to tie evyrthing together" |> IO.puts
        "expert_system ('orchestrator'?) server to tie evyrthing together" |> IO.puts
