@@ -25,7 +25,8 @@ defmodule Talisman.Rules do
           :start,
           [
             rule_name,
-            rule.lhs_fact_templates,
+            rule.lhs_fact_template_names,
+            rule.lhs_fact_multiplicity,
             rule.evaluate_lhs_function,
             rule.execute_rule_function
           ]
