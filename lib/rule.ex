@@ -7,6 +7,11 @@ defmodule Talisman.Rule do
     {:ok, lhs_fact_template_names} = GenServer.call(rule_pid, :get_lhs_fact_template_names)
     lhs_fact_template_names
   end
+
+  def get_lhs_fact_multiplicity(rule_pid) do
+    {:ok, lhs_fact_multiplicity} = GenServer.call(rule_pid, :get_lhs_fact_multiplicity)
+    lhs_fact_multiplicity
+  end
   
   def get_lhs_fact_template_names_hash(rule_pid) do
     {:ok, lhs_fact_template_names_hash} = GenServer.call(rule_pid, :get_lhs_fact_template_names_hash)
@@ -25,7 +30,7 @@ defmodule Talisman.Rule do
     {:ok}
   end
 
-  def handle_call(:get_lhs_fact_template_names, _from, {_, lhs_fact_template_names, _, _, _} = state) do
+  def handle_call(:get_lhs_fact_template_names, _from, {_, lhs_fact_template_names, _, _, _, _} = state) do
     {
       :reply,
       {
@@ -35,8 +40,19 @@ defmodule Talisman.Rule do
       state
     }
   end
+
+  def handle_call(:get_lhs_fact_multiplicity, _from, {_, _, lhs_fact_multiplicity, _, _, _} = state) do
+    {
+      :reply,
+      {
+        :ok,
+        lhs_fact_multiplicity
+      },
+      state
+    }
+  end
     
-  def handle_call(:get_lhs_fact_template_names_hash, _from, {lhs_fact_template_names_hash, _, _, _, _} = state) do
+  def handle_call(:get_lhs_fact_template_names_hash, _from, {lhs_fact_template_names_hash, _, _, _, _, _} = state) do
     {
       :reply,
       {
@@ -47,17 +63,18 @@ defmodule Talisman.Rule do
     }
   end
 
-  def start(rule_name, lhs_fact_template_names, evaluate_lhs_function, execute_rule_function) do
-    GenServer.start_link(__MODULE__, {lhs_fact_template_names, evaluate_lhs_function, execute_rule_function}, name: {:global, rule_name})
+  def start(rule_name, lhs_fact_template_names, lhs_fact_multiplicity, evaluate_lhs_function, execute_rule_function) do
+    GenServer.start_link(__MODULE__, {lhs_fact_template_names, lhs_fact_multiplicity, evaluate_lhs_function, execute_rule_function}, name: {:global, rule_name})
   end
 
-  def init({lhs_fact_template_names, evaluate_lhs_function, execute_rule_function}) do
+  def init({lhs_fact_template_names, lhs_fact_multiplicity, evaluate_lhs_function, execute_rule_function}) do
     {
       :ok,
       {
         # fact ids are the list at the end. init to empty. to be added by inference_engine
         Utilities.generate_fact_template_names_hash(lhs_fact_template_names),
         lhs_fact_template_names,
+        lhs_fact_multiplicity,
         evaluate_lhs_function,
         execute_rule_function,
         []
