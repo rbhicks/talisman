@@ -224,6 +224,12 @@ defmodule TalismanTest do
            end
          })
 
+        for {_, {rule_name, rule_pid}} <- Rules.get_rules(rules) do
+          Mapper.add_rule_fact_templates(mapper, rule_name, Rule.get_lhs_fact_templates(rule_pid))
+        end
+ 
+        Mapper.create_fact_template_to_rule_lhs_mapping(mapper)
+
        "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" |> IO.puts
        "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" |> IO.puts
        "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" |> IO.puts
