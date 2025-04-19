@@ -231,6 +231,8 @@ defmodule TalismanTest do
        "====================================================" |> IO.puts
        Rules.get_rules(rules) |> IO.inspect(limit: :infinity)
        "====================================================" |> IO.puts
+       Mapper.get_fact_template_to_rule_lhs_mapping(mapper) |> IO.inspect(limit: :infinity)
+       "====================================================" |> IO.puts
        for {_, {_, rule_pid}} <- Rules.get_rules(rules) do
          Rule.get_lhs_fact_template_names_hash(rule_pid)
          |> IO.inspect(limit: :infinity)
