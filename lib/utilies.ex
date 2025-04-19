@@ -15,18 +15,18 @@ defmodule Talisman.Utilities do
     |> Base.encode16()
   end
 
-  def generate_fact_assertion_or_rule_addition_response(supervisor, child_spec, facts_or_rules, fact_or_rule_name,  update_key, state) do
+  def generate_fact_assertion_or_rule_addition_response(supervisor, child_spec, facts_or_rules, fact_or_rule_name, key, state) do
 
     updated_facts_or_rules =
     child_spec
     |> then(fn child_spec -> DynamicSupervisor.start_child(supervisor, child_spec) end)
-    |> then(fn {_, pid} -> Map.put(facts_or_rules, fact_or_rule_name, {fact_or_rule_name, pid}) end)
+    |> then(fn {_, pid} -> Map.put(facts_or_rules, child_spec.id, {fact_or_rule_name, pid}) end)
     
     {
       :reply,
       :ok,
       state
-      |> Map.put(update_key, updated_facts_or_rules)
+      |> Map.put(key, updated_facts_or_rules)
     }
   end
 end
