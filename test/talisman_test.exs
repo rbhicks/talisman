@@ -179,6 +179,22 @@ defmodule TalismanTest do
              warhead: :mirv
            })
 
+       Facts.assert(facts, %MissileFactTemplate{
+             name: :aim_9c_sidewinder,
+             type: :air_to_air,
+             propulsion: :solid_propellant,
+             guidance: :semi_active_radar,
+             warhead: :continuous_rod
+           })
+
+       Facts.assert(facts, %MissileFactTemplate{
+             name: :aim_9c_sidewinder,
+             type: :air_to_air,
+             propulsion: :solid_propellant,
+             guidance: :semi_active_radar,
+             warhead: :continuous_rod
+           })
+
        Facts.assert(facts, %BombFactTemplate{
              name: :b61,
              type: :gravity_bomb,
@@ -187,7 +203,8 @@ defmodule TalismanTest do
            })
 
        Rules.add_rule(rules, :found_icbm, %{
-           lhs_fact_templates: [MissileFactTemplate],
+           lhs_fact_template_names: [MissileFactTemplate],
+           lhs_fact_multiplicity: %{MissileFactTemplate => 1},
            evaluate_lhs_function: fn fact_instances ->
              "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
              "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
@@ -206,7 +223,28 @@ defmodule TalismanTest do
          })
        
        Rules.add_rule(rules, :assess_total_missile_yield, %{
-           lhs_fact_templates: [MissileFactTemplate, WarheadFactTemplate],
+           lhs_fact_template_names: [MissileFactTemplate, WarheadFactTemplate],
+           lhs_fact_multiplicity: %{MissileFactTemplate => 1, WarheadFactTemplate => 1},
+           evaluate_lhs_function: fn fact_instances ->
+             "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
+             "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
+             "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
+             fact_instances |> IO.inspect(limit: :infinity)
+             "+++++++++++++++++++++++++++++++++++" |> IO.puts
+             "+++++++++++++++++++++++++++++++++++" |> IO.puts
+             "+++++++++++++++++++++++++++++++++++" |> IO.puts
+             {:ok}
+           end,
+           execute_rule_function: fn -> 
+             "()()()()()()()()()()()()()()()()()()" |> IO.puts
+             "fox-1" |> IO.puts
+             "()()()()()()()()()()()()()()()()()()" |> IO.puts
+           end
+         })
+
+       Rules.add_rule(rules, :found_f22_aim_9c_loadout, %{
+           lhs_fact_template_names: [MissileFactTemplate],
+           lhs_fact_multiplicity: %{MissileFactTemplate => 2},
            evaluate_lhs_function: fn fact_instances ->
              "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
              "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
@@ -241,6 +279,9 @@ defmodule TalismanTest do
        "====================================================" |> IO.puts
        for {_, {_, rule_pid}} <- Rules.get_rules(rules) do
          Rule.get_lhs_fact_template_names_hash(rule_pid)
+         |> IO.inspect(limit: :infinity)
+         "====================================================" |> IO.puts
+         Rule.get_lhs_fact_multiplicity(rule_pid)
          |> IO.inspect(limit: :infinity)
        end
        "====================================================" |> IO.puts
