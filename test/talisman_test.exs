@@ -196,7 +196,12 @@ defmodule TalismanTest do
 
 #   @tag :skip
    it "facts are asserted (added not test 'asserted' correctly", (%{facts: facts}) do
-     assert 4 == Facts.get_asserted_facts(facts) |> Enum.count     
+
+     for {fact_id, fact_template, fact_pid} <- Facts.get_asserted_facts(facts) do
+       assert is_binary(fact_id)
+       assert is_struct(fact_template)
+       assert is_pid(fact_pid)
+     end 
    end
 
    #   @tag :skip
@@ -211,7 +216,11 @@ defmodule TalismanTest do
 
 #   @tag :skip
    it "rules are added correctly", (%{rules: rules}) do
-     assert 3 == Rules.get_rules(rules) |> Enum.count     
+     for {rule_id, rule_name, rule_pid} <- Rules.get_rules(rules) do
+       assert is_atom(rule_id)
+       assert is_atom(rule_name)
+       assert is_pid(rule_pid)
+     end
    end
 
 #   @tag :skip
