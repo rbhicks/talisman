@@ -225,7 +225,7 @@ defmodule TalismanTest do
          })
 
         for {_, {rule_name, rule_pid}} <- Rules.get_rules(rules) do
-          Mapper.add_rule_fact_templates(mapper, rule_name, Rule.get_lhs_fact_templates(rule_pid))
+          Mapper.add_rule_fact_templates(mapper, rule_name, Rule.get_lhs_fact_template_names(rule_pid))
         end
  
         Mapper.create_fact_template_to_rule_lhs_mapping(mapper)
