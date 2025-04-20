@@ -278,6 +278,10 @@ defmodule TalismanTest do
      "does the second (or first) stage require anymore filtering of rules to apply facts too" |> IO.puts
      "does the second (or first) stage require anymore filtering of rules to apply facts too" |> IO.puts
      "does the second (or first) stage require anymore filtering of rules to apply facts too" |> IO.puts
+     "====================================================" |> IO.puts
+     "need to have a mapping between fact_template_names and asserted facts" |> IO.puts
+     "need to have a mapping between fact_template_names and asserted facts" |> IO.puts
+     "need to have a mapping between fact_template_names and asserted facts" |> IO.puts
      "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
      "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
      "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
