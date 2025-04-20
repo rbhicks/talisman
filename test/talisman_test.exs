@@ -266,6 +266,22 @@ defmodule TalismanTest do
      # look into avoid hardcoding this 
      assert [:found_icbm, :found_f22_aim_9c_loadout] =
        InferenceEngine.get_stage_one_candidate_rules(inference_engine)
+
+
+     "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
+     "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
+     "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
+     "get rid of hash thing as unnecessary?" |> IO.puts
+     "get rid of hash thing as unnecessary?" |> IO.puts
+     "get rid of hash thing as unnecessary?" |> IO.puts
+     "====================================================" |> IO.puts
+     "does the second (or first) stage require anymore filtering of rules to apply facts too" |> IO.puts
+     "does the second (or first) stage require anymore filtering of rules to apply facts too" |> IO.puts
+     "does the second (or first) stage require anymore filtering of rules to apply facts too" |> IO.puts
+     "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
+     "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
+     "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
+     
    end   
  end
 end
