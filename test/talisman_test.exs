@@ -76,7 +76,7 @@ defmodule TalismanTest do
        start: {
          InferenceEngine,
          :start,
-         [[facts: facts, rules: rules]]
+         [[facts: facts, rules: rules, mapper: mapper]]
        }
      }
 
@@ -193,6 +193,12 @@ defmodule TalismanTest do
          end
                   })
 
+   InferenceEngine.generate_lhs_fact_template_name_hashes_powerset(inference_engine)
+   for {_, {rule_name, rule_pid}} <- Rules.get_rules(rules) do
+     Mapper.add_rule_fact_templates(mapper, rule_name, Rule.get_lhs_fact_template_names(rule_pid))
+   end
+   Mapper.create_fact_template_to_rule_lhs_mapping(mapper)
+
    %{
      facts_supervisor: facts_supervisor,
      rules_supervisor: rules_supervisor,
@@ -203,7 +209,7 @@ defmodule TalismanTest do
    }
  end
     
- describe "basic fact and rule functionality" do
+ describe "basic fact, rule, and candidacy functionality" do
 
 #   @tag :skip
    it "facts_supervisor is created successfully", (%{facts_supervisor: facts_supervisor}) do
@@ -253,5 +259,13 @@ defmodule TalismanTest do
    it "mapper is created successfully", (%{mapper: mapper}) do
      assert is_pid(mapper)
    end
+
+#   @tag :skip
+   it "add stage one rule candidacy check works", (%{inference_engine: inference_engine}) do
+     InferenceEngine.generate_stage_one_candidate_rules(inference_engine)
+     # look into avoid hardcoding this 
+     assert [:found_icbm, :found_f22_aim_9c_loadout] =
+       InferenceEngine.get_stage_one_candidate_rules(inference_engine)
+   end   
  end
 end
