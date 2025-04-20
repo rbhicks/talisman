@@ -4,6 +4,7 @@ defmodule Talisman.InferenceEngine do
   alias Talisman.Facts
   alias Talisman.Rule
   alias Talisman.Rules
+  alias Talisman.Mapper
   alias Talisman.Utilities
 
 
@@ -29,6 +30,15 @@ defmodule Talisman.InferenceEngine do
   def generate_asserted_facts_template_name_hashes_powerset(server) do
     {:ok, asserted_facts_template_name_hashes_powerset} = GenServer.call(server, :generate_asserted_facts_template_name_hashes_powerset)
     asserted_facts_template_name_hashes_powerset
+  end
+
+  def generate_stage_one_candidate_rules(server) do
+    :ok = GenServer.call(server, :generate_stage_one_candidate_rules)
+  end
+
+  def get_stage_one_candidate_rules(server) do
+    {:ok, stage_one_candidate_rules} = GenServer.call(server, :get_stage_one_candidate_rules)
+    stage_one_candidate_rules
   end
 
   def handle_call(:generate_lhs_fact_template_name_hashes_powerset, _from, %{rules: rules} = state) do    
@@ -66,16 +76,73 @@ defmodule Talisman.InferenceEngine do
       state}
   end
 
-  def start(facts_and_rules) do
-    GenServer.start_link(__MODULE__, facts_and_rules)
+  def handle_call(:generate_stage_one_candidate_rules, _from, %{facts: facts, rules: rules, mapper: mapper} = state) do
+    # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    # look into tightening this up
+    # look into tightening this up
+    # look into tightening this up
+    # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    asserted_facts = Facts.get_asserted_facts(facts)
+    fact_template_to_rule_lhs_mapping = Mapper.get_fact_template_to_rule_lhs_mapping(mapper)
+    asserted_fact_templates_names = for {_, {asserted_fact_template_name, _}} <- asserted_facts do
+      asserted_fact_template_name
+    end
+    |> MapSet.new
+    |> MapSet.to_list
+    |> MapSet.new
+    rule_lhs_fact_template_names = for {_, {rule_name, rule_pid}} <- rules |> Rules.get_rules do
+      {rule_name, rule_pid |> Rule.get_lhs_fact_template_names |> MapSet.new}
+    end
+    mapped_rules = asserted_fact_templates_names
+    |> Enum.filter(fn asserted_fact_template_name ->
+      Map.get(fact_template_to_rule_lhs_mapping, asserted_fact_template_name)
+    end)
+    |> Enum.reduce([], fn asserted_fact_template_name, acc ->
+      fact_template_to_rule_lhs_mapping
+      |> Map.get(asserted_fact_template_name)
+      |> Kernel.++(acc)
+    end)
+    first_stage_candidate_rules = mapped_rules
+    |> Enum.filter(fn rule_name ->
+      rule_lhs_fact_template_names[rule_name]
+      |> MapSet.subset?(asserted_fact_templates_names)
+    end)
+    
+    {
+      :reply,
+      :ok,
+      state
+      |> Map.put(:first_stage_candidate_rules, first_stage_candidate_rules)
+    }
+  end
+
+  def handle_call(:get_stage_one_candidate_rules, _from, %{first_stage_candidate_rules: first_stage_candidate_rules} = state) do
+    {
+      :reply,
+      {
+        :ok,
+        first_stage_candidate_rules
+      },
+      state
+    }
+  end
+
+  def start(params) do
+    GenServer.start_link(__MODULE__, params)
   end
   
-  def init([facts: facts, rules: rules]) do
+  def init([facts: facts, rules: rules, mapper: mapper]) do
     {
       :ok,
        %{
          facts: facts,
-         rules: rules
+         rules: rules,
+         mapper: mapper,
+         first_stage_candidate_rules: []
        }
     }
   end
