@@ -1,21 +1,62 @@
-# Talisman
+Talisman
+Talisman is a CLIPS-inspired expert system built with Elixir and OTP, designed for scalable, fault-tolerant symbolic AI. Leveraging Elixir’s concurrency and pattern-matching strengths, Talisman provides a flexible framework for defining declarative rules and reasoning over complex datasets. It’s ideal for mission-critical backend systems requiring robust decision-making logic, from SEO optimization to automated diagnostics.
+Features
 
-**TODO: Add description**
+Declarative Rule Engine: Define rules using Elixir’s expressive syntax, with pattern matching to simplify complex logic.
+OTP-Powered Scalability: Built on the BEAM, Talisman uses GenServers and Supervisors for concurrent, fault-tolerant rule evaluation.
+CLIPS-Like Semantics: Inspired by CLIPS, Talisman supports forward-chaining inference and fact-based reasoning.
+Extensible DSL: Create domain-specific languages for rule definition, streamlining integration into existing Elixir projects.
+Tested and Reliable: Uses ExUnit for rigorous testing, ensuring stability in production environments.
 
-## Installation
+Getting Started
+Prerequisites
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `talisman` to your list of dependencies in `mix.exs`:
+Elixir 1.14+
+Erlang/OTP 25+
+Git
 
-```elixir
-def deps do
-  [
-    {:talisman, "~> 0.1.0"}
-  ]
+Installation
+
+Clone the repository:git clone https://github.com/rbhicks/talisman.git
+cd talisman
+
+
+Install dependencies:mix deps.get
+
+
+Run tests to verify setup:mix test
+
+
+
+Basic Usage
+Define a rule in Talisman using Elixir’s pattern-matching syntax:
+defmodule MyRules do
+  use Talisman.Rule
+
+  defrule :example_rule do
+    fact {:user, %{role: role}} when role == :admin ->
+      {:ok, :grant_access}
+    fact _ ->
+      {:ok, :deny_access}
+  end
 end
-```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/talisman>.
+Start the Talisman application and evaluate facts:
+Talisman.evaluate({:user, %{role: :admin}})
+# => {:ok, :grant_access}
 
+See examples/ for more detailed use cases.
+Contributing
+Contributions are welcome! To get started:
+
+Fork the repository.
+Create a feature branch (git checkout -b feature/my-feature).
+Commit changes (git commit -m "Add my feature").
+Push to the branch (git push origin feature/my-feature).
+Open a pull request.
+
+Please include tests and follow the Elixir Style Guide.
+License
+MIT License. See LICENSE for details.
+Contact
+For questions or feedback, open an issue or reach out to rbhicks.
