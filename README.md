@@ -1,4 +1,5 @@
-Talisman
+#Talisman
+
 Talisman is a CLIPS-inspired expert system built with Elixir and OTP, designed for scalable, fault-tolerant symbolic AI. Leveraging Elixir’s concurrency and pattern-matching strengths, Talisman provides a flexible framework for defining declarative rules and reasoning over complex datasets. It’s ideal for mission-critical backend systems requiring robust decision-making logic, from SEO optimization to automated diagnostics.
 Features
 
