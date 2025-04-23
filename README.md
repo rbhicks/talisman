@@ -44,7 +44,7 @@ end
 
 Start the Talisman application and evaluate facts:
 Talisman.evaluate({:user, %{role: :admin}})
-# => {:ok, :grant_access}
+=> {:ok, :grant_access}
 
 See examples/ for more detailed use cases.
 Contributing
