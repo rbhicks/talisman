@@ -36,9 +36,18 @@ defmodule Talisman.InferenceEngine do
     :ok = GenServer.call(server, :generate_stage_one_candidate_rules)
   end
 
+  def generate_stage_two_candidate_rules(server) do
+    :ok = GenServer.call(server, :generate_stage_two_candidate_rules)
+  end
+
   def get_stage_one_candidate_rules(server) do
     {:ok, stage_one_candidate_rules} = GenServer.call(server, :get_stage_one_candidate_rules)
     stage_one_candidate_rules
+  end
+
+  def get_stage_two_candidate_rules(server) do
+    {:ok, stage_two_candidate_rules} = GenServer.call(server, :get_stage_two_candidate_rules)
+    stage_two_candidate_rules
   end
 
   def handle_call(:generate_lhs_fact_template_name_hashes_powerset, _from, %{rules: rules} = state) do    
@@ -111,12 +120,57 @@ defmodule Talisman.InferenceEngine do
       rule_lhs_fact_template_names[rule_name]
       |> MapSet.subset?(asserted_fact_templates_names)
     end)
-    
     {
       :reply,
       :ok,
       state
       |> Map.put(:stage_one_candidate_rules, stage_one_candidate_rules)
+    }
+  end
+
+  def handle_call(:generate_stage_two_candidate_rules, _from, %{facts: facts, rules: rules, stage_one_candidate_rules: stage_one_candidate_rules, mapper: mapper} = state) do
+    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    # woeful duplication or effort, recalculation,
+    # inefficiency, etc. get it working and then consolidate
+    # all the stage calculations
+    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    
+    fact_template_name_to_asserted_facts_mapping = Mapper.get_fact_template_name_to_asserted_facts_mapping(mapper)
+    fact_template_to_rule_lhs_mapping = Mapper.get_fact_template_name_to_rule_lhs_mapping(mapper)
+    asserted_fact_templates_names = for {_, {asserted_fact_template_name, _}} <- Facts.get_asserted_facts(facts) do
+      asserted_fact_template_name
+    end
+    rule_lhs_fact_template_names = for {_, {rule_name, rule_pid}} <- rules |> Rules.get_rules do
+      {rule_name, rule_pid |> Rule.get_lhs_fact_template_names |> MapSet.new}
+    end
+
+
+    "§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§" |> IO.puts
+    "§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§" |> IO.puts
+    "§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§" |> IO.puts
+    rule_lhs_fact_template_names |> IO.inspect(limit: :infinity)
+    "=======================================================" |> IO.puts
+    asserted_fact_templates_names |> IO.inspect(limit: :infinity)
+    "=======================================================" |> IO.puts
+    stage_one_candidate_rules |> IO.inspect(limit: :infinity)
+    "=======================================================" |> IO.puts
+    fact_template_to_rule_lhs_mapping |> IO.inspect(limit: :infinity)
+    "=======================================================" |> IO.puts
+    fact_template_name_to_asserted_facts_mapping |> IO.inspect(limit: :infinity)
+    "±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±" |> IO.puts
+    "±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±" |> IO.puts
+    "±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±" |> IO.puts
+    
+    stage_two_candidate_rules = nil
+    {
+      :reply,
+      :ok,
+      state
+      |> Map.put(:stage_two_candidate_rules, stage_two_candidate_rules)
     }
   end
 
@@ -131,6 +185,17 @@ defmodule Talisman.InferenceEngine do
     }
   end
 
+  def handle_call(:get_stage_two_candidate_rules, _from, %{stage_two_candidate_rules: stage_two_candidate_rules} = state) do
+    {
+      :reply,
+      {
+        :ok,
+        stage_two_candidate_rules
+      },
+      state
+    }
+  end
+  
   def start(params) do
     GenServer.start_link(__MODULE__, params)
   end
@@ -142,7 +207,8 @@ defmodule Talisman.InferenceEngine do
          facts: facts,
          rules: rules,
          mapper: mapper,
-         stage_one_candidate_rules: []
+         stage_one_candidate_rules: [],
+         stage_two_candidate_rules: []
        }
     }
   end

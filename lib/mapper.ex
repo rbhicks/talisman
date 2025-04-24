@@ -20,7 +20,7 @@ defmodule Talisman.Mapper do
     GenServer.call(server, :create_fact_template_name_to_rule_lhs_mapping)
   end
 
-  def update_fact_template_name_asserted_facts_mapping(server, fact_template_name, pid) do    
+  def update_fact_template_name_asserted_facts_mapping(server, fact_template_name, pid) do
     {:ok, fact_template_name_asserted_facts_mapping} = GenServer.call(server, {:update_fact_template_name_asserted_facts_mapping, fact_template_name, pid})
     fact_template_name_asserted_facts_mapping
   end

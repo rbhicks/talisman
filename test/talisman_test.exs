@@ -261,7 +261,7 @@ defmodule TalismanTest do
    end
 
 #   @tag :skip
-   it "add stage one rule candidacy check works", (%{inference_engine: inference_engine, mapper: mapper}) do
+   it "add stage one rule candidacy check works", (%{inference_engine: inference_engine}) do
      InferenceEngine.generate_stage_one_candidate_rules(inference_engine)
      # look into avoid hardcoding this 
      assert [:found_icbm, :found_f22_aim_9c_loadout] =
@@ -277,6 +277,8 @@ defmodule TalismanTest do
      "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
      "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
      "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
+
+     InferenceEngine.generate_stage_two_candidate_rules(inference_engine)
      
    end   
  end
