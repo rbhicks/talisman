@@ -11,7 +11,6 @@ defmodule Talisman.Rules do
   
   def add_rule(server, rule_name, rule) do
     GenServer.call(server, {:add_rule, rule_name, rule})
-    
   end
 
   def handle_call({:add_rule, rule_name, rule}, _from, %{rules_supervisor: rules_supervisor, rules: rules} = state) do
