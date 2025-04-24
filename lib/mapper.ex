@@ -20,6 +20,11 @@ defmodule Talisman.Mapper do
     GenServer.call(server, :create_fact_template_name_to_rule_lhs_mapping)
   end
 
+  def create_fact_template_name_asserted_facts_mapping(server, fact_template_name, pid) do    
+    {:ok, fact_template_name_asserted_facts_mapping} = GenServer.call(server, {:create_fact_template_name_asserted_facts_mapping, fact_template_name, pid})
+    fact_template_name_asserted_facts_mapping
+  end
+
   def get_fact_template_name_to_rule_lhs_mapping(server) do
     {:ok, fact_template_name_to_rule_lhs_mapping} = GenServer.call(server, :get_fact_template_name_to_rule_lhs_mapping)
     fact_template_name_to_rule_lhs_mapping
@@ -75,6 +80,25 @@ defmodule Talisman.Mapper do
   end
 
   def handle_call(
+    {:create_fact_template_name_asserted_facts_mapping, fact_template_name, pid},
+    _from,
+#    state) do
+    %{fact_template_name_asserted_facts_mapping: current_fact_template_name_asserted_facts_mapping} = state) do
+
+    fact_template_name_asserted_facts_mapping = Map.update(current_fact_template_name_asserted_facts_mapping,
+      fact_template_name,
+      [{fact_template_name, pid}],
+      fn asserted_facts_for_fact_template_name ->
+        [{fact_template_name, pid}|asserted_facts_for_fact_template_name]
+      end)
+    {
+      :reply,
+      {:ok, fact_template_name_asserted_facts_mapping},
+      Map.put(state, :fact_template_name_asserted_facts_mapping, fact_template_name_asserted_facts_mapping)
+    }
+  end
+
+  def handle_call(
     :get_fact_template_name_to_rule_lhs_mapping,
     _from,
     %{fact_template_name_to_rule_lhs_mapping: fact_template_name_to_rule_lhs_mapping} = state) do
@@ -92,7 +116,15 @@ defmodule Talisman.Mapper do
   def init(_) do
     {
       :ok,
-       %{fact_template_names: MapSet.new(), rule_fact_template_names: []}
+       %{
+         fact_template_names: MapSet.new(),
+         rule_fact_template_names: [],
+         # this mapping is created initially, unlike
+         # fact_template_name_to_rule_lhs_mapping
+         # as the semantics for this one are far
+         # more dynamic 
+         fact_template_name_asserted_facts_mapping: %{}
+       }
     }
   end
 end
