@@ -36,8 +36,8 @@ defmodule Talisman.InferenceEngine do
     :ok = GenServer.call(server, :generate_stage_one_candidate_rules)
   end
 
-  def generate_stage_two_candidate_rules(server) do
-    :ok = GenServer.call(server, :generate_stage_two_candidate_rules)
+  def generate_stage_two_candidate_rule_info(server) do
+    :ok = GenServer.call(server, :generate_stage_two_candidate_rule_info)
   end
 
   def get_stage_one_candidate_rules(server) do
@@ -45,9 +45,9 @@ defmodule Talisman.InferenceEngine do
     stage_one_candidate_rules
   end
 
-  def get_stage_two_candidate_rules(server) do
-    {:ok, stage_two_candidate_rules} = GenServer.call(server, :get_stage_two_candidate_rules)
-    stage_two_candidate_rules
+  def get_stage_two_candidate_rule_info(server) do
+    {:ok, stage_two_candidate_rule_info} = GenServer.call(server, :get_stage_two_candidate_rule_info)
+    stage_two_candidate_rule_info
   end
 
   def handle_call(:generate_lhs_fact_template_name_hashes_powerset, _from, %{rules: rules} = state) do    
@@ -128,13 +128,15 @@ defmodule Talisman.InferenceEngine do
     }
   end
 
-  def handle_call(:generate_stage_two_candidate_rules, _from, %{facts: facts, rules: rules, stage_one_candidate_rules: stage_one_candidate_rules, mapper: mapper} = state) do
+  def handle_call(:generate_stage_two_candidate_rule_info, _from, %{facts: facts, rules: rules, stage_one_candidate_rules: stage_one_candidate_rules, mapper: mapper} = state) do
     #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     # woeful duplication or effort, recalculation,
     # inefficiency, etc. get it working and then consolidate
     # all the stage calculations
+    # also, "stage two candidate ......" may need a new name,
+    # i.e., does it accurately reflect what's happeneing?
     #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -143,34 +145,59 @@ defmodule Talisman.InferenceEngine do
     fact_template_to_rule_lhs_mapping = Mapper.get_fact_template_name_to_rule_lhs_mapping(mapper)
     asserted_fact_templates_names = for {_, {asserted_fact_template_name, _}} <- Facts.get_asserted_facts(facts) do
       asserted_fact_template_name
-    end
-    rule_lhs_fact_template_names = for {_, {rule_name, rule_pid}} <- rules |> Rules.get_rules do
-      {rule_name, rule_pid |> Rule.get_lhs_fact_template_names |> MapSet.new}
-    end
+    end    
+    stage_two_candidate_rule_info = rules
+    |> Rules.get_rules
+    |> Enum.filter(fn {_, {rule_name, _rule_pid}} ->
+      stage_one_candidate_rules |> Enum.member?(rule_name)
+    end)
+    |> Enum.reduce([], fn {_, {rule_name, rule_pid}}, acc ->
 
+      rule_info = {rule_name, rule_pid, Rule.get_lhs_fact_template_names(rule_pid)}
+      
+      [rule_info|acc]
+    end)
+    |> Enum.filter(fn {rule_name, rule_pid, rule_lhs_fact_template_names} ->
+      rule_lhs_fact_template_names
+      |> Enum.reduce_while(true, fn rule_lhs_fact_template_name, acc ->
+        if(Map.has_key?(fact_template_name_to_asserted_facts_mapping, rule_lhs_fact_template_name)) do
+          {:cont, acc}
+        else
+          {:halt, false}
+        end
+      end)
+    end)
+    |> Enum.reduce([], fn {rule_name, rule_pid, rule_lhs_fact_template_names}, acc ->
+      [
+        {
+          rule_name,
+          rule_pid,
+          for rule_lhs_fact_template_name <- rule_lhs_fact_template_names do
+            Map.get(fact_template_name_to_asserted_facts_mapping, rule_lhs_fact_template_name)
+          end
+        }|acc]
+    end)
 
     "§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§" |> IO.puts
     "§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§" |> IO.puts
     "§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§" |> IO.puts
-    rule_lhs_fact_template_names |> IO.inspect(limit: :infinity)
+    stage_two_candidate_rule_info |> IO.inspect(limit: :infinity)
     "=======================================================" |> IO.puts
-    asserted_fact_templates_names |> IO.inspect(limit: :infinity)
-    "=======================================================" |> IO.puts
-    stage_one_candidate_rules |> IO.inspect(limit: :infinity)
-    "=======================================================" |> IO.puts
-    fact_template_to_rule_lhs_mapping |> IO.inspect(limit: :infinity)
-    "=======================================================" |> IO.puts
-    fact_template_name_to_asserted_facts_mapping |> IO.inspect(limit: :infinity)
+    # asserted_fact_templates_names |> IO.inspect(limit: :infinity)
+    # "=======================================================" |> IO.puts
+    # stage_one_candidate_rules |> IO.inspect(limit: :infinity)
+    # "=======================================================" |> IO.puts
+    #  fact_template_to_rule_lhs_mapping |> IO.inspect(limit: :infinity)
+    # "=======================================================" |> IO.puts
+    # fact_template_name_to_asserted_facts_mapping |> IO.inspect(limit: :infinity)
     "±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±" |> IO.puts
     "±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±" |> IO.puts
     "±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±" |> IO.puts
-    
-    stage_two_candidate_rules = nil
     {
       :reply,
       :ok,
       state
-      |> Map.put(:stage_two_candidate_rules, stage_two_candidate_rules)
+      |> Map.put(:stage_two_candidate_rule_info, stage_two_candidate_rule_info)
     }
   end
 
@@ -208,7 +235,7 @@ defmodule Talisman.InferenceEngine do
          rules: rules,
          mapper: mapper,
          stage_one_candidate_rules: [],
-         stage_two_candidate_rules: []
+         stage_two_candidate_rule_info: %{}
        }
     }
   end
