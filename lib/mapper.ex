@@ -30,12 +30,18 @@ defmodule Talisman.Mapper do
     fact_template_name_to_rule_lhs_mapping
   end
 
+  def get_fact_template_name_to_asserted_facts_mapping(server) do
+    {:ok, fact_template_name_to_asserted_facts_mapping} = GenServer.call(server, :get_fact_template_name_to_asserted_facts_mapping)
+    fact_template_name_to_asserted_facts_mapping
+  end
+
   def handle_call(
     {:add_rule_fact_template_names, rule_name, rule_fact_template_names},
     _from,
     %{
       fact_template_names: current_fact_template_names,
-      rule_fact_template_names: current_rule_fact_template_names
+      rule_fact_template_names: current_rule_fact_template_names,
+      fact_template_name_to_asserted_facts_mapping: current_fact_template_name_to_asserted_facts_mapping
     }
   ) do
     {
@@ -47,7 +53,8 @@ defmodule Talisman.Mapper do
         |> Enum.concat(rule_fact_template_names)
         |> MapSet.new(),
         rule_fact_template_names: [{rule_name, rule_fact_template_names}|current_rule_fact_template_names],
-        fact_template_name_to_rule_lhs_mapping: %{}
+        fact_template_name_to_rule_lhs_mapping: %{},
+        fact_template_name_to_asserted_facts_mapping: current_fact_template_name_to_asserted_facts_mapping
       }
     }
   end
@@ -71,7 +78,7 @@ defmodule Talisman.Mapper do
           end
         end)
       )
-    end)    
+    end)
     {
       :reply,
       :ok,
@@ -82,9 +89,9 @@ defmodule Talisman.Mapper do
   def handle_call(
     {:update_fact_template_name_asserted_facts_mapping, fact_template_name, pid},
     _from,
-    %{fact_template_name_asserted_facts_mapping: current_fact_template_name_asserted_facts_mapping} = state) do
+    %{fact_template_name_to_asserted_facts_mapping: current_fact_template_name_to_asserted_facts_mapping} = state) do
 
-    fact_template_name_asserted_facts_mapping = Map.update(current_fact_template_name_asserted_facts_mapping,
+    fact_template_name_to_asserted_facts_mapping = Map.update(current_fact_template_name_to_asserted_facts_mapping,
       fact_template_name,
       [{fact_template_name, pid}],
       fn asserted_facts_for_fact_template_name ->
@@ -92,8 +99,8 @@ defmodule Talisman.Mapper do
       end)
     {
       :reply,
-      {:ok, fact_template_name_asserted_facts_mapping},
-      Map.put(state, :fact_template_name_asserted_facts_mapping, fact_template_name_asserted_facts_mapping)
+      {:ok, fact_template_name_to_asserted_facts_mapping},
+      Map.put(state, :fact_template_name_to_asserted_facts_mapping, fact_template_name_to_asserted_facts_mapping)
     }
   end
 
@@ -104,6 +111,17 @@ defmodule Talisman.Mapper do
     {
       :reply,
       {:ok, fact_template_name_to_rule_lhs_mapping},
+      state
+    }
+  end
+
+  def handle_call(
+    :get_fact_template_name_to_asserted_facts_mapping,
+    _from,
+    %{fact_template_name_to_asserted_facts_mapping: fact_template_name_to_asserted_facts_mapping} = state) do
+    {
+      :reply,
+      {:ok, fact_template_name_to_asserted_facts_mapping},
       state
     }
   end
@@ -123,7 +141,7 @@ defmodule Talisman.Mapper do
          # as the semantics for this one are far
          # more dynamic (also why its api function
          # is called 'update_...' instead of 'create...'
-         fact_template_name_asserted_facts_mapping: %{}
+         fact_template_name_to_asserted_facts_mapping: %{}
        }
     }
   end
