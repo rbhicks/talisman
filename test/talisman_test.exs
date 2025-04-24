@@ -261,7 +261,7 @@ defmodule TalismanTest do
    end
 
 #   @tag :skip
-   it "add stage one rule candidacy check works", (%{inference_engine: inference_engine}) do
+   it "add stage one rule candidacy check works", (%{inference_engine: inference_engine, mapper: mapper}) do
      InferenceEngine.generate_stage_one_candidate_rules(inference_engine)
      # look into avoid hardcoding this 
      assert [:found_icbm, :found_f22_aim_9c_loadout] =
@@ -274,15 +274,6 @@ defmodule TalismanTest do
      "get rid of hash thing as unnecessary?" |> IO.puts
      "get rid of hash thing as unnecessary?" |> IO.puts
      "get rid of hash thing as unnecessary?" |> IO.puts
-     "====================================================" |> IO.puts
-     "does the second (or first) stage require anymore filtering of rules to apply facts too" |> IO.puts
-     "does the second (or first) stage require anymore filtering of rules to apply facts too" |> IO.puts
-     "does the second (or first) stage require anymore filtering of rules to apply facts too" |> IO.puts
-     "====================================================" |> IO.puts
-     "need to have a mapping between fact_template_names and asserted facts" |> IO.puts
-     "need to have a mapping between fact_template_names and asserted facts" |> IO.puts
-     "need to have a mapping between fact_template_names and asserted facts" |> IO.puts
-     "^^^^^easy! don't o'er think it" |> IO.puts
      "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
      "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
      "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
