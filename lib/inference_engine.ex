@@ -106,7 +106,7 @@ defmodule Talisman.InferenceEngine do
       |> Map.get(asserted_fact_template_name)
       |> Kernel.++(acc)
     end)
-    first_stage_candidate_rules = mapped_rules
+    stage_one_candidate_rules = mapped_rules
     |> Enum.filter(fn rule_name ->
       rule_lhs_fact_template_names[rule_name]
       |> MapSet.subset?(asserted_fact_templates_names)
@@ -116,16 +116,16 @@ defmodule Talisman.InferenceEngine do
       :reply,
       :ok,
       state
-      |> Map.put(:first_stage_candidate_rules, first_stage_candidate_rules)
+      |> Map.put(:stage_one_candidate_rules, stage_one_candidate_rules)
     }
   end
 
-  def handle_call(:get_stage_one_candidate_rules, _from, %{first_stage_candidate_rules: first_stage_candidate_rules} = state) do
+  def handle_call(:get_stage_one_candidate_rules, _from, %{stage_one_candidate_rules: stage_one_candidate_rules} = state) do
     {
       :reply,
       {
         :ok,
-        first_stage_candidate_rules
+        stage_one_candidate_rules
       },
       state
     }
@@ -142,7 +142,7 @@ defmodule Talisman.InferenceEngine do
          facts: facts,
          rules: rules,
          mapper: mapper,
-         first_stage_candidate_rules: []
+         stage_one_candidate_rules: []
        }
     }
   end
