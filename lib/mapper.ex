@@ -20,8 +20,8 @@ defmodule Talisman.Mapper do
     GenServer.call(server, :create_fact_template_name_to_rule_lhs_mapping)
   end
 
-  def create_fact_template_name_asserted_facts_mapping(server, fact_template_name, pid) do    
-    {:ok, fact_template_name_asserted_facts_mapping} = GenServer.call(server, {:create_fact_template_name_asserted_facts_mapping, fact_template_name, pid})
+  def update_fact_template_name_asserted_facts_mapping(server, fact_template_name, pid) do    
+    {:ok, fact_template_name_asserted_facts_mapping} = GenServer.call(server, {:update_fact_template_name_asserted_facts_mapping, fact_template_name, pid})
     fact_template_name_asserted_facts_mapping
   end
 
@@ -80,9 +80,8 @@ defmodule Talisman.Mapper do
   end
 
   def handle_call(
-    {:create_fact_template_name_asserted_facts_mapping, fact_template_name, pid},
+    {:update_fact_template_name_asserted_facts_mapping, fact_template_name, pid},
     _from,
-#    state) do
     %{fact_template_name_asserted_facts_mapping: current_fact_template_name_asserted_facts_mapping} = state) do
 
     fact_template_name_asserted_facts_mapping = Map.update(current_fact_template_name_asserted_facts_mapping,
@@ -122,7 +121,8 @@ defmodule Talisman.Mapper do
          # this mapping is created initially, unlike
          # fact_template_name_to_rule_lhs_mapping
          # as the semantics for this one are far
-         # more dynamic 
+         # more dynamic (also why its api function
+         # is called 'update_...' instead of 'create...'
          fact_template_name_asserted_facts_mapping: %{}
        }
     }
