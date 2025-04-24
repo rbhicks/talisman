@@ -278,7 +278,7 @@ defmodule TalismanTest do
      "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
      "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
 
-     InferenceEngine.generate_stage_two_candidate_rules(inference_engine)
+     InferenceEngine.generate_stage_two_candidate_rule_info(inference_engine)
      
    end   
  end
