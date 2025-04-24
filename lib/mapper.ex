@@ -12,54 +12,54 @@ defmodule Talisman.Mapper do
   # @doc """
   # a batch version can be created later if needed
   # """
-  def add_rule_fact_templates(server, rule_name, rule_fact_templates) do
-    GenServer.call(server, {:add_rule_fact_templates, rule_name, rule_fact_templates})
+  def add_rule_fact_template_names(server, rule_name, rule_fact_template_names) do
+    GenServer.call(server, {:add_rule_fact_template_names, rule_name, rule_fact_template_names})
   end
 
-  def create_fact_template_to_rule_lhs_mapping(server) do
-    GenServer.call(server, :create_fact_template_to_rule_lhs_mapping)
+  def create_fact_template_name_to_rule_lhs_mapping(server) do
+    GenServer.call(server, :create_fact_template_name_to_rule_lhs_mapping)
   end
 
-  def get_fact_template_to_rule_lhs_mapping(server) do
-    {:ok, fact_template_to_rule_lhs_mapping} = GenServer.call(server, :get_fact_template_to_rule_lhs_mapping)
-    fact_template_to_rule_lhs_mapping
+  def get_fact_template_name_to_rule_lhs_mapping(server) do
+    {:ok, fact_template_name_to_rule_lhs_mapping} = GenServer.call(server, :get_fact_template_name_to_rule_lhs_mapping)
+    fact_template_name_to_rule_lhs_mapping
   end
 
   def handle_call(
-    {:add_rule_fact_templates, rule_name, rule_fact_templates},
+    {:add_rule_fact_template_names, rule_name, rule_fact_template_names},
     _from,
     %{
-      fact_templates: current_fact_templates,
-      rule_fact_templates: current_rule_fact_templates
+      fact_template_names: current_fact_template_names,
+      rule_fact_template_names: current_rule_fact_template_names
     }
   ) do
     {
       :reply,
       :ok,
       %{
-        fact_templates: current_fact_templates
+        fact_template_names: current_fact_template_names
         |> MapSet.to_list()
-        |> Enum.concat(rule_fact_templates)
+        |> Enum.concat(rule_fact_template_names)
         |> MapSet.new(),
-        rule_fact_templates: [{rule_name, rule_fact_templates}|current_rule_fact_templates],
-        fact_template_to_rule_lhs_mapping: %{}
+        rule_fact_template_names: [{rule_name, rule_fact_template_names}|current_rule_fact_template_names],
+        fact_template_name_to_rule_lhs_mapping: %{}
       }
     }
   end
 
   def handle_call(
-    :create_fact_template_to_rule_lhs_mapping,
+    :create_fact_template_name_to_rule_lhs_mapping,
     _from,
-    %{fact_templates: fact_templates, rule_fact_templates: rule_fact_templates} = state) do
-    fact_template_to_rule_lhs_mapping = fact_templates
+    %{fact_template_names: fact_template_names, rule_fact_template_names: rule_fact_template_names} = state) do
+    fact_template_name_to_rule_lhs_mapping = fact_template_names
     |> MapSet.to_list()
-    |> Enum.reduce(%{}, fn fact_template, acc ->
+    |> Enum.reduce(%{}, fn fact_template_name, acc ->
       acc
       |> Map.put(
-        fact_template, 
-        rule_fact_templates
-        |> Enum.reduce([], fn {rule_name, current_rule_fact_templates}, acc ->
-          if Enum.member?(current_rule_fact_templates, fact_template) do
+        fact_template_name, 
+        rule_fact_template_names
+        |> Enum.reduce([], fn {rule_name, current_rule_fact_template_names}, acc ->
+          if Enum.member?(current_rule_fact_template_names, fact_template_name) do
             [rule_name|acc]
           else
             acc
@@ -70,17 +70,17 @@ defmodule Talisman.Mapper do
     {
       :reply,
       :ok,
-      Map.put(state, :fact_template_to_rule_lhs_mapping, fact_template_to_rule_lhs_mapping)
+      Map.put(state, :fact_template_name_to_rule_lhs_mapping, fact_template_name_to_rule_lhs_mapping)
     }
   end
 
   def handle_call(
-    :get_fact_template_to_rule_lhs_mapping,
+    :get_fact_template_name_to_rule_lhs_mapping,
     _from,
-    %{fact_template_to_rule_lhs_mapping: fact_template_to_rule_lhs_mapping} = state) do
+    %{fact_template_name_to_rule_lhs_mapping: fact_template_name_to_rule_lhs_mapping} = state) do
     {
       :reply,
-      {:ok, fact_template_to_rule_lhs_mapping},
+      {:ok, fact_template_name_to_rule_lhs_mapping},
       state
     }
   end
@@ -92,7 +92,7 @@ defmodule Talisman.Mapper do
   def init(_) do
     {
       :ok,
-       %{fact_templates: MapSet.new(), rule_fact_templates: []}
+       %{fact_template_names: MapSet.new(), rule_fact_template_names: []}
     }
   end
 end

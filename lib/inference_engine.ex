@@ -87,7 +87,7 @@ defmodule Talisman.InferenceEngine do
     # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     asserted_facts = Facts.get_asserted_facts(facts)
-    fact_template_to_rule_lhs_mapping = Mapper.get_fact_template_to_rule_lhs_mapping(mapper)
+    fact_template_to_rule_lhs_mapping = Mapper.get_fact_template_name_to_rule_lhs_mapping(mapper)
     asserted_fact_templates_names = for {_, {asserted_fact_template_name, _}} <- asserted_facts do
       asserted_fact_template_name
     end
