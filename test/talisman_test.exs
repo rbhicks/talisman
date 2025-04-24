@@ -88,7 +88,7 @@ defmodule TalismanTest do
          propulsion: :solid_propellant,
          guidance: :ballistic_trajectory,
          warhead: :mirv
-                })
+                }, mapper)
 
    Facts.assert(facts, %MissileFactTemplate{
          name: :aim_9c_sidewinder,
@@ -96,7 +96,7 @@ defmodule TalismanTest do
          propulsion: :solid_propellant,
          guidance: :semi_active_radar,
          warhead: :continuous_rod
-                })
+                }, mapper)
 
    Facts.assert(facts, %MissileFactTemplate{
          name: :aim_9c_sidewinder,
@@ -104,14 +104,14 @@ defmodule TalismanTest do
          propulsion: :solid_propellant,
          guidance: :semi_active_radar,
          warhead: :continuous_rod
-                })
+                }, mapper)
 
    Facts.assert(facts, %BombFactTemplate{
          name: :b61,
          type: :gravity_bomb,
          guidance: :glide,
          warhead: :thermonuclear
-                })
+                }, mapper)
 
    Rules.add_rule(rules, :found_icbm, %{
          lhs_fact_template_names: [MissileFactTemplate],
@@ -282,6 +282,7 @@ defmodule TalismanTest do
      "need to have a mapping between fact_template_names and asserted facts" |> IO.puts
      "need to have a mapping between fact_template_names and asserted facts" |> IO.puts
      "need to have a mapping between fact_template_names and asserted facts" |> IO.puts
+     "^^^^^easy! don't o'er think it" |> IO.puts
      "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
      "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
      "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
