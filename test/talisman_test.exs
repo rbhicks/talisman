@@ -267,19 +267,28 @@ defmodule TalismanTest do
      assert [:found_icbm, :found_f22_aim_9c_loadout] =
        InferenceEngine.get_stage_one_candidate_rules(inference_engine)
 
-
-     "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
-     "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
-     "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
-     "get rid of hash thing as unnecessary?" |> IO.puts
-     "get rid of hash thing as unnecessary?" |> IO.puts
-     "get rid of hash thing as unnecessary?" |> IO.puts
-     "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
-     "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
-     "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
-
      InferenceEngine.generate_stage_two_candidate_rule_info(inference_engine)
      
+     assert [
+       {:found_icbm, _,
+        [
+          [
+            {Talisman.Test.Support.Fixtures.MissileFactTemplate, _},
+            {Talisman.Test.Support.Fixtures.MissileFactTemplate, _},
+            {Talisman.Test.Support.Fixtures.MissileFactTemplate, _}
+          ]
+        ]
+       },
+       {:found_f22_aim_9c_loadout, _,
+        [
+          [
+            {Talisman.Test.Support.Fixtures.MissileFactTemplate, _},
+            {Talisman.Test.Support.Fixtures.MissileFactTemplate, _},
+            {Talisman.Test.Support.Fixtures.MissileFactTemplate, _}
+          ]
+        ]
+       }
+     ] = InferenceEngine.get_stage_two_candidate_rule_info(inference_engine)
    end   
  end
 end
