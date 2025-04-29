@@ -177,22 +177,6 @@ defmodule Talisman.InferenceEngine do
           end
         }|acc]
     end)
-
-    "§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§" |> IO.puts
-    "§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§" |> IO.puts
-    "§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§" |> IO.puts
-    stage_two_candidate_rule_info |> IO.inspect(limit: :infinity)
-    "=======================================================" |> IO.puts
-    # asserted_fact_templates_names |> IO.inspect(limit: :infinity)
-    # "=======================================================" |> IO.puts
-    # stage_one_candidate_rules |> IO.inspect(limit: :infinity)
-    # "=======================================================" |> IO.puts
-    #  fact_template_to_rule_lhs_mapping |> IO.inspect(limit: :infinity)
-    # "=======================================================" |> IO.puts
-    # fact_template_name_to_asserted_facts_mapping |> IO.inspect(limit: :infinity)
-    "±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±" |> IO.puts
-    "±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±" |> IO.puts
-    "±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±" |> IO.puts
     {
       :reply,
       :ok,
@@ -212,12 +196,12 @@ defmodule Talisman.InferenceEngine do
     }
   end
 
-  def handle_call(:get_stage_two_candidate_rules, _from, %{stage_two_candidate_rules: stage_two_candidate_rules} = state) do
+  def handle_call(:get_stage_two_candidate_rule_info, _from, %{stage_two_candidate_rule_info: stage_two_candidate_rule_info} = state) do
     {
       :reply,
       {
         :ok,
-        stage_two_candidate_rules
+        stage_two_candidate_rule_info
       },
       state
     }
@@ -235,7 +219,7 @@ defmodule Talisman.InferenceEngine do
          rules: rules,
          mapper: mapper,
          stage_one_candidate_rules: [],
-         stage_two_candidate_rule_info: %{}
+         stage_two_candidate_rule_info: []
        }
     }
   end
