@@ -268,7 +268,14 @@ defmodule TalismanTest do
        InferenceEngine.get_stage_one_candidate_rules(inference_engine)
 
      InferenceEngine.generate_stage_two_candidate_rule_info(inference_engine)
-     
+
+     # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+     # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+     # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+     # fix this awful magic value!
+     # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+     # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+     # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
      assert [
        {:found_icbm, _,
         [
