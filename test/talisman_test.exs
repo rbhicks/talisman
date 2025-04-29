@@ -88,7 +88,7 @@ defmodule TalismanTest do
          propulsion: :solid_propellant,
          guidance: :ballistic_trajectory,
          warhead: :mirv
-                })
+                }, mapper)
 
    Facts.assert(facts, %MissileFactTemplate{
          name: :aim_9c_sidewinder,
@@ -96,7 +96,7 @@ defmodule TalismanTest do
          propulsion: :solid_propellant,
          guidance: :semi_active_radar,
          warhead: :continuous_rod
-                })
+                }, mapper)
 
    Facts.assert(facts, %MissileFactTemplate{
          name: :aim_9c_sidewinder,
@@ -104,14 +104,14 @@ defmodule TalismanTest do
          propulsion: :solid_propellant,
          guidance: :semi_active_radar,
          warhead: :continuous_rod
-                })
+                }, mapper)
 
    Facts.assert(facts, %BombFactTemplate{
          name: :b61,
          type: :gravity_bomb,
          guidance: :glide,
          warhead: :thermonuclear
-                })
+                }, mapper)
 
    Rules.add_rule(rules, :found_icbm, %{
          lhs_fact_template_names: [MissileFactTemplate],
@@ -195,9 +195,9 @@ defmodule TalismanTest do
 
    InferenceEngine.generate_lhs_fact_template_name_hashes_powerset(inference_engine)
    for {_, {rule_name, rule_pid}} <- Rules.get_rules(rules) do
-     Mapper.add_rule_fact_templates(mapper, rule_name, Rule.get_lhs_fact_template_names(rule_pid))
+     Mapper.add_rule_fact_template_names(mapper, rule_name, Rule.get_lhs_fact_template_names(rule_pid))
    end
-   Mapper.create_fact_template_to_rule_lhs_mapping(mapper)
+   Mapper.create_fact_template_name_to_rule_lhs_mapping(mapper)
 
    %{
      facts_supervisor: facts_supervisor,
@@ -267,25 +267,35 @@ defmodule TalismanTest do
      assert [:found_icbm, :found_f22_aim_9c_loadout] =
        InferenceEngine.get_stage_one_candidate_rules(inference_engine)
 
+     InferenceEngine.generate_stage_two_candidate_rule_info(inference_engine)
 
-     "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
-     "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
-     "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
-     "get rid of hash thing as unnecessary?" |> IO.puts
-     "get rid of hash thing as unnecessary?" |> IO.puts
-     "get rid of hash thing as unnecessary?" |> IO.puts
-     "====================================================" |> IO.puts
-     "does the second (or first) stage require anymore filtering of rules to apply facts too" |> IO.puts
-     "does the second (or first) stage require anymore filtering of rules to apply facts too" |> IO.puts
-     "does the second (or first) stage require anymore filtering of rules to apply facts too" |> IO.puts
-     "====================================================" |> IO.puts
-     "need to have a mapping between fact_template_names and asserted facts" |> IO.puts
-     "need to have a mapping between fact_template_names and asserted facts" |> IO.puts
-     "need to have a mapping between fact_template_names and asserted facts" |> IO.puts
-     "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
-     "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
-     "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
-     
+     # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+     # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+     # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+     # fix this awful magic value!
+     # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+     # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+     # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+     assert [
+       {:found_icbm, _,
+        [
+          [
+            {Talisman.Test.Support.Fixtures.MissileFactTemplate, _},
+            {Talisman.Test.Support.Fixtures.MissileFactTemplate, _},
+            {Talisman.Test.Support.Fixtures.MissileFactTemplate, _}
+          ]
+        ]
+       },
+       {:found_f22_aim_9c_loadout, _,
+        [
+          [
+            {Talisman.Test.Support.Fixtures.MissileFactTemplate, _},
+            {Talisman.Test.Support.Fixtures.MissileFactTemplate, _},
+            {Talisman.Test.Support.Fixtures.MissileFactTemplate, _}
+          ]
+        ]
+       }
+     ] = InferenceEngine.get_stage_two_candidate_rule_info(inference_engine)
    end   
  end
 end
