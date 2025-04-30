@@ -202,32 +202,8 @@ defmodule Talisman.InferenceEngine do
       stage_one_candidate_rules: stage_one_candidate_rules,
       stage_two_candidate_rule_info: stage_two_candidate_rule_info
     } = state) do
-
     asserted_facts = Facts.get_asserted_facts(facts)
     current_rules = Rules.get_rules(rules)
-    "()()()()()()()()()()()()()()()()()()()()()()()(()()()()" |> IO.puts
-    "()()()()()()()()()()()()()()()()()()()()()()()(()()()()" |> IO.puts
-    "()()()()()()()()()()()()()()()()()()()()()()()(()()()()" |> IO.puts
-    asserted_facts |> IO.inspect(limit: :infinity)
-    "=======================================================" |> IO.puts
-    current_rules |> IO.inspect(limit: :infinity)
-    "=======================================================" |> IO.puts
-    stage_one_candidate_rules |> IO.inspect(limit: :infinity)
-    "=======================================================" |> IO.puts
-    # stage_two_candidate_rule_info |> IO.inspect(limit: :infinity)
-    # "=======================================================" |> IO.puts
-    # stage_two_candidate_rule_info
-    # |> Enum.filter(fn {_, rule_pid, _} ->
-    #   "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^" |> IO.puts
-    #   "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^" |> IO.puts
-    #   "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^" |> IO.puts
-    #   rule_pid
-    #   |> Rule.get_lhs_fact_multiplicity()
-    #   |> IO.inspect(limit: :infinity)
-    #   "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" |> IO.puts
-    #   "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" |> IO.puts
-    #   "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" |> IO.puts
-    # end)
     asserted_facts_template_name_frequencies = asserted_facts
     |> Map.values()
     |> Enum.map(fn {asserted_fact_template_name, _} ->
