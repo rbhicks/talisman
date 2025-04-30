@@ -278,17 +278,32 @@ defmodule TalismanTest do
      InferenceEngine.generate_stage_two_candidate_rule_info(inference_engine)
      InferenceEngine.generate_stage_three_candidate_rules(inference_engine)
 
-     # "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" |> IO.puts
-     # "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" |> IO.puts
-     # "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" |> IO.puts
-     # InferenceEngine.get_stage_one_candidate_rules(inference_engine) |> IO.inspect(limit: :infinity)
-     # "============================================================" |> IO.puts
-     # InferenceEngine.get_stage_two_candidate_rule_info(inference_engine) |> IO.inspect(limit: :infinity)
-     # "============================================================" |> IO.puts
-     # InferenceEngine.get_stage_three_candidate_rules(inference_engine) |> IO.inspect(limit: :infinity)
-     # "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" |> IO.puts
-     # "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" |> IO.puts
-     # "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" |> IO.puts
+
+     "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" |> IO.puts
+     "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" |> IO.puts
+     "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" |> IO.puts
+     "may have to change the 'stage' naming convention, they don't seem to be strictly linearly ordered stages" |> IO.puts
+     "may have to change the 'stage' naming convention, they don't seem to be strictly linearly ordered stages" |> IO.puts
+     "may have to change the 'stage' naming convention, they don't seem to be strictly linearly ordered stages" |> IO.puts
+     "may have to change the 'stage' naming convention, they don't seem to be strictly linearly ordered stages" |> IO.puts
+     "may have to change the 'stage' naming convention, they don't seem to be strictly linearly ordered stages" |> IO.puts
+     "may have to change the 'stage' naming convention, they don't seem to be strictly linearly ordered stages" |> IO.puts
+     "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" |> IO.puts
+     "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" |> IO.puts
+     "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" |> IO.puts
+     
+     
+     "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" |> IO.puts
+     "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" |> IO.puts
+     "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" |> IO.puts
+     InferenceEngine.get_stage_one_candidate_rules(inference_engine) |> IO.inspect(limit: :infinity)
+     "============================================================" |> IO.puts
+     InferenceEngine.get_stage_two_candidate_rule_info(inference_engine) |> IO.inspect(limit: :infinity)
+     "============================================================" |> IO.puts
+     InferenceEngine.get_stage_three_candidate_rules(inference_engine) |> IO.inspect(limit: :infinity)
+     "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" |> IO.puts
+     "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" |> IO.puts
+     "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" |> IO.puts
 
    end   
  end

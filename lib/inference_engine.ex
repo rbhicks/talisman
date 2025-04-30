@@ -40,6 +40,10 @@ defmodule Talisman.InferenceEngine do
     :ok = GenServer.call(server, :generate_stage_two_candidate_rule_info)
   end
 
+  def generate_stage_three_candidate_rules(server) do
+    :ok = GenServer.call(server, :generate_stage_three_candidate_rules)
+  end
+  
   def get_stage_one_candidate_rules(server) do
     {:ok, stage_one_candidate_rules} = GenServer.call(server, :get_stage_one_candidate_rules)
     stage_one_candidate_rules
@@ -48,6 +52,11 @@ defmodule Talisman.InferenceEngine do
   def get_stage_two_candidate_rule_info(server) do
     {:ok, stage_two_candidate_rule_info} = GenServer.call(server, :get_stage_two_candidate_rule_info)
     stage_two_candidate_rule_info
+  end
+
+  def get_stage_three_candidate_rules(server) do
+    {:ok, stage_three_candidate_rules} = GenServer.call(server, :get_stage_three_candidate_rules)
+    stage_three_candidate_rules
   end
 
   def handle_call(:generate_lhs_fact_template_name_hashes_powerset, _from, %{rules: rules} = state) do    
@@ -120,6 +129,7 @@ defmodule Talisman.InferenceEngine do
       rule_lhs_fact_template_names[rule_name]
       |> MapSet.subset?(asserted_fact_templates_names)
     end)
+    |> Enum.uniq()
     {
       :reply,
       :ok,
@@ -185,6 +195,68 @@ defmodule Talisman.InferenceEngine do
     }
   end
 
+  def handle_call(:generate_stage_three_candidate_rules, _from,
+    %{
+      facts: facts,
+      rules: rules,
+      stage_one_candidate_rules: stage_one_candidate_rules,
+      stage_two_candidate_rule_info: stage_two_candidate_rule_info
+    } = state) do
+
+    asserted_facts = Facts.get_asserted_facts(facts)
+    current_rules = Rules.get_rules(rules)
+    "()()()()()()()()()()()()()()()()()()()()()()()(()()()()" |> IO.puts
+    "()()()()()()()()()()()()()()()()()()()()()()()(()()()()" |> IO.puts
+    "()()()()()()()()()()()()()()()()()()()()()()()(()()()()" |> IO.puts
+    asserted_facts |> IO.inspect(limit: :infinity)
+    "=======================================================" |> IO.puts
+    current_rules |> IO.inspect(limit: :infinity)
+    "=======================================================" |> IO.puts
+    stage_one_candidate_rules |> IO.inspect(limit: :infinity)
+    "=======================================================" |> IO.puts
+    # stage_two_candidate_rule_info |> IO.inspect(limit: :infinity)
+    # "=======================================================" |> IO.puts
+    # stage_two_candidate_rule_info
+    # |> Enum.filter(fn {_, rule_pid, _} ->
+    #   "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^" |> IO.puts
+    #   "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^" |> IO.puts
+    #   "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^" |> IO.puts
+    #   rule_pid
+    #   |> Rule.get_lhs_fact_multiplicity()
+    #   |> IO.inspect(limit: :infinity)
+    #   "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" |> IO.puts
+    #   "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" |> IO.puts
+    #   "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" |> IO.puts
+    # end)
+    asserted_facts_template_name_frequencies = asserted_facts
+    |> Map.values()
+    |> Enum.map(fn {asserted_fact_template_name, _} ->
+      asserted_fact_template_name
+    end)
+    |> Enum.frequencies()
+
+    stage_three_candidate_rules = current_rules
+    |> Map.take(stage_one_candidate_rules)
+    |> Enum.filter(fn {_, {rule_name, rule_pid}} ->
+      lhs_fact_multiplicity = Rule.get_lhs_fact_multiplicity(rule_pid)
+      lhs_fact_multiplicity
+      |> Enum.reduce_while(true, fn {lhs_fact_template_name, lhs_fact_template_name_multiplicity}, acc ->
+        if(Map.get(asserted_facts_template_name_frequencies, lhs_fact_template_name) >= lhs_fact_template_name_multiplicity) do
+          {:cont, acc}
+        else
+          {:halt, false}
+        end
+      end)
+      |> IO.inspect(limit: :infinity)
+    end)
+    {
+      :reply,
+      :ok,
+      state
+      |> Map.put(:stage_three_candidate_rules, stage_three_candidate_rules)
+    }
+  end
+  
   def handle_call(:get_stage_one_candidate_rules, _from, %{stage_one_candidate_rules: stage_one_candidate_rules} = state) do
     {
       :reply,
@@ -206,6 +278,17 @@ defmodule Talisman.InferenceEngine do
       state
     }
   end
+
+  def handle_call(:get_stage_three_candidate_rules, _from, %{stage_three_candidate_rules: stage_three_candidate_rules} = state) do
+    {
+      :reply,
+      {
+        :ok,
+        stage_three_candidate_rules
+      },
+      state
+    }
+  end
   
   def start(params) do
     GenServer.start_link(__MODULE__, params)
@@ -219,7 +302,8 @@ defmodule Talisman.InferenceEngine do
          rules: rules,
          mapper: mapper,
          stage_one_candidate_rules: [],
-         stage_two_candidate_rule_info: []
+         stage_two_candidate_rule_info: [],
+         stage_three_candidate_rules: []
        }
     }
   end
