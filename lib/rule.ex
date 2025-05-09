@@ -26,7 +26,7 @@ defmodule Talisman.Rule do
   def handle_call(
         :get_lhs_fact_template_names,
         _from,
-        {lhs_fact_template_names, _, _, _, _} = state
+        %{lhs_fact_template_names: lhs_fact_template_names} = state
       ) do
     {
       :reply,
@@ -38,16 +38,7 @@ defmodule Talisman.Rule do
     }
   end
 
-  #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  # change state tuple to map
-  #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  
-
-  def handle_call(:get_lhs_fact_multiplicity, _from, {_, lhs_fact_multiplicity, _, _, _} = state) do
+  def handle_call(:get_lhs_fact_multiplicity, _from, %{lhs_fact_multiplicity: lhs_fact_multiplicity} = state) do
     {
       :reply,
       {
@@ -91,12 +82,12 @@ defmodule Talisman.Rule do
       ) do
     {
       :ok,
-      {
-        lhs_fact_template_names,
-        lhs_fact_multiplicity,
-        evaluate_lhs_function,
-        execute_rule_function,
-        []
+      %{
+        lhs_fact_template_names: lhs_fact_template_names,
+        lhs_fact_multiplicity: lhs_fact_multiplicity,
+        evaluate_lhs_function: evaluate_lhs_function,
+        execute_rule_function: execute_rule_function,
+        active?: false
       }
     }
   end
