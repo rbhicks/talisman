@@ -5,7 +5,7 @@ defmodule Talisman.MixProject do
     [
       app: :talisman,
       version: "0.1.0",
-      elixir: "~> 1.16",
+      elixir: "~> 1.18",
       start_permanent: Mix.env() == :prod,
       elixirc_paths: elixirc_paths(Mix.env()),
       deps: deps()
@@ -15,7 +15,7 @@ defmodule Talisman.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [:logger, :crypto],
+      extra_applications: [:logger],
       mod: {Talisman, []}
     ]
   end
@@ -27,7 +27,8 @@ defmodule Talisman.MixProject do
   defp deps do
     [
       {:benchee, "~> 1.3"},
-      {:ex_spec, "~> 2.0"}
+      {:ex_spec, "~> 2.0"},
+      {:credo, "~> 1.7"}
     ]
   end
 end
