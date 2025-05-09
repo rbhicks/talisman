@@ -36,8 +36,8 @@ defmodule Talisman.InferenceEngine do
     :ok = GenServer.call(server, :filter_rules_by_rule_lhs_and_asserted_fact_template_names)
   end
 
-  def generate_stage_two_candidate_rule_info(server) do
-    :ok = GenServer.call(server, :generate_stage_two_candidate_rule_info)
+  def generate_rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings(server) do
+    :ok = GenServer.call(server, :generate_rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings)
   end
 
   def generate_stage_three_candidate_rules(server) do
@@ -49,9 +49,9 @@ defmodule Talisman.InferenceEngine do
     rules_filtered_by_lhs_and_asserted_fact_template_names
   end
 
-  def get_stage_two_candidate_rule_info(server) do
-    {:ok, stage_two_candidate_rule_info} = GenServer.call(server, :get_stage_two_candidate_rule_info)
-    stage_two_candidate_rule_info
+  def get_rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings(server) do
+    {:ok, rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings} = GenServer.call(server, :get_rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings)
+    rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings
   end
 
   def get_stage_three_candidate_rules(server) do
@@ -138,7 +138,7 @@ defmodule Talisman.InferenceEngine do
     }
   end
 
-  def handle_call(:generate_stage_two_candidate_rule_info, _from, %{facts: facts, rules: rules, rules_filtered_by_lhs_and_asserted_fact_template_names: rules_filtered_by_lhs_and_asserted_fact_template_names, mapper: mapper} = state) do
+  def handle_call(:generate_rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings, _from, %{facts: facts, rules: rules, rules_filtered_by_lhs_and_asserted_fact_template_names: rules_filtered_by_lhs_and_asserted_fact_template_names, mapper: mapper} = state) do
     #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -156,7 +156,7 @@ defmodule Talisman.InferenceEngine do
     asserted_fact_templates_names = for {_, {asserted_fact_template_name, _}} <- Facts.get_asserted_facts(facts) do
       asserted_fact_template_name
     end    
-    stage_two_candidate_rule_info = rules
+    rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings = rules
     |> Rules.get_rules
     |> Enum.filter(fn {_, {rule_name, _rule_pid}} ->
       rules_filtered_by_lhs_and_asserted_fact_template_names |> Enum.member?(rule_name)
@@ -191,7 +191,7 @@ defmodule Talisman.InferenceEngine do
       :reply,
       :ok,
       state
-      |> Map.put(:stage_two_candidate_rule_info, stage_two_candidate_rule_info)
+      |> Map.put(:rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings, rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings)
     }
   end
 
@@ -244,12 +244,12 @@ defmodule Talisman.InferenceEngine do
     }
   end
 
-  def handle_call(:get_stage_two_candidate_rule_info, _from, %{stage_two_candidate_rule_info: stage_two_candidate_rule_info} = state) do
+  def handle_call(:get_rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings, _from, %{rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings: rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings} = state) do
     {
       :reply,
       {
         :ok,
-        stage_two_candidate_rule_info
+        rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings
       },
       state
     }
@@ -278,7 +278,7 @@ defmodule Talisman.InferenceEngine do
          rules: rules,
          mapper: mapper,
          rules_filtered_by_lhs_and_asserted_fact_template_names: [],
-         stage_two_candidate_rule_info: [],
+         rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings: [],
          stage_three_candidate_rules: []
        }
     }
