@@ -274,7 +274,7 @@ defmodule TalismanTest do
 
 #   @tag :skip
    it "rule candidacy checks works", (%{inference_engine: inference_engine}) do
-     InferenceEngine.generate_stage_one_candidate_rules(inference_engine)
+     InferenceEngine.filter_rules_by_rule_lhs_and_asserted_fact_template_names(inference_engine)
      InferenceEngine.generate_stage_two_candidate_rule_info(inference_engine)
      InferenceEngine.generate_stage_three_candidate_rules(inference_engine)
 
@@ -296,7 +296,7 @@ defmodule TalismanTest do
      "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" |> IO.puts
      "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" |> IO.puts
      "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" |> IO.puts
-     InferenceEngine.get_stage_one_candidate_rules(inference_engine) |> IO.inspect(limit: :infinity)
+     InferenceEngine.get_rules_filtered_by_lhs_and_asserted_fact_template_names(inference_engine) |> IO.inspect(limit: :infinity)
      "============================================================" |> IO.puts
      InferenceEngine.get_stage_two_candidate_rule_info(inference_engine) |> IO.inspect(limit: :infinity)
      "============================================================" |> IO.puts
