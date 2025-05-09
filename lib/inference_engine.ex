@@ -262,8 +262,10 @@ defmodule Talisman.InferenceEngine do
 
   def handle_call(:generate_rule_activations, _from, %{rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings: rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings,
         rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity: rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity} = state) do
-#    rule_activations = for {mapping_rule_name, _, _} = mapping <-rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings, rule_name <
-    rule_activations = []
+
+    rule_activations = for {mapping_rule_name, _, _} = mapping <-rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings, {_, {rule_name, _}} <- rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity, mapping_rule_name == rule_name do
+      mapping
+    end
 
     
     

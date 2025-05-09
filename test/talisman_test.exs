@@ -312,24 +312,24 @@ defmodule TalismanTest do
       "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" |> IO.puts()
       "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" |> IO.puts()
 
-      InferenceEngine.get_rules_filtered_by_lhs_and_asserted_fact_template_names(inference_engine)
-      |> IO.inspect(limit: :infinity)
+      # InferenceEngine.get_rules_filtered_by_lhs_and_asserted_fact_template_names(inference_engine)
+      # |> IO.inspect(limit: :infinity)
 
-      "============================================================" |> IO.puts()
+      # "============================================================" |> IO.puts()
 
-      InferenceEngine.get_rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings(
-        inference_engine
-      )
-      |> IO.inspect(limit: :infinity)
+      # InferenceEngine.get_rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings(
+      #   inference_engine
+      # )
+      # |> IO.inspect(limit: :infinity)
 
-      "============================================================" |> IO.puts()
+      # "============================================================" |> IO.puts()
 
-      InferenceEngine.get_rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity(
-        inference_engine
-      )
-      |> IO.inspect(limit: :infinity)
+      # InferenceEngine.get_rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity(
+      #   inference_engine
+      # )
+      # |> IO.inspect(limit: :infinity)
 
-      "============================================================" |> IO.puts()
+      # "============================================================" |> IO.puts()
 
       InferenceEngine.get_rule_activations(
         inference_engine
