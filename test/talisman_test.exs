@@ -228,8 +228,6 @@ defmodule TalismanTest do
       end
     })
 
-    InferenceEngine.generate_lhs_fact_template_name_hashes_powerset(inference_engine)
-
     for {_, {rule_name, rule_pid}} <- Rules.get_rules(rules) do
       Mapper.add_rule_fact_template_names(
         mapper,
