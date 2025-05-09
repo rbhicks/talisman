@@ -306,6 +306,7 @@ defmodule TalismanTest do
       )
 
       InferenceEngine.filter_rules_by_rule_lhs_and_asserted_fact_multiplicy(inference_engine)
+      InferenceEngine.generate_rule_activations(inference_engine)
 
       "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" |> IO.puts()
       "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" |> IO.puts()
@@ -328,6 +329,12 @@ defmodule TalismanTest do
       )
       |> IO.inspect(limit: :infinity)
 
+      "============================================================" |> IO.puts()
+
+      InferenceEngine.get_rule_activations(
+        inference_engine
+      )
+      |> IO.inspect(limit: :infinity)
       "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" |> IO.puts()
       "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" |> IO.puts()
       "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" |> IO.puts()

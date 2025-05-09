@@ -30,6 +30,10 @@ defmodule Talisman.InferenceEngine do
     :ok = GenServer.call(server, :filter_rules_by_rule_lhs_and_asserted_fact_multiplicy)
   end
 
+  def generate_rule_activations(server) do
+    :ok = GenServer.call(server, :generate_rule_activations)
+  end
+
   def get_rules_filtered_by_lhs_and_asserted_fact_template_names(server) do
     {:ok, rules_filtered_by_lhs_and_asserted_fact_template_names} =
       GenServer.call(server, :get_rules_filtered_by_lhs_and_asserted_fact_template_names)
@@ -52,6 +56,11 @@ defmodule Talisman.InferenceEngine do
       GenServer.call(server, :get_rules_filtered_by_rule_lhs_and_asserted_fact_multiplicy)
 
     rules_filtered_by_rule_lhs_and_asserted_fact_multiplicy
+  end
+
+  def get_rule_activations(server) do
+    {:ok, rule_activations} = GenServer.call(server, :get_rule_activations)
+    rule_activations
   end
 
   def handle_call(
@@ -251,6 +260,20 @@ defmodule Talisman.InferenceEngine do
     }
   end
 
+  def handle_call(:generate_rule_activations, _from, %{rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings: rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings,
+        rules_filtered_by_rule_lhs_and_asserted_fact_multiplicy: rules_filtered_by_rule_lhs_and_asserted_fact_multiplicy} = state) do
+    rule_activations = []
+
+    
+    
+    {
+      :reply,
+      :ok,
+      state
+      |> Map.put(:rule_activations, rule_activations)
+    }
+  end
+
   def handle_call(
         :get_rules_filtered_by_lhs_and_asserted_fact_template_names,
         _from,
@@ -305,6 +328,17 @@ defmodule Talisman.InferenceEngine do
     }
   end
 
+  def handle_call(:get_rule_activations, _from, %{rule_activations: rule_activations} = state) do
+    {
+      :reply,
+      {
+        :ok,
+        rule_activations
+      },
+      state
+    }
+  end
+
   def start(params) do
     GenServer.start_link(__MODULE__, params)
   end
@@ -318,7 +352,8 @@ defmodule Talisman.InferenceEngine do
         mapper: mapper,
         rules_filtered_by_lhs_and_asserted_fact_template_names: [],
         rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings: [],
-        rules_filtered_by_rule_lhs_and_asserted_fact_multiplicy: []
+        rules_filtered_by_rule_lhs_and_asserted_fact_multiplicy: [],
+        rule_activations: []
       }
     }
   end
