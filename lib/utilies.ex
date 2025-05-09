@@ -18,4 +18,16 @@ defmodule Talisman.Utilities do
       |> Map.put(key, updated_facts_or_rules)
     }
   end
+
+  def create_cartesian_product([]), do: [[]]
+
+  def create_cartesian_product(elements) do
+    elements
+    |> Enum.reduce([[]], fn current_element, acc ->
+      for x <- acc, y <- current_element do
+        [y | x]
+      end
+    end)
+    |> Enum.map(&Enum.reverse/1)
+  end
 end
