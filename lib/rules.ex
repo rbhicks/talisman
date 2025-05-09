@@ -3,18 +3,21 @@ defmodule Talisman.Rules do
 
   alias Talisman.Rule
   alias Talisman.Utilities
-  
+
   def get_rules(server) do
     {:ok, rules} = GenServer.call(server, :get_rules)
     rules
   end
-  
+
   def add_rule(server, rule_name, rule) do
     GenServer.call(server, {:add_rule, rule_name, rule})
   end
 
-  def handle_call({:add_rule, rule_name, rule}, _from, %{rules_supervisor: rules_supervisor, rules: rules} = state) do
-
+  def handle_call(
+        {:add_rule, rule_name, rule},
+        _from,
+        %{rules_supervisor: rules_supervisor, rules: rules} = state
+      ) do
     Utilities.generate_fact_assertion_or_rule_addition_response(
       rules_supervisor,
       %{
@@ -35,7 +38,7 @@ defmodule Talisman.Rules do
       rule_name,
       :rules,
       state
-    )    
+    )
   end
 
   def handle_call(:get_rules, _from, %{rules: rules} = state) do
@@ -49,14 +52,14 @@ defmodule Talisman.Rules do
   def start([rules_supervisor]) do
     GenServer.start_link(__MODULE__, rules_supervisor)
   end
-  
+
   def init({_, rules_supervisor}) do
     {
       :ok,
-       %{
-         rules_supervisor: rules_supervisor,
-         rules: %{}
-       }
+      %{
+        rules_supervisor: rules_supervisor,
+        rules: %{}
+      }
     }
   end
 end

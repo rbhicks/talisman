@@ -1,6 +1,6 @@
 defmodule Talisman.Fact do
   use GenServer
-  
+
   def get_field_values(server) do
     GenServer.call({:global, server}, :get_field_values)
   end

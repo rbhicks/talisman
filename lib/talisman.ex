@@ -13,5 +13,5 @@ defmodule Talisman do
     |> Enum.reduce([[]], fn list, acc ->
       for x <- acc, y <- list, do: x ++ [y]
     end)
-  end  
+  end
 end

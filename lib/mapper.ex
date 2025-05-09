@@ -8,7 +8,7 @@ defmodule Talisman.Mapper do
   # referenced by a rule, it's pointless
   # (should be pruned anyway)
   # """
-  
+
   # @doc """
   # a batch version can be created later if needed
   # """
@@ -21,93 +21,129 @@ defmodule Talisman.Mapper do
   end
 
   def update_fact_template_name_asserted_facts_mapping(server, fact_template_name, pid) do
-    {:ok, fact_template_name_asserted_facts_mapping} = GenServer.call(server, {:update_fact_template_name_asserted_facts_mapping, fact_template_name, pid})
+    {:ok, fact_template_name_asserted_facts_mapping} =
+      GenServer.call(
+        server,
+        {:update_fact_template_name_asserted_facts_mapping, fact_template_name, pid}
+      )
+
     fact_template_name_asserted_facts_mapping
   end
 
   def get_fact_template_name_to_rule_lhs_mapping(server) do
-    {:ok, fact_template_name_to_rule_lhs_mapping} = GenServer.call(server, :get_fact_template_name_to_rule_lhs_mapping)
+    {:ok, fact_template_name_to_rule_lhs_mapping} =
+      GenServer.call(server, :get_fact_template_name_to_rule_lhs_mapping)
+
     fact_template_name_to_rule_lhs_mapping
   end
 
   def get_fact_template_name_to_asserted_facts_mapping(server) do
-    {:ok, fact_template_name_to_asserted_facts_mapping} = GenServer.call(server, :get_fact_template_name_to_asserted_facts_mapping)
+    {:ok, fact_template_name_to_asserted_facts_mapping} =
+      GenServer.call(server, :get_fact_template_name_to_asserted_facts_mapping)
+
     fact_template_name_to_asserted_facts_mapping
   end
 
   def handle_call(
-    {:add_rule_fact_template_names, rule_name, rule_fact_template_names},
-    _from,
-    %{
-      fact_template_names: current_fact_template_names,
-      rule_fact_template_names: current_rule_fact_template_names,
-      fact_template_name_to_asserted_facts_mapping: current_fact_template_name_to_asserted_facts_mapping
-    }
-  ) do
+        {:add_rule_fact_template_names, rule_name, rule_fact_template_names},
+        _from,
+        %{
+          fact_template_names: current_fact_template_names,
+          rule_fact_template_names: current_rule_fact_template_names,
+          fact_template_name_to_asserted_facts_mapping:
+            current_fact_template_name_to_asserted_facts_mapping
+        }
+      ) do
     {
       :reply,
       :ok,
       %{
-        fact_template_names: current_fact_template_names
-        |> MapSet.to_list()
-        |> Enum.concat(rule_fact_template_names)
-        |> MapSet.new(),
-        rule_fact_template_names: [{rule_name, rule_fact_template_names}|current_rule_fact_template_names],
+        fact_template_names:
+          current_fact_template_names
+          |> MapSet.to_list()
+          |> Enum.concat(rule_fact_template_names)
+          |> MapSet.new(),
+        rule_fact_template_names: [
+          {rule_name, rule_fact_template_names} | current_rule_fact_template_names
+        ],
         fact_template_name_to_rule_lhs_mapping: %{},
-        fact_template_name_to_asserted_facts_mapping: current_fact_template_name_to_asserted_facts_mapping
+        fact_template_name_to_asserted_facts_mapping:
+          current_fact_template_name_to_asserted_facts_mapping
       }
     }
   end
 
   def handle_call(
-    :create_fact_template_name_to_rule_lhs_mapping,
-    _from,
-    %{fact_template_names: fact_template_names, rule_fact_template_names: rule_fact_template_names} = state) do
-    fact_template_name_to_rule_lhs_mapping = fact_template_names
-    |> MapSet.to_list()
-    |> Enum.reduce(%{}, fn fact_template_name, acc ->
-      acc
-      |> Map.put(
-        fact_template_name, 
-        rule_fact_template_names
-        |> Enum.reduce([], fn {rule_name, current_rule_fact_template_names}, acc ->
-          if Enum.member?(current_rule_fact_template_names, fact_template_name) do
-            [rule_name|acc]
-          else
-            acc
-          end
-        end)
-      )
-    end)
+        :create_fact_template_name_to_rule_lhs_mapping,
+        _from,
+        %{
+          fact_template_names: fact_template_names,
+          rule_fact_template_names: rule_fact_template_names
+        } = state
+      ) do
+    fact_template_name_to_rule_lhs_mapping =
+      fact_template_names
+      |> MapSet.to_list()
+      |> Enum.reduce(%{}, fn fact_template_name, acc ->
+        acc
+        |> Map.put(
+          fact_template_name,
+          rule_fact_template_names
+          |> Enum.reduce([], fn {rule_name, current_rule_fact_template_names}, acc ->
+            if Enum.member?(current_rule_fact_template_names, fact_template_name) do
+              [rule_name | acc]
+            else
+              acc
+            end
+          end)
+        )
+      end)
+
     {
       :reply,
       :ok,
-      Map.put(state, :fact_template_name_to_rule_lhs_mapping, fact_template_name_to_rule_lhs_mapping)
+      Map.put(
+        state,
+        :fact_template_name_to_rule_lhs_mapping,
+        fact_template_name_to_rule_lhs_mapping
+      )
     }
   end
 
   def handle_call(
-    {:update_fact_template_name_asserted_facts_mapping, fact_template_name, pid},
-    _from,
-    %{fact_template_name_to_asserted_facts_mapping: current_fact_template_name_to_asserted_facts_mapping} = state) do
+        {:update_fact_template_name_asserted_facts_mapping, fact_template_name, pid},
+        _from,
+        %{
+          fact_template_name_to_asserted_facts_mapping:
+            current_fact_template_name_to_asserted_facts_mapping
+        } = state
+      ) do
+    fact_template_name_to_asserted_facts_mapping =
+      Map.update(
+        current_fact_template_name_to_asserted_facts_mapping,
+        fact_template_name,
+        [{fact_template_name, pid}],
+        fn asserted_facts_for_fact_template_name ->
+          [{fact_template_name, pid} | asserted_facts_for_fact_template_name]
+        end
+      )
 
-    fact_template_name_to_asserted_facts_mapping = Map.update(current_fact_template_name_to_asserted_facts_mapping,
-      fact_template_name,
-      [{fact_template_name, pid}],
-      fn asserted_facts_for_fact_template_name ->
-        [{fact_template_name, pid}|asserted_facts_for_fact_template_name]
-      end)
     {
       :reply,
       {:ok, fact_template_name_to_asserted_facts_mapping},
-      Map.put(state, :fact_template_name_to_asserted_facts_mapping, fact_template_name_to_asserted_facts_mapping)
+      Map.put(
+        state,
+        :fact_template_name_to_asserted_facts_mapping,
+        fact_template_name_to_asserted_facts_mapping
+      )
     }
   end
 
   def handle_call(
-    :get_fact_template_name_to_rule_lhs_mapping,
-    _from,
-    %{fact_template_name_to_rule_lhs_mapping: fact_template_name_to_rule_lhs_mapping} = state) do
+        :get_fact_template_name_to_rule_lhs_mapping,
+        _from,
+        %{fact_template_name_to_rule_lhs_mapping: fact_template_name_to_rule_lhs_mapping} = state
+      ) do
     {
       :reply,
       {:ok, fact_template_name_to_rule_lhs_mapping},
@@ -116,16 +152,20 @@ defmodule Talisman.Mapper do
   end
 
   def handle_call(
-    :get_fact_template_name_to_asserted_facts_mapping,
-    _from,
-    %{fact_template_name_to_asserted_facts_mapping: fact_template_name_to_asserted_facts_mapping} = state) do
+        :get_fact_template_name_to_asserted_facts_mapping,
+        _from,
+        %{
+          fact_template_name_to_asserted_facts_mapping:
+            fact_template_name_to_asserted_facts_mapping
+        } = state
+      ) do
     {
       :reply,
       {:ok, fact_template_name_to_asserted_facts_mapping},
       state
     }
   end
-      
+
   def start() do
     GenServer.start_link(__MODULE__, nil)
   end
@@ -133,16 +173,16 @@ defmodule Talisman.Mapper do
   def init(_) do
     {
       :ok,
-       %{
-         fact_template_names: MapSet.new(),
-         rule_fact_template_names: [],
-         # this mapping is created initially, unlike
-         # fact_template_name_to_rule_lhs_mapping
-         # as the semantics for this one are far
-         # more dynamic (also why its api function
-         # is called 'update_...' instead of 'create...'
-         fact_template_name_to_asserted_facts_mapping: %{}
-       }
+      %{
+        fact_template_names: MapSet.new(),
+        rule_fact_template_names: [],
+        # this mapping is created initially, unlike
+        # fact_template_name_to_rule_lhs_mapping
+        # as the semantics for this one are far
+        # more dynamic (also why its api function
+        # is called 'update_...' instead of 'create...'
+        fact_template_name_to_asserted_facts_mapping: %{}
+      }
     }
   end
 end
