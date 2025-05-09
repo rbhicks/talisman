@@ -276,7 +276,7 @@ defmodule TalismanTest do
    it "rule candidacy checks works", (%{inference_engine: inference_engine}) do
      InferenceEngine.filter_rules_by_rule_lhs_and_asserted_fact_template_names(inference_engine)
      InferenceEngine.generate_rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings(inference_engine)
-     # InferenceEngine.generate_stage_three_candidate_rules(inference_engine)
+     InferenceEngine.filter_rules_by_rule_lhs_and_asserted_fact_multiplicy(inference_engine)
      
      
      "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" |> IO.puts
@@ -285,8 +285,8 @@ defmodule TalismanTest do
      InferenceEngine.get_rules_filtered_by_lhs_and_asserted_fact_template_names(inference_engine) |> IO.inspect(limit: :infinity)
      "============================================================" |> IO.puts
      InferenceEngine.get_rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings(inference_engine) |> IO.inspect(limit: :infinity)
-     # "============================================================" |> IO.puts
-     # InferenceEngine.get_stage_three_candidate_rules(inference_engine) |> IO.inspect(limit: :infinity)
+     "============================================================" |> IO.puts
+     InferenceEngine.get_rules_filtered_by_rule_lhs_and_asserted_fact_multiplicy(inference_engine) |> IO.inspect(limit: :infinity)
      "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" |> IO.puts
      "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" |> IO.puts
      "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" |> IO.puts

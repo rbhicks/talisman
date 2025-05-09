@@ -40,8 +40,8 @@ defmodule Talisman.InferenceEngine do
     :ok = GenServer.call(server, :generate_rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings)
   end
 
-  def generate_stage_three_candidate_rules(server) do
-    :ok = GenServer.call(server, :generate_stage_three_candidate_rules)
+  def filter_rules_by_rule_lhs_and_asserted_fact_multiplicy(server) do
+    :ok = GenServer.call(server, :filter_rules_by_rule_lhs_and_asserted_fact_multiplicy)
   end
   
   def get_rules_filtered_by_lhs_and_asserted_fact_template_names(server) do
@@ -54,9 +54,9 @@ defmodule Talisman.InferenceEngine do
     rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings
   end
 
-  def get_stage_three_candidate_rules(server) do
-    {:ok, stage_three_candidate_rules} = GenServer.call(server, :get_stage_three_candidate_rules)
-    stage_three_candidate_rules
+  def get_rules_filtered_by_rule_lhs_and_asserted_fact_multiplicy(server) do
+    {:ok, rules_filtered_by_rule_lhs_and_asserted_fact_multiplicy} = GenServer.call(server, :get_rules_filtered_by_rule_lhs_and_asserted_fact_multiplicy)
+    rules_filtered_by_rule_lhs_and_asserted_fact_multiplicy
   end
 
   def handle_call(:generate_lhs_fact_template_name_hashes_powerset, _from, %{rules: rules} = state) do    
@@ -195,12 +195,11 @@ defmodule Talisman.InferenceEngine do
     }
   end
 
-  def handle_call(:generate_stage_three_candidate_rules, _from,
+  def handle_call(:filter_rules_by_rule_lhs_and_asserted_fact_multiplicy, _from,
     %{
       facts: facts,
       rules: rules,
-      stage_one_candidate_rules: stage_one_candidate_rules,
-      stage_two_candidate_rule_info: stage_two_candidate_rule_info
+      rules_filtered_by_lhs_and_asserted_fact_template_names: rules_filtered_by_lhs_and_asserted_fact_template_names
     } = state) do
     asserted_facts = Facts.get_asserted_facts(facts)
     current_rules = Rules.get_rules(rules)
@@ -211,8 +210,8 @@ defmodule Talisman.InferenceEngine do
     end)
     |> Enum.frequencies()
 
-    stage_three_candidate_rules = current_rules
-    |> Map.take(stage_one_candidate_rules)
+    rules_filtered_by_rule_lhs_and_asserted_fact_multiplicy = current_rules
+    |> Map.take(rules_filtered_by_lhs_and_asserted_fact_template_names)
     |> Enum.filter(fn {_, {rule_name, rule_pid}} ->
       lhs_fact_multiplicity = Rule.get_lhs_fact_multiplicity(rule_pid)
       lhs_fact_multiplicity
@@ -229,7 +228,7 @@ defmodule Talisman.InferenceEngine do
       :reply,
       :ok,
       state
-      |> Map.put(:stage_three_candidate_rules, stage_three_candidate_rules)
+      |> Map.put(:rules_filtered_by_rule_lhs_and_asserted_fact_multiplicy, rules_filtered_by_rule_lhs_and_asserted_fact_multiplicy)
     }
   end
   
@@ -255,12 +254,12 @@ defmodule Talisman.InferenceEngine do
     }
   end
 
-  def handle_call(:get_stage_three_candidate_rules, _from, %{stage_three_candidate_rules: stage_three_candidate_rules} = state) do
+  def handle_call(:get_rules_filtered_by_rule_lhs_and_asserted_fact_multiplicy, _from, %{rules_filtered_by_rule_lhs_and_asserted_fact_multiplicy: rules_filtered_by_rule_lhs_and_asserted_fact_multiplicy} = state) do
     {
       :reply,
       {
         :ok,
-        stage_three_candidate_rules
+        rules_filtered_by_rule_lhs_and_asserted_fact_multiplicy
       },
       state
     }
@@ -279,7 +278,7 @@ defmodule Talisman.InferenceEngine do
          mapper: mapper,
          rules_filtered_by_lhs_and_asserted_fact_template_names: [],
          rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings: [],
-         stage_three_candidate_rules: []
+         rules_filtered_by_rule_lhs_and_asserted_fact_multiplicy: []
        }
     }
   end
