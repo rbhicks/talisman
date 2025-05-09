@@ -138,7 +138,7 @@ defmodule Talisman.InferenceEngine do
     }
   end
 
-  def handle_call(:generate_stage_two_candidate_rule_info, _from, %{facts: facts, rules: rules, stage_one_candidate_rules: stage_one_candidate_rules, mapper: mapper} = state) do
+  def handle_call(:generate_stage_two_candidate_rule_info, _from, %{facts: facts, rules: rules, rules_filtered_by_lhs_and_asserted_fact_template_names: rules_filtered_by_lhs_and_asserted_fact_template_names, mapper: mapper} = state) do
     #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -159,7 +159,7 @@ defmodule Talisman.InferenceEngine do
     stage_two_candidate_rule_info = rules
     |> Rules.get_rules
     |> Enum.filter(fn {_, {rule_name, _rule_pid}} ->
-      stage_one_candidate_rules |> Enum.member?(rule_name)
+      rules_filtered_by_lhs_and_asserted_fact_template_names |> Enum.member?(rule_name)
     end)
     |> Enum.reduce([], fn {_, {rule_name, rule_pid}}, acc ->
 
