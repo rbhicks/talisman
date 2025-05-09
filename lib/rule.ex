@@ -12,20 +12,24 @@ defmodule Talisman.Rule do
     {:ok, lhs_fact_multiplicity} = GenServer.call(rule_pid, :get_lhs_fact_multiplicity)
     lhs_fact_multiplicity
   end
-    
+
   def add_fact_id(fact_id) do
     {:ok}
   end
-  
+
   def evaluate_lhs_for_fact_instances do
     {:ok, []}
   end
-  
+
   def execute_rule do
     {:ok}
   end
 
-  def handle_call(:get_lhs_fact_template_names, _from, {lhs_fact_template_names, _, _, _, _} = state) do
+  def handle_call(
+        :get_lhs_fact_template_names,
+        _from,
+        {lhs_fact_template_names, _, _, _, _} = state
+      ) do
     {
       :reply,
       {
@@ -46,12 +50,26 @@ defmodule Talisman.Rule do
       state
     }
   end
-    
-  def start(rule_name, lhs_fact_template_names, lhs_fact_multiplicity, evaluate_lhs_function, execute_rule_function) do
-    GenServer.start_link(__MODULE__, {lhs_fact_template_names, lhs_fact_multiplicity, evaluate_lhs_function, execute_rule_function}, name: {:global, rule_name})
+
+  def start(
+        rule_name,
+        lhs_fact_template_names,
+        lhs_fact_multiplicity,
+        evaluate_lhs_function,
+        execute_rule_function
+      ) do
+    GenServer.start_link(
+      __MODULE__,
+      {lhs_fact_template_names, lhs_fact_multiplicity, evaluate_lhs_function,
+       execute_rule_function},
+      name: {:global, rule_name}
+    )
   end
 
-  def init({lhs_fact_template_names, lhs_fact_multiplicity, evaluate_lhs_function, execute_rule_function}) do
+  def init(
+        {lhs_fact_template_names, lhs_fact_multiplicity, evaluate_lhs_function,
+         execute_rule_function}
+      ) do
     {
       :ok,
       {
