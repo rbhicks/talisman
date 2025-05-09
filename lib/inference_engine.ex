@@ -26,8 +26,8 @@ defmodule Talisman.InferenceEngine do
       )
   end
 
-  def filter_rules_by_rule_lhs_and_asserted_fact_multiplicy(server) do
-    :ok = GenServer.call(server, :filter_rules_by_rule_lhs_and_asserted_fact_multiplicy)
+  def filter_rules_by_rule_lhs_and_asserted_fact_multiplicity(server) do
+    :ok = GenServer.call(server, :filter_rules_by_rule_lhs_and_asserted_fact_multiplicity)
   end
 
   def generate_rule_activations(server) do
@@ -51,11 +51,11 @@ defmodule Talisman.InferenceEngine do
     rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings
   end
 
-  def get_rules_filtered_by_rule_lhs_and_asserted_fact_multiplicy(server) do
-    {:ok, rules_filtered_by_rule_lhs_and_asserted_fact_multiplicy} =
-      GenServer.call(server, :get_rules_filtered_by_rule_lhs_and_asserted_fact_multiplicy)
+  def get_rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity(server) do
+    {:ok, rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity} =
+      GenServer.call(server, :get_rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity)
 
-    rules_filtered_by_rule_lhs_and_asserted_fact_multiplicy
+    rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity
   end
 
   def get_rule_activations(server) do
@@ -207,7 +207,7 @@ defmodule Talisman.InferenceEngine do
   end
 
   def handle_call(
-        :filter_rules_by_rule_lhs_and_asserted_fact_multiplicy,
+        :filter_rules_by_rule_lhs_and_asserted_fact_multiplicity,
         _from,
         %{
           facts: facts,
@@ -227,7 +227,7 @@ defmodule Talisman.InferenceEngine do
       end)
       |> Enum.frequencies()
 
-    rules_filtered_by_rule_lhs_and_asserted_fact_multiplicy =
+    rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity =
       current_rules
       |> Map.take(rules_filtered_by_lhs_and_asserted_fact_template_names)
       |> Enum.filter(fn {_, {rule_name, rule_pid}} ->
@@ -254,14 +254,15 @@ defmodule Talisman.InferenceEngine do
       :ok,
       state
       |> Map.put(
-        :rules_filtered_by_rule_lhs_and_asserted_fact_multiplicy,
-        rules_filtered_by_rule_lhs_and_asserted_fact_multiplicy
+        :rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity,
+        rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity
       )
     }
   end
 
   def handle_call(:generate_rule_activations, _from, %{rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings: rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings,
-        rules_filtered_by_rule_lhs_and_asserted_fact_multiplicy: rules_filtered_by_rule_lhs_and_asserted_fact_multiplicy} = state) do
+        rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity: rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity} = state) do
+#    rule_activations = for {mapping_rule_name, _, _} = mapping <-rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings, rule_name <
     rule_activations = []
 
     
@@ -311,18 +312,18 @@ defmodule Talisman.InferenceEngine do
   end
 
   def handle_call(
-        :get_rules_filtered_by_rule_lhs_and_asserted_fact_multiplicy,
+        :get_rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity,
         _from,
         %{
-          rules_filtered_by_rule_lhs_and_asserted_fact_multiplicy:
-            rules_filtered_by_rule_lhs_and_asserted_fact_multiplicy
+          rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity:
+            rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity
         } = state
       ) do
     {
       :reply,
       {
         :ok,
-        rules_filtered_by_rule_lhs_and_asserted_fact_multiplicy
+        rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity
       },
       state
     }
@@ -352,7 +353,7 @@ defmodule Talisman.InferenceEngine do
         mapper: mapper,
         rules_filtered_by_lhs_and_asserted_fact_template_names: [],
         rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings: [],
-        rules_filtered_by_rule_lhs_and_asserted_fact_multiplicy: [],
+        rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity: [],
         rule_activations: []
       }
     }
