@@ -50,7 +50,13 @@ defmodule Talisman.Rule do
   end
 
   def handle_call({:evaluate_lhs_for_asserted_facts, :asserted_facts}, _from, state) do
+
+    
+    
     active? = false
+
+    
+    
     {
       :reply,
       {
@@ -86,8 +92,7 @@ defmodule Talisman.Rule do
         lhs_fact_template_names: lhs_fact_template_names,
         lhs_fact_multiplicity: lhs_fact_multiplicity,
         evaluate_lhs_function: evaluate_lhs_function,
-        execute_rule_function: execute_rule_function,
-        active?: false
+        execute_rule_function: execute_rule_function
       }
     }
   end
