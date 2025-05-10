@@ -34,6 +34,10 @@ defmodule Talisman.InferenceEngine do
     :ok = GenServer.call(server, :generate_candidate_rule_activations)
   end
 
+  def generate_activated_rules(server) do
+    :ok = GenServer.call(server, :generate_activated_rules)
+  end
+  
   def get_rules_filtered_by_lhs_and_asserted_fact_template_names(server) do
     {:ok, rules_filtered_by_lhs_and_asserted_fact_template_names} =
       GenServer.call(server, :get_rules_filtered_by_lhs_and_asserted_fact_template_names)
@@ -61,6 +65,11 @@ defmodule Talisman.InferenceEngine do
   def get_candidate_rule_activations(server) do
     {:ok, candidate_rule_activations} = GenServer.call(server, :get_candidate_rule_activations)
     candidate_rule_activations
+  end
+
+  def get_activated_rules(server) do
+    {:ok, activated_rules} = GenServer.call(server, :get_activated_rules)
+    activated_rules
   end
 
   def handle_call(
@@ -273,6 +282,19 @@ defmodule Talisman.InferenceEngine do
     }
   end
 
+  def handle_call(:generate_activated_rules, _from, %{candidate_rule_activations: candidate_rule_activations} = state) do
+    activated_rules = []
+
+    
+    
+    {
+      :reply,
+      :ok,
+      state
+      |> Map.put(:activated_rules, activated_rules)
+    }
+  end
+
   def handle_call(
         :get_rules_filtered_by_lhs_and_asserted_fact_template_names,
         _from,
@@ -338,6 +360,17 @@ defmodule Talisman.InferenceEngine do
     }
   end
 
+  def handle_call(:get_activated_rules, _from, %{activated_rules: activated_rules} = state) do
+    {
+      :reply,
+      {
+        :ok,
+        activated_rules
+      },
+      state
+    }
+  end
+
   def start(params) do
     GenServer.start_link(__MODULE__, params)
   end
@@ -352,7 +385,8 @@ defmodule Talisman.InferenceEngine do
         rules_filtered_by_lhs_and_asserted_fact_template_names: [],
         rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings: [],
         rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity: [],
-        candidate_rule_activations: []
+        candidate_rule_activations: [],
+        activated_rules: []
       }
     }
   end
