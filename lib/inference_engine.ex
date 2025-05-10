@@ -30,8 +30,8 @@ defmodule Talisman.InferenceEngine do
     :ok = GenServer.call(server, :filter_rules_by_rule_lhs_and_asserted_fact_multiplicity)
   end
 
-  def generate_rule_activations(server) do
-    :ok = GenServer.call(server, :generate_rule_activations)
+  def generate_candidate_rule_activations(server) do
+    :ok = GenServer.call(server, :generate_candidate_rule_activations)
   end
 
   def get_rules_filtered_by_lhs_and_asserted_fact_template_names(server) do
@@ -58,9 +58,9 @@ defmodule Talisman.InferenceEngine do
     rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity
   end
 
-  def get_rule_activations(server) do
-    {:ok, rule_activations} = GenServer.call(server, :get_rule_activations)
-    rule_activations
+  def get_candidate_rule_activations(server) do
+    {:ok, candidate_rule_activations} = GenServer.call(server, :get_candidate_rule_activations)
+    candidate_rule_activations
   end
 
   def handle_call(
@@ -260,20 +260,16 @@ defmodule Talisman.InferenceEngine do
     }
   end
 
-  def handle_call(:generate_rule_activations, _from, %{rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings: rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings,
+  def handle_call(:generate_candidate_rule_activations, _from, %{rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings: rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings,
         rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity: rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity} = state) do
-
-    rule_activations = for {mapping_rule_name, _, _} = mapping <-rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings, {_, {rule_name, _}} <- rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity, mapping_rule_name == rule_name do
+    candidate_rule_activations = for {mapping_rule_name, _, _} = mapping <-rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings, {_, {rule_name, _}} <- rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity, mapping_rule_name == rule_name do
       mapping
     end
-
-    
-    
     {
       :reply,
       :ok,
       state
-      |> Map.put(:rule_activations, rule_activations)
+      |> Map.put(:candidate_rule_activations, candidate_rule_activations)
     }
   end
 
@@ -331,12 +327,12 @@ defmodule Talisman.InferenceEngine do
     }
   end
 
-  def handle_call(:get_rule_activations, _from, %{rule_activations: rule_activations} = state) do
+  def handle_call(:get_candidate_rule_activations, _from, %{candidate_rule_activations: candidate_rule_activations} = state) do
     {
       :reply,
       {
         :ok,
-        rule_activations
+        candidate_rule_activations
       },
       state
     }
@@ -356,7 +352,7 @@ defmodule Talisman.InferenceEngine do
         rules_filtered_by_lhs_and_asserted_fact_template_names: [],
         rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings: [],
         rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity: [],
-        rule_activations: []
+        candidate_rule_activations: []
       }
     }
   end
