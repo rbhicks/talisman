@@ -285,7 +285,7 @@ defmodule Talisman.InferenceEngine do
   def handle_call(:generate_activated_rules, _from, %{candidate_rule_activations: candidate_rule_activations} = state) do
     activated_rules = []
 
-    
+    # loop over the candidate rules and send the cartesian product via to the rule the rule data
     
     {
       :reply,
