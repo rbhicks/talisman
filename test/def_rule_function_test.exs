@@ -7,15 +7,9 @@ defmodule DefRuleFunctionTest do
     # @tag :skip
 
     it "-------- something --------" do
-      DefRuleFunction.def_rule_function :evaluate_lhs_function, do: fn ack ->
-        "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^" |> IO.puts
-        "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^" |> IO.puts
-        "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^" |> IO.puts
-        ack |> IO.inspect(limit: :infinity)
-        "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" |> IO.puts
-        "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" |> IO.puts
-        "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" |> IO.puts
-      end
+      # DefRuleFunction.def_rule_function fn jbe -> {jbe} end,
+      # fn ack, oop, oop = zorg -> {ack, oop, zorg} end
+      DefRuleFunction.def_rule_function fn x -> fn -> x * 2 end  end
     end
   end
 end
