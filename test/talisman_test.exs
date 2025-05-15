@@ -332,12 +332,12 @@ defmodule TalismanTest do
 
       # "============================================================" |> IO.puts()
 
-      InferenceEngine.get_candidate_rule_activations(
-        inference_engine
-      )
-      |> IO.inspect(limit: :infinity)
+      # InferenceEngine.get_candidate_rule_activations(
+      #   inference_engine
+      # )
+      # |> IO.inspect(limit: :infinity)
 
-      "============================================================" |> IO.puts()
+      # "============================================================" |> IO.puts()
 
       InferenceEngine.get_activated_rules(
         inference_engine

@@ -283,10 +283,10 @@ defmodule Talisman.InferenceEngine do
   end
 
   def handle_call(:generate_activated_rules, _from, %{candidate_rule_activations: candidate_rule_activations} = state) do
-    activated_rules = []
-
-    # loop over the candidate rules and send the cartesian product via to the rule the rule data
-    
+    activated_rules = candidate_rule_activations
+    |> Enum.filter(fn {_, rule_pid, asserted_facts} ->
+      Rule.evaluate_lhs_for_asserted_facts(rule_pid, Utilities.create_cartesian_product(asserted_facts))
+    end)
     {
       :reply,
       :ok,
