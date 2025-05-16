@@ -1,8 +1,8 @@
-defmodule DefRuleFunction do
+defmodule DefRule do
 
 
   # defmacro def_rule_function(lhs, rhs) do
-  defmacro def_rule_function(y) do
+  defmacro def_rule(y) do
     quote do
       unquote("(*&(*&(*&(*&(*&(*&(*&(*&(*&(*" |> IO.puts)
       unquote("(*&(*&(*&(*&(*&(*&(*&(*&(*&(*" |> IO.puts)
@@ -11,6 +11,8 @@ defmodule DefRuleFunction do
       # unquote("=====================================" |> IO.puts)
       # unquote(rhs |> IO.inspect(limit: :infinity))
       unquote(y |> IO.inspect(limit: :infinity))
+      unquote("=====================================" |> IO.puts)
+      unquote(fn j ->  j * 17 end)
       unquote("kwm;qbjqjvwkmbqjvkm;qjk;qjk;q" |> IO.puts)
       unquote("kwm;qbjqjvwkmbqjvkm;qjk;qjk;q" |> IO.puts)
       unquote("kwm;qbjqjvwkmbqjvkm;qjk;qjk;q" |> IO.puts)

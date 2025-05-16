@@ -1,7 +1,7 @@
-defmodule DefRuleFunctionTest do
+defmodule DefRuleTest do
   use ExSpec, async: true
 
-  require DefRuleFunction
+  require DefRule
 
   describe "************** WIP >>>>>>>>>>>>>>>>>>" do
     # @tag :skip
@@ -9,7 +9,7 @@ defmodule DefRuleFunctionTest do
     it "-------- something --------" do
       # DefRuleFunction.def_rule_function fn jbe -> {jbe} end,
       # fn ack, oop, oop = zorg -> {ack, oop, zorg} end
-      DefRuleFunction.def_rule_function fn x -> fn -> x * 2 end  end
+      DefRule.def_rule fn x -> fn -> x * 2 end  end
     end
   end
 end
