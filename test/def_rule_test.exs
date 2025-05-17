@@ -7,8 +7,11 @@ defmodule DefRuleTest do
     # @tag :skip
 
     it "-------- something --------" do
-      DefRule.def_rule fn jbe, ack, oop, zorg when jbe < ack and is_binary(zorg) ->
-        fn -> {jbe} end
+      DefRule.def_rule fn jbe, ack, oop, zorg ->
+        fn
+          jbe when jbe > ack -> true
+          _ -> false
+        end
         fn -> {ack, oop, zorg} end
       end
     end
