@@ -9,8 +9,8 @@ defmodule DefRuleTest do
     it "-------- something --------" do
       DefRule.def_rule fn jbe, ack, oop, zorg ->
         fn
-          jbe when jbe > ack -> true
-          _ -> false
+          ^jbe, 17 = ack when jbe > ack -> true
+          _, _ -> false
         end
         fn -> {ack, oop, zorg} end
       end
