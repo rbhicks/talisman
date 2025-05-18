@@ -3,16 +3,20 @@ defmodule DefRuleTest do
 
   require DefRule
 
+  alias Talisman.Test.Support.Fixtures.MissileFactTemplate
+  alias Talisman.Test.Support.Fixtures.PropulsionFactTemplate
+
+
   describe "************** WIP >>>>>>>>>>>>>>>>>>" do
     # @tag :skip
 
     it "-------- something --------" do
-      DefRule.def_rule fn jbe, ack, oop, zorg ->
+      DefRule.def_rule fn MissileFactTemplate = missile, PropulsionFactTemplate = propulsion ->
         fn
-          ^jbe, 17 = ack when jbe > ack -> true
+          ^missile, ^propulsion = propulsion when propulsion == :jet -> true
           _, _ -> false
         end
-        fn -> {ack, oop, zorg} end
+        fn -> {missile, propulsion} end
       end
     end
   end
