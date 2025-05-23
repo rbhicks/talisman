@@ -9,7 +9,9 @@ defmodule DefRule do
 
   defmacro def_rule(rule_name, rule) do
 
+    fact_template_names = crack_fact_template_names(rule)
     {lhs_evaluation_body, rhs_execution_body} = crack_lhs_evaluation_and_rhs_execution_bodies(rule)
+    
     
     quote do
       unquote("(*&(*&(*&(*&(*&(*&(*&(*&(*&(*" |> IO.puts)
@@ -17,9 +19,7 @@ defmodule DefRule do
       unquote("(*&(*&(*&(*&(*&(*&(*&(*&(*&(*" |> IO.puts)
       unquote(rule_name |> IO.inspect(limit: :infinity))
       unquote("=================================" |> IO.puts())
-      unquote(rule |> IO.inspect(limit: :infinity))
-      unquote("=================================" |> IO.puts())
-      unquote(rule |> crack_fact_template_names() |> IO.inspect(limit: :infinity))
+      unquote(fact_template_names|> IO.inspect(limit: :infinity))
       unquote("=================================" |> IO.puts())
       unquote(lhs_evaluation_body |> IO.inspect(limit: :infinity))
       unquote("=================================" |> IO.puts())
