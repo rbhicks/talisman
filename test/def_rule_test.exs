@@ -12,11 +12,11 @@ defmodule DefRuleTest do
 
     it "-------- something --------" do
       DefRule.def_rule :found_jet_powered_missile, fn %MissileFactTemplate{} = missile, %PropulsionFactTemplate{} = propulsion ->
-        fn
+        lhs_evaluation_body = fn
           ^missile, ^propulsion = propulsion when propulsion == :jet -> true
           _, _ -> false
         end
-        fn -> {missile, propulsion} end
+        rhs_execution_body = fn -> {missile, propulsion} end
       end
     end
   end
