@@ -1,5 +1,7 @@
 defmodule DefRule do
 
+  alias Talisman.Rules
+
   @doc """
   crack a fact template name that is also set to a variable
   """
@@ -36,18 +38,43 @@ defmodule DefRule do
     fact_template_name_frequencies = fact_template_names
     |> Enum.frequencies
 
-    {:fn, [],
-     [
-       {:->, [],
-       [
-         closure_function_head,
-         {
-           lhs_evaluation_body,
-           rhs_execution_body
-         }
-       ]}
-     ]}
+    prepare_and_restrieve_functions = {:fn, [],
+                                       [
+                                         {:->, [],
+                                         [
+                                           closure_function_head,
+                                           {
+                                             lhs_evaluation_body,
+                                             rhs_execution_body
+                                           }
+                                         ]}
+                                       ]}
 
+    prepare_and_restrieve_functions
+
+    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    # have to produce this
+    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    
+    # {:%{}, [],
+    #  [
+    #    lhs_fact_template_names: [
+    #      {:__aliases__, [alias: false], [:MissileFactTemplate]},
+    #      {:__aliases__, [alias: false], [:PropulsionFactTemplate]}
+    #    ],
+    #    lhs_fact_multiplicity: {:%{}, [],
+    #                            [
+    #                              {{:__aliases__, [alias: false], [:MissileFactTemplate]}, 1},
+    #                              {{:__aliases__, [alias: false], [:PropulsionFactTemplate]}, 1}
+    #                            ]},
+    #    evaluate_lhs_function: {:fn, [],
+    #      [{:->, [], [[{:fact_instances, [], Elixir}], nil]}]},
+    #  execute_rule_function: {:fn, [], [{:->, [], [[], nil]}]}
+    #  ]}
   end
 end
 
