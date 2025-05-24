@@ -21,16 +21,3 @@ defmodule DefRuleTest do
     end
   end
 end
-
-# fn %MissileFactTemplate{} = missile, %PropulsionFactTemplate{} = propulsion ->
-
-#         Rules.add_rule(rules, :found_icbm, %{
-#               lhs_fact_template_names: [MissileFactTemplate],
-#               lhs_fact_multiplicity: %{MissileFactTemplate => 1},
-#               evaluate_lhs_function: fn
-#                 ^missile, ^propulsion = propulsion when propulsion == :jet -> true
-#                 _, _ -> false
-#               end,
-#               execute_rule_function: fn -> {missile, propulsion} end
-#         })
-# end
