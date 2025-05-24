@@ -11,16 +11,26 @@ defmodule DefRule do
 
     fact_template_names = crack_fact_template_names(rule)
     {lhs_evaluation_body, rhs_execution_body} = crack_lhs_evaluation_and_rhs_execution_bodies(rule)
-    
-    
+
+    "asnoetuhasoentuhasoentuh" |> IO.puts()
+    "asnoetuhasoentuhasoentuh" |> IO.puts()
+    "asnoetuhasoentuhasoentuh" |> IO.puts()
+    rule_name |> IO.inspect(limit: :infinity)
+    "=================================" |> IO.puts()
+    fact_template_names|> IO.inspect(limit: :infinity)
+    "=================================" |> IO.puts()
+    "48573495873459873459348"  |> IO.puts()
+    "48573495873459873459348"  |> IO.puts()
+    "48573495873459873459348"  |> IO.puts()
+
     quote do
       unquote("(*&(*&(*&(*&(*&(*&(*&(*&(*&(*" |> IO.puts)
       unquote("(*&(*&(*&(*&(*&(*&(*&(*&(*&(*" |> IO.puts)
       unquote("(*&(*&(*&(*&(*&(*&(*&(*&(*&(*" |> IO.puts)
-      unquote(rule_name |> IO.inspect(limit: :infinity))
-      unquote("=================================" |> IO.puts())
-      unquote(fact_template_names|> IO.inspect(limit: :infinity))
-      unquote("=================================" |> IO.puts())
+      # unquote(rule_name |> IO.inspect(limit: :infinity))
+      # unquote("=================================" |> IO.puts())
+      # unquote(fact_template_names|> IO.inspect(limit: :infinity))
+      # unquote("=================================" |> IO.puts())
       unquote(lhs_evaluation_body |> IO.inspect(limit: :infinity))
       unquote("=================================" |> IO.puts())
       unquote(rhs_execution_body |> IO.inspect(limit: :infinity))
