@@ -5,7 +5,7 @@ defmodule DefRuleTest do
 
   alias Talisman.Test.Support.Fixtures.MissileFactTemplate
   alias Talisman.Test.Support.Fixtures.PropulsionFactTemplate
-
+  alias Talisman.Rules
 
   describe "************** WIP >>>>>>>>>>>>>>>>>>" do
     # @tag :skip
@@ -21,3 +21,16 @@ defmodule DefRuleTest do
     end
   end
 end
+
+# fn %MissileFactTemplate{} = missile, %PropulsionFactTemplate{} = propulsion ->
+
+#         Rules.add_rule(rules, :found_icbm, %{
+#               lhs_fact_template_names: [MissileFactTemplate],
+#               lhs_fact_multiplicity: %{MissileFactTemplate => 1},
+#               evaluate_lhs_function: fn
+#                 ^missile, ^propulsion = propulsion when propulsion == :jet -> true
+#                 _, _ -> false
+#               end,
+#               execute_rule_function: fn -> {missile, propulsion} end
+#         })
+# end
