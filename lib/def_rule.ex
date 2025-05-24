@@ -29,15 +29,7 @@ defmodule DefRule do
     {closure_function_head, lhs_evaluation_body, rhs_execution_body}
   end
 
-  defmacro def_rule(rule_name, rule) do
-
-    "§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§" |> IO.puts
-    "§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§" |> IO.puts
-    "§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§" |> IO.puts
-    "look into hygiene and passing 'rules'"|> IO.puts
-    "§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§" |> IO.puts
-    "§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§" |> IO.puts
-    "§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§" |> IO.puts
+  defmacro def_rule(rules, rule_name, rule) do
 
     fact_template_names = crack_fact_template_names_from_ast_node(rule)
     {closure_function_head, lhs_evaluation_body, rhs_execution_body} = crack_function_info_from_ast_node(rule)
@@ -58,31 +50,17 @@ defmodule DefRule do
                                          ]}
                                        ]}
 
-    prepare_and_restrieve_functions
 
-    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    # have to produce this
-    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+   
+    quote do
+      Rules.add_rule(unquote(rules), :found_jet_powered_missile, %{
+            lhs_fact_template_names: [MissileFactTemplate, PropulsionFactTemplate],
+            lhs_fact_multiplicity: %{MissileFactTemplate => 1, PropulsionFactTemplate => 1},
+            evaluate_lhs_function: fn -> true end,
+            execute_rule_function: fn -> false end
+                     })
+    end
     
-    # {:%{}, [],
-    #  [
-    #    lhs_fact_template_names: [
-    #      {:__aliases__, [alias: false], [:MissileFactTemplate]},
-    #      {:__aliases__, [alias: false], [:PropulsionFactTemplate]}
-    #    ],
-    #    lhs_fact_multiplicity: {:%{}, [],
-    #                            [
-    #                              {{:__aliases__, [alias: false], [:MissileFactTemplate]}, 1},
-    #                              {{:__aliases__, [alias: false], [:PropulsionFactTemplate]}, 1}
-    #                            ]},
-    #    evaluate_lhs_function: {:fn, [],
-    #      [{:->, [], [[{:fact_instances, [], Elixir}], nil]}]},
-    #  execute_rule_function: {:fn, [], [{:->, [], [[], nil]}]}
-    #  ]}
   end
 end
 
@@ -98,3 +76,11 @@ end
 #               execute_rule_function: fn -> {missile, propulsion} end
 #         })
 # end
+
+
+# Rules.add_rule(rules, :found_jet_powered_missile, %{
+#       lhs_fact_template_names: [MissileFactTemplate, PropulsionFactTemplate],
+#       lhs_fact_multiplicity: %{MissileFactTemplate => 1, PropulsionFactTemplate => 1},
+#       evaluate_lhs_function: fn -> true end,
+#       execute_rule_function: fn -> false end
+#                })
