@@ -1,7 +1,10 @@
 defmodule DefRule do
 
   def crack_fact_template_names({_, _, [{_, _, [[]|_]}|_]}), do: []
-  def crack_fact_template_names({_, _, [{_, _, [fact_template_names|_]}|_]}), do: fact_template_names
+  def crack_fact_template_names({_, _, [{_, _, [fact_template_names|_]}|_]}) do
+    
+    fact_template_names
+  end
 
   def crack_lhs_evaluation_and_rhs_execution_bodies({_, _, [{_, _, [_|[{_, _, [lhs_evaluation_body|rhs_execution_body]}|_]]}|_]}) do
     {lhs_evaluation_body, rhs_execution_body}
