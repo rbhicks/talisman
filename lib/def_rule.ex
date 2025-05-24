@@ -31,6 +31,14 @@ defmodule DefRule do
 
   defmacro def_rule(rule_name, rule) do
 
+    "§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§" |> IO.puts
+    "§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§" |> IO.puts
+    "§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§" |> IO.puts
+    "look into hygiene and passing 'rules'"|> IO.puts
+    "§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§" |> IO.puts
+    "§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§" |> IO.puts
+    "§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§" |> IO.puts
+
     fact_template_names = crack_fact_template_names_from_ast_node(rule)
     {closure_function_head, lhs_evaluation_body, rhs_execution_body} = crack_function_info_from_ast_node(rule)
     unique_fact_template_names = fact_template_names
