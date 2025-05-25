@@ -339,9 +339,7 @@ defmodule TalismanTest do
 
       # "============================================================" |> IO.puts()
 
-      InferenceEngine.get_activated_rules(
-        inference_engine
-      )
+      InferenceEngine.get_activated_rules(inference_engine)
       |> IO.inspect(limit: :infinity)
 
       "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" |> IO.puts()

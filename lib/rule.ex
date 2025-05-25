@@ -13,7 +13,6 @@ defmodule Talisman.Rule do
     lhs_fact_multiplicity
   end
 
-
   def evaluate_lhs_for_asserted_facts(rule_pid, asserted_facts) do
     {:ok, active?} = GenServer.call(rule_pid, {:evaluate_lhs_for_asserted_facts, asserted_facts})
     active?
@@ -38,7 +37,11 @@ defmodule Talisman.Rule do
     }
   end
 
-  def handle_call(:get_lhs_fact_multiplicity, _from, %{lhs_fact_multiplicity: lhs_fact_multiplicity} = state) do
+  def handle_call(
+        :get_lhs_fact_multiplicity,
+        _from,
+        %{lhs_fact_multiplicity: lhs_fact_multiplicity} = state
+      ) do
     {
       :reply,
       {
@@ -49,15 +52,17 @@ defmodule Talisman.Rule do
     }
   end
 
-  def handle_call({:evaluate_lhs_for_asserted_facts, asserted_facts}, _from, %{evaluate_lhs_function: evaluate_lhs_function} = state) do
+  def handle_call(
+        {:evaluate_lhs_for_asserted_facts, asserted_facts},
+        _from,
+        %{evaluate_lhs_function: evaluate_lhs_function} = state
+      ) do
+    #    use apply/2 with lhs_fact_template_names
 
-#    use apply/2 with lhs_fact_template_names
-    
     active? = false
-    
 
-#    evaluate_lhs_function.(asserted_facts)
-    
+    #    evaluate_lhs_function.(asserted_facts)
+
     {
       :reply,
       {

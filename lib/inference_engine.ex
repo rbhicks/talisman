@@ -37,7 +37,7 @@ defmodule Talisman.InferenceEngine do
   def generate_activated_rules(server) do
     :ok = GenServer.call(server, :generate_activated_rules)
   end
-  
+
   def get_rules_filtered_by_lhs_and_asserted_fact_template_names(server) do
     {:ok, rules_filtered_by_lhs_and_asserted_fact_template_names} =
       GenServer.call(server, :get_rules_filtered_by_lhs_and_asserted_fact_template_names)
@@ -269,11 +269,24 @@ defmodule Talisman.InferenceEngine do
     }
   end
 
-  def handle_call(:generate_candidate_rule_activations, _from, %{rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings: rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings,
-        rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity: rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity} = state) do
-    candidate_rule_activations = for {mapping_rule_name, _, _} = mapping <-rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings, {_, {rule_name, _}} <- rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity, mapping_rule_name == rule_name do
-      mapping
-    end
+  def handle_call(
+        :generate_candidate_rule_activations,
+        _from,
+        %{
+          rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings:
+            rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings,
+          rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity:
+            rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity
+        } = state
+      ) do
+    candidate_rule_activations =
+      for {mapping_rule_name, _, _} = mapping <-
+            rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings,
+          {_, {rule_name, _}} <- rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity,
+          mapping_rule_name == rule_name do
+        mapping
+      end
+
     {
       :reply,
       :ok,
@@ -282,11 +295,20 @@ defmodule Talisman.InferenceEngine do
     }
   end
 
-  def handle_call(:generate_activated_rules, _from, %{candidate_rule_activations: candidate_rule_activations} = state) do
-    activated_rules = candidate_rule_activations
-    |> Enum.filter(fn {_, rule_pid, asserted_facts} ->
-      Rule.evaluate_lhs_for_asserted_facts(rule_pid, Utilities.create_cartesian_product(asserted_facts))
-    end)
+  def handle_call(
+        :generate_activated_rules,
+        _from,
+        %{candidate_rule_activations: candidate_rule_activations} = state
+      ) do
+    activated_rules =
+      candidate_rule_activations
+      |> Enum.filter(fn {_, rule_pid, asserted_facts} ->
+        Rule.evaluate_lhs_for_asserted_facts(
+          rule_pid,
+          Utilities.create_cartesian_product(asserted_facts)
+        )
+      end)
+
     {
       :reply,
       :ok,
@@ -349,7 +371,11 @@ defmodule Talisman.InferenceEngine do
     }
   end
 
-  def handle_call(:get_candidate_rule_activations, _from, %{candidate_rule_activations: candidate_rule_activations} = state) do
+  def handle_call(
+        :get_candidate_rule_activations,
+        _from,
+        %{candidate_rule_activations: candidate_rule_activations} = state
+      ) do
     {
       :reply,
       {

@@ -8,13 +8,16 @@ defmodule DefRuleTest do
 
   test "def_rule preserves variable bindings" do
     rules = :zorg
-    DefRule.def_rule rules, :found_jet_powered_missile, fn %MissileFactTemplate{} = missile, %PropulsionFactTemplate{} = propulsion ->
+
+    DefRule.def_rule(rules, :found_jet_powered_missile, fn %MissileFactTemplate{} = missile,
+                                                           %PropulsionFactTemplate{} = propulsion ->
       fn
         ^missile, ^propulsion = propulsion when propulsion == :jet -> true
         _, _ -> false
       end
+
       fn -> {missile, propulsion} end
-    end
+    end)
 
     # Add assertions to verify Rules.add_rule
   end
