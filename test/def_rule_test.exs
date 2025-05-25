@@ -1,27 +1,21 @@
 defmodule DefRuleTest do
-  use ExSpec, async: true
+  use ExUnit.Case
 
   require DefRule
 
   alias Talisman.Test.Support.Fixtures.MissileFactTemplate
   alias Talisman.Test.Support.Fixtures.PropulsionFactTemplate
-  alias Talisman.Rules
 
-  describe "************** WIP >>>>>>>>>>>>>>>>>>" do
-    # @tag :skip
-
-    it "-------- something --------" do
-
-      rules = :zorg
-      
-      DefRule.def_rule rules, :found_jet_powered_missile, fn %MissileFactTemplate{} = missile, %PropulsionFactTemplate{} = propulsion ->
-        
-        fn
-          ^missile, ^propulsion = propulsion when propulsion == :jet -> true
-          _, _ -> false
-        end
-        fn -> {missile, propulsion} end
+  test "def_rule preserves variable bindings" do
+    rules = :zorg
+    DefRule.def_rule rules, :found_jet_powered_missile, fn %MissileFactTemplate{} = missile, %PropulsionFactTemplate{} = propulsion ->
+      fn
+        ^missile, ^propulsion = propulsion when propulsion == :jet -> true
+        _, _ -> false
       end
+      fn -> {missile, propulsion} end
     end
+
+    # Add assertions to verify Rules.add_rule
   end
 end
