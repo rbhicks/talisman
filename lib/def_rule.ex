@@ -9,7 +9,6 @@ defmodule DefRule do
       other ->
         raise "Unexpected Macro.expand result for #{inspect(node)}: #{inspect(other)}"
     end
-    IO.inspect({resolved, parts_as_atoms}, label: "Crack Fact Template Resolved")
     {:__aliases__, meta, parts_as_atoms}
   end
 
@@ -21,7 +20,6 @@ defmodule DefRule do
       other ->
         raise "Unexpected Macro.expand result for #{inspect(node)}: #{inspect(other)}"
     end
-    IO.inspect({resolved, parts_as_atoms}, label: "Crack Fact Template Resolved")
     {:__aliases__, meta, parts_as_atoms}
   end
 
@@ -32,9 +30,7 @@ defmodule DefRule do
   def crack_fact_template_names_from_ast_node(closure_function_head, env) when is_list(closure_function_head) do
     closure_function_head
     |> Enum.map(fn node ->
-      result = crack_fact_template_name_from_ast_node(node, env)
-      IO.inspect({node, result}, label: "Crack Fact Template Node")
-      result
+      crack_fact_template_name_from_ast_node(node, env)
     end)
     |> Enum.filter(& &1)
   end
@@ -72,9 +68,6 @@ defmodule DefRule do
           other ->
             raise "Unexpected fact template name: #{inspect(other)}"
         end)
-
-      # Debugging
-      IO.inspect(unquote(Macro.escape(fact_template_names)), label: "Fact Template Names", limit: :infinity)
 
       # Define the outer function
       outer_fn = fn unquote_splicing(closure_function_head) ->
