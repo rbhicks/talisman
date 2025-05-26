@@ -115,7 +115,16 @@ defmodule DefRule do
       {evaluate_lhs_fn, execute_rule_fn} = apply(outer_fn, structs)
 
       Rules.add_rule(unquote(rules), unquote(rule_name), %{
-        lhs_fact_template_names: unquote(Macro.escape(fact_template_names)),
+        # need to extract the qualified fact template names out of the their ast node
+        lhs_fact_template_names:
+          unquote(
+            Macro.escape(
+              fact_template_names
+              |> Enum.map(fn {_, _, fact_template_name} ->
+                Module.concat(fact_template_name)
+              end)
+            )
+          ),
         lhs_fact_multiplicity: unquote(Macro.escape(fact_template_name_frequencies)),
         evaluate_lhs_function: evaluate_lhs_fn,
         execute_rule_function: execute_rule_fn
