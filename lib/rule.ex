@@ -77,26 +77,28 @@ defmodule Talisman.Rule do
         rule_name,
         lhs_fact_template_names,
         lhs_fact_multiplicity,
+        evaluate_lhs_function_args,
         evaluate_lhs_function,
         execute_rule_function
       ) do
     GenServer.start_link(
       __MODULE__,
-      {lhs_fact_template_names, lhs_fact_multiplicity, evaluate_lhs_function,
-       execute_rule_function},
+      {lhs_fact_template_names, lhs_fact_multiplicity, evaluate_lhs_function_args,
+       evaluate_lhs_function, execute_rule_function},
       name: {:global, rule_name}
     )
   end
 
   def init(
-        {lhs_fact_template_names, lhs_fact_multiplicity, evaluate_lhs_function,
-         execute_rule_function}
+        {lhs_fact_template_names, lhs_fact_multiplicity, evaluate_lhs_function_args,
+         evaluate_lhs_function, execute_rule_function}
       ) do
     {
       :ok,
       %{
         lhs_fact_template_names: lhs_fact_template_names,
         lhs_fact_multiplicity: lhs_fact_multiplicity,
+        evaluate_lhs_function_args: evaluate_lhs_function_args,
         evaluate_lhs_function: evaluate_lhs_function,
         execute_rule_function: execute_rule_function
       }
