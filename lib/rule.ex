@@ -55,12 +55,22 @@ defmodule Talisman.Rule do
   def handle_call(
         {:evaluate_lhs_for_asserted_facts, asserted_facts},
         _from,
-        %{evaluate_lhs_function: evaluate_lhs_function} = state
+        %{evaluate_lhs_function_args: evaluate_lhs_function_args,
+          evaluate_lhs_function: evaluate_lhs_function} = state
       ) do
     #    use apply/2 with lhs_fact_template_names
 
+    "m8v823x0ks6d9eh23j4v9u8uyy7w9t" |> IO.puts
+    "m8v823x0ks6d9eh23j4v9u8uyy7w9t" |> IO.puts
+    "m8v823x0ks6d9eh23j4v9u8uyy7w9t" |> IO.puts
+    asserted_facts |> IO.inspect(limit: :infinity)
+    "==============================" |> IO.puts
+    evaluate_lhs_function_args |> IO.inspect(limit: :infinity)
+    "uwa901j4uhb4aadmocdrbg1w9hmqez" |> IO.puts
+    "uwa901j4uhb4aadmocdrbg1w9hmqez" |> IO.puts
+    "uwa901j4uhb4aadmocdrbg1w9hmqez" |> IO.puts
     active? = false
-
+    
     #    evaluate_lhs_function.(asserted_facts)
 
     {

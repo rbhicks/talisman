@@ -189,7 +189,8 @@ defmodule TalismanTest do
       end
     end)
 
-    DefRule.def_rule(rules, :found_f22_aim_9c_loadout, fn %MissileFactTemplate{} = missile ->
+    DefRule.def_rule(rules, :found_f22_aim_9c_loadout, fn %MissileFactTemplate{} = sidewinder_0,
+      %MissileFactTemplate{} = sidewinder_1 ->
       fn fact_instances ->
         "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
         "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
