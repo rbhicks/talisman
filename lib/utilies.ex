@@ -29,5 +29,13 @@ defmodule Talisman.Utilities do
       end
     end)
     |> Enum.map(&Enum.reverse/1)
+    # get rid of results where all the elements are the same
+    # (a degenerate case)
+    |> Enum.filter(fn cartesian_product ->
+      cartesian_product
+      |> Enum.dedup
+      |> Enum.count
+      |> Kernel.!= 1
+    end)
   end
 end
