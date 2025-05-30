@@ -95,70 +95,70 @@ defmodule TalismanTest do
       mapper
     )
 
-    # Facts.assert(
-    #   facts,
-    #   %MissileFactTemplate{
-    #     name: :aim_9c_sidewinder,
-    #     type: :air_to_air,
-    #     propulsion: :solid_propellant,
-    #     guidance: :semi_active_radar,
-    #     warhead: :continuous_rod
-    #   },
-    #   mapper
-    # )
+    Facts.assert(
+      facts,
+      %MissileFactTemplate{
+        name: :aim_9c_sidewinder,
+        type: :air_to_air,
+        propulsion: :solid_propellant,
+        guidance: :semi_active_radar,
+        warhead: :continuous_rod
+      },
+      mapper
+    )
 
-    # Facts.assert(
-    #   facts,
-    #   %MissileFactTemplate{
-    #     name: :aim_9c_sidewinder,
-    #     type: :air_to_air,
-    #     propulsion: :solid_propellant,
-    #     guidance: :semi_active_radar,
-    #     warhead: :continuous_rod
-    #   },
-    #   mapper
-    # )
+    Facts.assert(
+      facts,
+      %MissileFactTemplate{
+        name: :aim_9c_sidewinder,
+        type: :air_to_air,
+        propulsion: :solid_propellant,
+        guidance: :semi_active_radar,
+        warhead: :continuous_rod
+      },
+      mapper
+    )
 
-    # Facts.assert(
-    #   facts,
-    #   %BombFactTemplate{
-    #     name: :b61,
-    #     type: :gravity_bomb,
-    #     guidance: :glide,
-    #     warhead: :thermonuclear
-    #   },
-    #   mapper
-    # )
+    Facts.assert(
+      facts,
+      %BombFactTemplate{
+        name: :b61,
+        type: :gravity_bomb,
+        guidance: :glide,
+        warhead: :thermonuclear
+      },
+      mapper
+    )
 
-    # Facts.assert(
-    #   facts,
-    #   %PropulsionFactTemplate{
-    #     name: :f107_wr_400,
-    #     type: :turbofan,
-    #     power: :"2.7_kN"
-    #   },
-    #   mapper
-    # )
+    Facts.assert(
+      facts,
+      %PropulsionFactTemplate{
+        name: :f107_wr_400,
+        type: :turbofan,
+        power: :"2.7_kN"
+      },
+      mapper
+    )
 
-    # Facts.assert(
-    #   facts,
-    #   %PropulsionFactTemplate{
-    #     name: :"f107_wr_105/401",
-    #     type: :turbofan,
-    #     power: :"6.22_kN"
-    #   },
-    #   mapper
-    # )
+    Facts.assert(
+      facts,
+      %PropulsionFactTemplate{
+        name: :"f107_wr_105/401",
+        type: :turbofan,
+        power: :"6.22_kN"
+      },
+      mapper
+    )
 
-    # Facts.assert(
-    #   facts,
-    #   %WarheadFactTemplate{
-    #     name: :"W80",
-    #     type: :thermonuclear,
-    #     yield: :"21-628_TJ"
-    #   },
-    #   mapper
-    # )
+    Facts.assert(
+      facts,
+      %WarheadFactTemplate{
+        name: :"W80",
+        type: :thermonuclear,
+        yield: :"21-628_TJ"
+      },
+      mapper
+    )
     
     DefRule.def_rule(rules, :found_icbm, fn %MissileFactTemplate{} = missile ->
       fn ->
@@ -179,86 +179,86 @@ defmodule TalismanTest do
       end
     end)
 
-    # DefRule.def_rule(rules, :assess_total_missile_yield, fn %MissileFactTemplate{} = missile,
-    #                                                         %WarheadFactTemplate{} = warhead ->
-    #   fn fact_instances ->
-    #     "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
-    #     "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
-    #     "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
-    #     fact_instances |> IO.inspect(limit: :infinity)
-    #     "+++++++++++++++++++++++++++++++++++" |> IO.puts()
-    #     "+++++++++++++++++++++++++++++++++++" |> IO.puts()
-    #     "+++++++++++++++++++++++++++++++++++" |> IO.puts()
-    #     {:ok}
-    #   end
+    DefRule.def_rule(rules, :assess_total_missile_yield, fn %MissileFactTemplate{} = missile,
+                                                            %WarheadFactTemplate{} = warhead ->
+      fn fact_instances ->
+        "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
+        "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
+        "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
+        fact_instances |> IO.inspect(limit: :infinity)
+        "+++++++++++++++++++++++++++++++++++" |> IO.puts()
+        "+++++++++++++++++++++++++++++++++++" |> IO.puts()
+        "+++++++++++++++++++++++++++++++++++" |> IO.puts()
+        {:ok}
+      end
 
-    #   fn ->
-    #     "()()()()()()()()()()()()()()()()()()" |> IO.puts()
-    #     "fox-1" |> IO.puts()
-    #     "()()()()()()()()()()()()()()()()()()" |> IO.puts()
-    #   end
-    # end)
+      fn ->
+        "()()()()()()()()()()()()()()()()()()" |> IO.puts()
+        "fox-1" |> IO.puts()
+        "()()()()()()()()()()()()()()()()()()" |> IO.puts()
+      end
+    end)
 
-    # DefRule.def_rule(rules, :found_f22_aim_9c_loadout, fn %MissileFactTemplate{} = sidewinder_0,
-    #   %MissileFactTemplate{} = sidewinder_1 ->
-    #   fn fact_instances ->
-    #     "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
-    #     "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
-    #     "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
-    #     fact_instances |> IO.inspect(limit: :infinity)
-    #     "+++++++++++++++++++++++++++++++++++" |> IO.puts()
-    #     "+++++++++++++++++++++++++++++++++++" |> IO.puts()
-    #     "+++++++++++++++++++++++++++++++++++" |> IO.puts()
-    #     {:ok}
-    #   end
+    DefRule.def_rule(rules, :found_f22_aim_9c_loadout, fn %MissileFactTemplate{} = sidewinder_0,
+      %MissileFactTemplate{} = sidewinder_1 ->
+      fn fact_instances ->
+        "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
+        "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
+        "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
+        fact_instances |> IO.inspect(limit: :infinity)
+        "+++++++++++++++++++++++++++++++++++" |> IO.puts()
+        "+++++++++++++++++++++++++++++++++++" |> IO.puts()
+        "+++++++++++++++++++++++++++++++++++" |> IO.puts()
+        {:ok}
+      end
 
-    #   fn ->
-    #     "()()()()()()()()()()()()()()()()()()" |> IO.puts()
-    #     "fox-1" |> IO.puts()
-    #     "()()()()()()()()()()()()()()()()()()" |> IO.puts()
-    #   end
-    # end)
+      fn ->
+        "()()()()()()()()()()()()()()()()()()" |> IO.puts()
+        "fox-1" |> IO.puts()
+        "()()()()()()()()()()()()()()()()()()" |> IO.puts()
+      end
+    end)
 
-    # DefRule.def_rule(rules, :found_jet_powered_missile, fn %MissileFactTemplate{} = missile,
-    #                                                        %PropulsionFactTemplate{} = propulsion ->
-    #   fn fact_instances ->
-    #     "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
-    #     "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
-    #     "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
-    #     fact_instances |> IO.inspect(limit: :infinity)
-    #     "+++++++++++++++++++++++++++++++++++" |> IO.puts()
-    #     "+++++++++++++++++++++++++++++++++++" |> IO.puts()
-    #     "+++++++++++++++++++++++++++++++++++" |> IO.puts()
-    #     {:ok}
-    #   end
+    DefRule.def_rule(rules, :found_jet_powered_missile, fn %MissileFactTemplate{} = missile,
+                                                           %PropulsionFactTemplate{} = propulsion ->
+      fn fact_instances ->
+        "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
+        "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
+        "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
+        fact_instances |> IO.inspect(limit: :infinity)
+        "+++++++++++++++++++++++++++++++++++" |> IO.puts()
+        "+++++++++++++++++++++++++++++++++++" |> IO.puts()
+        "+++++++++++++++++++++++++++++++++++" |> IO.puts()
+        {:ok}
+      end
 
-    #   fn ->
-    #     "()()()()()()()()()()()()()()()()()()" |> IO.puts()
-    #     "fox-1" |> IO.puts()
-    #     "()()()()()()()()()()()()()()()()()()" |> IO.puts()
-    #   end
-    # end)
+      fn ->
+        "()()()()()()()()()()()()()()()()()()" |> IO.puts()
+        "fox-1" |> IO.puts()
+        "()()()()()()()()()()()()()()()()()()" |> IO.puts()
+      end
+    end)
 
-    # DefRule.def_rule(rules, :found_nuclear_cruise_missile, fn %MissileFactTemplate{} = missile,
-    #                                                           %PropulsionFactTemplate{} = propulsion,
-    #                                                           %WarheadFactTemplate{} = warhead ->
-    #   fn fact_instances ->
-    #     "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
-    #     "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
-    #     "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
-    #     fact_instances |> IO.inspect(limit: :infinity)
-    #     "+++++++++++++++++++++++++++++++++++" |> IO.puts()
-    #     "+++++++++++++++++++++++++++++++++++" |> IO.puts()
-    #     "+++++++++++++++++++++++++++++++++++" |> IO.puts()
-    #     {:ok}
-    #   end
+    DefRule.def_rule(rules, :found_nuclear_cruise_missile, fn %MissileFactTemplate{} = missile,
+                                                              %PropulsionFactTemplate{} = propulsion,
+                                                              %WarheadFactTemplate{} = warhead ->
+      fn fact_instances ->
+        "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
+        "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
+        "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
+        fact_instances |> IO.inspect(limit: :infinity)
+        "+++++++++++++++++++++++++++++++++++" |> IO.puts()
+        "+++++++++++++++++++++++++++++++++++" |> IO.puts()
+        "+++++++++++++++++++++++++++++++++++" |> IO.puts()
+        {:ok}
+      end
 
-    #   fn ->
-    #     "()()()()()()()()()()()()()()()()()()" |> IO.puts()
-    #     "fox-1" |> IO.puts()
-    #     "()()()()()()()()()()()()()()()()()()" |> IO.puts()
-    #   end
-    # end)
+      fn ->
+        "()()()()()()()()()()()()()()()()()()" |> IO.puts()
+        "fox-1" |> IO.puts()
+        "()()()()()()()()()()()()()()()()()()" |> IO.puts()
+      end
+    end)
 
     for {_, {rule_name, rule_pid}} <- Rules.get_rules(rules) do
       Mapper.add_rule_fact_template_names(
