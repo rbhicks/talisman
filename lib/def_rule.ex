@@ -112,7 +112,15 @@ defmodule DefRule do
       end
 
       # Call it with structs to get zero-arity inner functions
-      {evaluate_lhs_fn, execute_rule_fn} = apply(outer_fn, structs)
+
+
+
+
+
+
+
+      #      {evaluate_lhs_fn, execute_rule_fn} = apply(outer_fn, structs)
+      get_rule_lhs_evaluation_and_rhs_execution_functions = apply(outer_fn, structs)
 
       Rules.add_rule(unquote(rules), unquote(rule_name), %{
         # need to extract the qualified fact template names out of the their ast node
@@ -135,8 +143,12 @@ defmodule DefRule do
               end)
             )
           ),
-        evaluate_lhs_function: evaluate_lhs_fn,
-        execute_rule_function: execute_rule_fn
+        get_rule_lhs_evaluation_and_rhs_execution_functions: get_rule_lhs_evaluation_and_rhs_execution_functions
+
+        
+        # evaluate_lhs_function: evaluate_lhs_fn,
+        # execute_rule_function: execute_rule_fn
+        
       })
     end
   end

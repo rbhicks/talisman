@@ -29,9 +29,10 @@ defmodule Talisman.Rules do
             rule_name,
             rule.lhs_fact_template_names,
             rule.lhs_fact_multiplicity,
-            rule.evaluate_lhs_function_args,
-            rule.evaluate_lhs_function,
-            rule.execute_rule_function
+            # rule.evaluate_lhs_function_args,
+            # rule.evaluate_lhs_function,
+            # rule.execute_rule_function
+            rule.get_rule_lhs_evaluation_and_rhs_execution_functions
           ]
         }
       },
