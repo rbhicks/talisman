@@ -1,14 +1,23 @@
 defmodule Talisman.Fact do
   use GenServer
 
+  def get_fact_instance(server) do
+    {:ok, field_values} = GenServer.call(server, :get_fact_instance)
+    field_values
+  end
+
   def get_field_values(server) do
-    GenServer.call({:global, server}, :get_field_values)
+    GenServer.call(server, :get_field_values)
   end
 
   def set_field_values(server, field_values) do
     GenServer.cast(server, :set_field_values)
   end
 
+  def handle_call(:get_fact_instance, _from, {fact_instance, field_values, fact_id} = state) do
+    {:reply, {:ok, fact_instance}, state}
+  end
+  
   def handle_call(:get_field_values, _from, {fact_instance, field_values, fact_id} = state) do
     {:reply, {:ok, field_values}, state}
   end
@@ -25,7 +34,7 @@ defmodule Talisman.Fact do
     {
       :ok,
       {
-        fact_instance.__struct__,
+        fact_instance,
         %{}
         |> Enum.into(Map.from_struct(fact_instance)),
         fact_id

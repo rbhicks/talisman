@@ -21,6 +21,12 @@ defmodule Talisman.Utilities do
 
   def create_cartesian_product([]), do: [[]]
 
+  # since the get rid of degenerate cartesian cases by
+  # dedup'ing then filtering if the list length is 1,
+  # we need to capture actual single element lists above,
+  # i.e., here.
+  def create_cartesian_product([_|[]] = single_element_list), do: single_element_list
+  
   def create_cartesian_product(elements) do
     elements
     |> Enum.reduce([[]], fn current_element, acc ->
@@ -33,9 +39,9 @@ defmodule Talisman.Utilities do
     # (a degenerate case)
     |> Enum.filter(fn cartesian_product ->
       cartesian_product
-      |> Enum.dedup
-      |> Enum.count
-      |> Kernel.!= 1
+      |> Enum.dedup()
+      |> Enum.count()
+      |> Kernel.!=(1)
     end)
   end
 end
