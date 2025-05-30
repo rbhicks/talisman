@@ -150,6 +150,16 @@ defmodule TalismanTest do
       mapper
     )
 
+    Facts.assert(
+      facts,
+      %WarheadFactTemplate{
+        name: :"W80",
+        type: :thermonuclear,
+        yield: :"21-628_TJ"
+      },
+      mapper
+    )
+    
     DefRule.def_rule(rules, :found_icbm, fn %MissileFactTemplate{} = missile ->
       fn fact_instances ->
         "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
@@ -211,6 +221,27 @@ defmodule TalismanTest do
 
     DefRule.def_rule(rules, :found_jet_powered_missile, fn %MissileFactTemplate{} = missile,
                                                            %PropulsionFactTemplate{} = propulsion ->
+      fn fact_instances ->
+        "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
+        "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
+        "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
+        fact_instances |> IO.inspect(limit: :infinity)
+        "+++++++++++++++++++++++++++++++++++" |> IO.puts()
+        "+++++++++++++++++++++++++++++++++++" |> IO.puts()
+        "+++++++++++++++++++++++++++++++++++" |> IO.puts()
+        {:ok}
+      end
+
+      fn ->
+        "()()()()()()()()()()()()()()()()()()" |> IO.puts()
+        "fox-1" |> IO.puts()
+        "()()()()()()()()()()()()()()()()()()" |> IO.puts()
+      end
+    end)
+
+    DefRule.def_rule(rules, :found_nuclear_cruise_missile, fn %MissileFactTemplate{} = missile,
+                                                              %PropulsionFactTemplate{} = propulsion,
+                                                              %WarheadFactTemplate{} = warhead ->
       fn fact_instances ->
         "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
         "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
