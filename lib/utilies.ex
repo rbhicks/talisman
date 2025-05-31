@@ -29,6 +29,8 @@ defmodule Talisman.Utilities do
       end
     end)
     |> Enum.map(&Enum.reverse/1)
+    # get rid of degenerate cases (i.e., the same fact instance
+    # used more than once)
     |> Enum.filter(fn cartesian_product_element ->
       cartesian_product_element
       |> Enum.frequencies()
