@@ -17,7 +17,7 @@ defmodule Talisman.Fact do
   def handle_call(:get_fact_instance, _from, {fact_instance, field_values, fact_id} = state) do
     {:reply, {:ok, fact_instance}, state}
   end
-  
+
   def handle_call(:get_field_values, _from, {fact_instance, field_values, fact_id} = state) do
     {:reply, {:ok, field_values}, state}
   end

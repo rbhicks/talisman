@@ -20,7 +20,7 @@ defmodule Talisman.Utilities do
   end
 
   def create_cartesian_product([]), do: [[]]
-  
+
   def create_cartesian_product(elements) do
     elements
     |> Enum.reduce([[]], fn current_element, acc ->

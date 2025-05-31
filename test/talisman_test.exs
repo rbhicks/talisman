@@ -153,13 +153,13 @@ defmodule TalismanTest do
     Facts.assert(
       facts,
       %WarheadFactTemplate{
-        name: :"W80",
+        name: :W80,
         type: :thermonuclear,
         yield: :"21-628_TJ"
       },
       mapper
     )
-    
+
     DefRule.def_rule(rules, :found_icbm, fn %MissileFactTemplate{} = missile ->
       fn ->
         "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
@@ -200,7 +200,7 @@ defmodule TalismanTest do
     end)
 
     DefRule.def_rule(rules, :found_f22_aim_9c_loadout, fn %MissileFactTemplate{} = sidewinder_0,
-      %MissileFactTemplate{} = sidewinder_1 ->
+                                                          %MissileFactTemplate{} = sidewinder_1 ->
       fn ->
         "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
         "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
@@ -240,7 +240,8 @@ defmodule TalismanTest do
     end)
 
     DefRule.def_rule(rules, :found_nuclear_cruise_missile, fn %WarheadFactTemplate{} = warhead,
-                                                              %PropulsionFactTemplate{} = propulsion,
+                                                              %PropulsionFactTemplate{} =
+                                                                propulsion,
                                                               %MissileFactTemplate{} = missile ->
       fn ->
         "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
