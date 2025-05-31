@@ -20,12 +20,6 @@ defmodule Talisman.Utilities do
   end
 
   def create_cartesian_product([]), do: [[]]
-
-  # since the get rid of degenerate cartesian cases by
-  # dedup'ing then filtering if the list length is 1,
-  # we need to capture actual single element lists above,
-  # i.e., here.
-  def create_cartesian_product([_|[]] = single_element_list), do: single_element_list
   
   def create_cartesian_product(elements) do
     elements
@@ -35,13 +29,17 @@ defmodule Talisman.Utilities do
       end
     end)
     |> Enum.map(&Enum.reverse/1)
-    # get rid of results where all the elements are the same
-    # (a degenerate case)
-    |> Enum.filter(fn cartesian_product ->
-      cartesian_product
-      |> Enum.dedup()
-      |> Enum.count()
-      |> Kernel.!=(1)
+    |> Enum.filter(fn cartesian_product_element ->
+      cartesian_product_element
+      |> Enum.frequencies()
+      |> Map.values()
+      |> Enum.reduce_while(false, fn value, acc ->
+        if value == 1 do
+          {:cont, true}
+        else
+          {:halt, false}
+        end
+      end)
     end)
   end
 end
