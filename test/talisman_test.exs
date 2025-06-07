@@ -365,21 +365,13 @@ defmodule TalismanTest do
 
       # "============================================================" |> IO.puts()
 
-      InferenceEngine.get_candidate_rule_activations(inference_engine)
-      |> IO.inspect(limit: :infinity)
+      # InferenceEngine.get_candidate_rule_activations(inference_engine)
+      # |> IO.inspect(limit: :infinity)
 
-      "============================================================" |> IO.puts()
+      # "============================================================" |> IO.puts()
 
       InferenceEngine.get_activated_rules(inference_engine)
       |> IO.inspect(limit: :infinity)
-
-      "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" |> IO.puts()
-      "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" |> IO.puts()
-      "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" |> IO.puts()
-      "neeed to enum all the params from the cartesian product to properly activate!"  |> IO.puts()
-      "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" |> IO.puts()
-      "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" |> IO.puts()
-      "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" |> IO.puts()
 
       "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" |> IO.puts()
       "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" |> IO.puts()

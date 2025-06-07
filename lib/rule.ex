@@ -15,7 +15,9 @@ defmodule Talisman.Rule do
   end
 
   def evaluate_lhs_for_asserted_facts(rule_pid, asserted_facts) do
-    {:ok, activations} = GenServer.call(rule_pid, {:evaluate_lhs_for_asserted_facts, asserted_facts})
+    {:ok, activations} =
+      GenServer.call(rule_pid, {:evaluate_lhs_for_asserted_facts, asserted_facts})
+
     activations
   end
 
@@ -62,26 +64,35 @@ defmodule Talisman.Rule do
             get_rule_lhs_evaluation_and_rhs_execution_functions
         } = state
       ) do
-    activations = for closure_function_param_info <- asserted_facts do
-      closure_function_params =
-        for {_, asserted_fact_pid} <- closure_function_param_info do
-          Fact.get_fact_instance(asserted_fact_pid)
-        end
+    activations =
+      for closure_function_param_info <- asserted_facts do
+        [closure_function_params, asserted_fact_pids] =
+          closure_function_param_info
+          |> Enum.reduce([[], []], fn {_, asserted_fact_pid},
+                                      [asserted_fact_instances, asserted_fact_pids] ->
+            [
+              [Fact.get_fact_instance(asserted_fact_pid) | asserted_fact_instances]
+              | [[asserted_fact_pid | asserted_fact_pids]]
+            ]
+          end)
 
-      {lhs_evaluation_function, rhs_execution_function} =
-        apply(get_rule_lhs_evaluation_and_rhs_execution_functions, closure_function_params)
+        closure_function_params = Enum.reverse(closure_function_params)
+        asserted_fact_pids = Enum.reverse(asserted_fact_pids)
 
-      {
-        rule_name,
-        closure_function_params,
-        lhs_evaluation_function,
-        rhs_execution_function
-      }
+        {lhs_evaluation_function, rhs_execution_function} =
+          apply(get_rule_lhs_evaluation_and_rhs_execution_functions, closure_function_params)
 
-    end
-    |> Enum.filter(fn {_, _, lhs_evaluation_function, _} ->
-      lhs_evaluation_function.()
-    end)
+        {
+          rule_name,
+          closure_function_params,
+          asserted_fact_pids,
+          lhs_evaluation_function,
+          rhs_execution_function
+        }
+      end
+      |> Enum.filter(fn {_, _, _, lhs_evaluation_function, _} ->
+        lhs_evaluation_function.()
+      end)
 
     {
       :reply,
@@ -97,15 +108,10 @@ defmodule Talisman.Rule do
         rule_name,
         lhs_fact_template_names,
         lhs_fact_multiplicity,
-        # evaluate_lhs_function_args,
-        # evaluate_lhs_function,
-        # execute_rule_function
         get_rule_lhs_evaluation_and_rhs_execution_functions
       ) do
     GenServer.start_link(
       __MODULE__,
-      # {lhs_fact_template_names, lhs_fact_multiplicity, evaluate_lhs_function_args,
-      #  evaluate_lhs_function, execute_rule_function},
       {
         rule_name,
         lhs_fact_template_names,
@@ -117,8 +123,6 @@ defmodule Talisman.Rule do
   end
 
   def init(
-        # {lhs_fact_template_names, lhs_fact_multiplicity, evaluate_lhs_function_args,
-        #  evaluate_lhs_function, execute_rule_function}
         {rule_name, lhs_fact_template_names, lhs_fact_multiplicity,
          get_rule_lhs_evaluation_and_rhs_execution_functions}
       ) do
@@ -128,9 +132,6 @@ defmodule Talisman.Rule do
         rule_name: rule_name,
         lhs_fact_template_names: lhs_fact_template_names,
         lhs_fact_multiplicity: lhs_fact_multiplicity,
-        # evaluate_lhs_function_args: evaluate_lhs_function_args,
-        # evaluate_lhs_function: evaluate_lhs_function,
-        # execute_rule_function: execute_rule_function
         get_rule_lhs_evaluation_and_rhs_execution_functions:
           get_rule_lhs_evaluation_and_rhs_execution_functions
       }

@@ -300,16 +300,35 @@ defmodule Talisman.InferenceEngine do
         _from,
         %{candidate_rule_activations: candidate_rule_activations} = state
       ) do
-    activated_rules =
-      candidate_rule_activations
-      |> Enum.filter(fn {_, rule_pid, asserted_facts} ->
-        Rule.evaluate_lhs_for_asserted_facts(
-          rule_pid,
-          Utilities.create_cartesian_product(asserted_facts)
-        )
-        |> Enum.count()
-        |> Kernel.>(0)
-      end)
+    # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    # need to reduce or map here, not filter
+    # i.e., we're getting info from the rules
+    # not merely filter candidate_rule_activations
+    # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+    # activated_rules =
+    #   candidate_rule_activations
+    #   |> Enum.filter(fn {_, rule_pid, asserted_facts} ->
+    #     Rule.evaluate_lhs_for_asserted_facts(
+    #       rule_pid,
+    #       Utilities.create_cartesian_product(asserted_facts)
+    #     )
+    #     |> Enum.count()
+    #     |> Kernel.>(0)
+    #   end)
+
+    "033jrlxsarqsnj2s10xdndm8o28bba" |> IO.puts()
+    "033jrlxsarqsnj2s10xdndm8o28bba" |> IO.puts()
+    "033jrlxsarqsnj2s10xdndm8o28bba" |> IO.puts()
+    activated_rules |> IO.inspect(limit: :infinity)
+    "xj11a4jvnr4e9fcalow6nhup9ty43s" |> IO.puts()
+    "xj11a4jvnr4e9fcalow6nhup9ty43s" |> IO.puts()
+    "xj11a4jvnr4e9fcalow6nhup9ty43s" |> IO.puts()
+
     {
       :reply,
       :ok,
