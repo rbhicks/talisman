@@ -84,14 +84,20 @@ defmodule Talisman.Rule do
 
         {
           rule_name,
-          closure_function_params,
           asserted_fact_pids,
           lhs_evaluation_function,
           rhs_execution_function
         }
       end
-      |> Enum.filter(fn {_, _, _, lhs_evaluation_function, _} ->
+      |> Enum.filter(fn {_, _, lhs_evaluation_function, _} ->
         lhs_evaluation_function.()
+      end)
+      |> Enum.map(fn {rule_name, asserted_fact_pids, _, rhs_execution_function} ->
+        {
+          rule_name,
+          asserted_fact_pids,
+          rhs_execution_function
+        }
       end)
 
     {
