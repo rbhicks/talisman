@@ -302,11 +302,15 @@ defmodule Talisman.InferenceEngine do
       ) do
     activated_rules =
       candidate_rule_activations
-      |> Enum.map(fn {_, rule_pid, asserted_facts} ->
+      |> Enum.map(fn {rule_name, rule_pid, asserted_facts} ->
+      {
+        rule_name,
+        rule_pid,
         Rule.evaluate_lhs_for_asserted_facts(
           rule_pid,
           Utilities.create_cartesian_product(asserted_facts)
         )
+      }
       end)
 
     {

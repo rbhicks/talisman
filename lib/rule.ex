@@ -59,7 +59,6 @@ defmodule Talisman.Rule do
         {:evaluate_lhs_for_asserted_facts, asserted_facts},
         _from,
         %{
-          rule_name: rule_name,
           get_rule_lhs_evaluation_and_rhs_execution_functions:
             get_rule_lhs_evaluation_and_rhs_execution_functions
         } = state
@@ -83,18 +82,16 @@ defmodule Talisman.Rule do
           apply(get_rule_lhs_evaluation_and_rhs_execution_functions, closure_function_params)
 
         {
-          rule_name,
           asserted_fact_pids,
           lhs_evaluation_function,
           rhs_execution_function
         }
       end
-      |> Enum.filter(fn {_, _, lhs_evaluation_function, _} ->
+      |> Enum.filter(fn {_, lhs_evaluation_function, _} ->
         lhs_evaluation_function.()
       end)
-      |> Enum.map(fn {rule_name, asserted_fact_pids, _, rhs_execution_function} ->
+      |> Enum.map(fn {asserted_fact_pids, _, rhs_execution_function} ->
         {
-          rule_name,
           asserted_fact_pids,
           rhs_execution_function
         }
