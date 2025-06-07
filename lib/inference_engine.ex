@@ -307,8 +307,9 @@ defmodule Talisman.InferenceEngine do
           rule_pid,
           Utilities.create_cartesian_product(asserted_facts)
         )
+        |> Enum.count()
+        |> Kernel.>(0)
       end)
-
     {
       :reply,
       :ok,

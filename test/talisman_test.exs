@@ -162,14 +162,14 @@ defmodule TalismanTest do
 
     DefRule.def_rule(rules, :found_icbm, fn %MissileFactTemplate{} = missile ->
       fn ->
-        "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
-        "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
-        "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
-        missile |> IO.inspect(limit: :infinity)
-        "+++++++++++++++++++++++++++++++++++" |> IO.puts()
-        "+++++++++++++++++++++++++++++++++++" |> IO.puts()
-        "+++++++++++++++++++++++++++++++++++" |> IO.puts()
-        {:ok}
+        # "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
+        # "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
+        # "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
+        # missile |> IO.inspect(limit: :infinity)
+        # "+++++++++++++++++++++++++++++++++++" |> IO.puts()
+        # "+++++++++++++++++++++++++++++++++++" |> IO.puts()
+        # "+++++++++++++++++++++++++++++++++++" |> IO.puts()
+        true
       end
 
       fn ->
@@ -182,14 +182,14 @@ defmodule TalismanTest do
     DefRule.def_rule(rules, :assess_total_missile_yield, fn %MissileFactTemplate{} = missile,
                                                             %WarheadFactTemplate{} = warhead ->
       fn ->
-        "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
-        "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
-        "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
-        missile |> IO.inspect(limit: :infinity)
-        "+++++++++++++++++++++++++++++++++++" |> IO.puts()
-        "+++++++++++++++++++++++++++++++++++" |> IO.puts()
-        "+++++++++++++++++++++++++++++++++++" |> IO.puts()
-        {:ok}
+        # "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
+        # "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
+        # "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
+        # missile |> IO.inspect(limit: :infinity)
+        # "+++++++++++++++++++++++++++++++++++" |> IO.puts()
+        # "+++++++++++++++++++++++++++++++++++" |> IO.puts()
+        # "+++++++++++++++++++++++++++++++++++" |> IO.puts()
+        false
       end
 
       fn ->
@@ -202,14 +202,14 @@ defmodule TalismanTest do
     DefRule.def_rule(rules, :found_f22_aim_9c_loadout, fn %MissileFactTemplate{} = sidewinder_0,
                                                           %MissileFactTemplate{} = sidewinder_1 ->
       fn ->
-        "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
-        "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
-        "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
-        sidewinder_0 |> IO.inspect(limit: :infinity)
-        "+++++++++++++++++++++++++++++++++++" |> IO.puts()
-        "+++++++++++++++++++++++++++++++++++" |> IO.puts()
-        "+++++++++++++++++++++++++++++++++++" |> IO.puts()
-        {:ok}
+        # "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
+        # "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
+        # "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
+        # sidewinder_0 |> IO.inspect(limit: :infinity)
+        # "+++++++++++++++++++++++++++++++++++" |> IO.puts()
+        # "+++++++++++++++++++++++++++++++++++" |> IO.puts()
+        # "+++++++++++++++++++++++++++++++++++" |> IO.puts()
+        false
       end
 
       fn ->
@@ -222,14 +222,14 @@ defmodule TalismanTest do
     DefRule.def_rule(rules, :found_jet_powered_missile, fn %MissileFactTemplate{} = missile,
                                                            %PropulsionFactTemplate{} = propulsion ->
       fn ->
-        "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
-        "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
-        "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
-        propulsion |> IO.inspect(limit: :infinity)
-        "+++++++++++++++++++++++++++++++++++" |> IO.puts()
-        "+++++++++++++++++++++++++++++++++++" |> IO.puts()
-        "+++++++++++++++++++++++++++++++++++" |> IO.puts()
-        {:ok}
+        # "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
+        # "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
+        # "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
+        # propulsion |> IO.inspect(limit: :infinity)
+        # "+++++++++++++++++++++++++++++++++++" |> IO.puts()
+        # "+++++++++++++++++++++++++++++++++++" |> IO.puts()
+        # "+++++++++++++++++++++++++++++++++++" |> IO.puts()
+        true
       end
 
       fn ->
@@ -244,14 +244,14 @@ defmodule TalismanTest do
                                                                 propulsion,
                                                               %MissileFactTemplate{} = missile ->
       fn ->
-        "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
-        "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
-        "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
-        warhead |> IO.inspect(limit: :infinity)
-        "+++++++++++++++++++++++++++++++++++" |> IO.puts()
-        "+++++++++++++++++++++++++++++++++++" |> IO.puts()
-        "+++++++++++++++++++++++++++++++++++" |> IO.puts()
-        {:ok}
+        # "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
+        # "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
+        # "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
+        # warhead |> IO.inspect(limit: :infinity)
+        # "+++++++++++++++++++++++++++++++++++" |> IO.puts()
+        # "+++++++++++++++++++++++++++++++++++" |> IO.puts()
+        # "+++++++++++++++++++++++++++++++++++" |> IO.puts()
+        true
       end
 
       fn ->
@@ -346,10 +346,10 @@ defmodule TalismanTest do
       "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" |> IO.puts()
       "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" |> IO.puts()
 
-      InferenceEngine.get_rules_filtered_by_lhs_and_asserted_fact_template_names(inference_engine)
-      |> IO.inspect(limit: :infinity)
+      # InferenceEngine.get_rules_filtered_by_lhs_and_asserted_fact_template_names(inference_engine)
+      # |> IO.inspect(limit: :infinity)
 
-      "============================================================" |> IO.puts()
+      # "============================================================" |> IO.puts()
 
       # InferenceEngine.get_rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings(
       #   inference_engine
@@ -365,10 +365,10 @@ defmodule TalismanTest do
 
       # "============================================================" |> IO.puts()
 
-      # InferenceEngine.get_candidate_rule_activations(inference_engine)
-      # |> IO.inspect(limit: :infinity)
+      InferenceEngine.get_candidate_rule_activations(inference_engine)
+      |> IO.inspect(limit: :infinity)
 
-      # "============================================================" |> IO.puts()
+      "============================================================" |> IO.puts()
 
       InferenceEngine.get_activated_rules(inference_engine)
       |> IO.inspect(limit: :infinity)

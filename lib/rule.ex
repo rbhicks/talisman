@@ -15,8 +15,8 @@ defmodule Talisman.Rule do
   end
 
   def evaluate_lhs_for_asserted_facts(rule_pid, asserted_facts) do
-    {:ok, active?} = GenServer.call(rule_pid, {:evaluate_lhs_for_asserted_facts, asserted_facts})
-    active?
+    {:ok, activations} = GenServer.call(rule_pid, {:evaluate_lhs_for_asserted_facts, asserted_facts})
+    activations
   end
 
   def execute_rule do
@@ -62,10 +62,7 @@ defmodule Talisman.Rule do
             get_rule_lhs_evaluation_and_rhs_execution_functions
         } = state
       ) do
-    for closure_function_param_info <- asserted_facts do
-      "m8v823x0ks6d9eh23j4v9u8uyy7w9t" |> IO.puts()
-      "m8v823x0ks6d9eh23j4v9u8uyy7w9t" |> IO.puts()
-      "m8v823x0ks6d9eh23j4v9u8uyy7w9t" |> IO.puts()
+    activations = for closure_function_param_info <- asserted_facts do
       closure_function_params =
         for {_, asserted_fact_pid} <- closure_function_param_info do
           Fact.get_fact_instance(asserted_fact_pid)
@@ -74,29 +71,23 @@ defmodule Talisman.Rule do
       {lhs_evaluation_function, rhs_execution_function} =
         apply(get_rule_lhs_evaluation_and_rhs_execution_functions, closure_function_params)
 
-      lhs_evaluation_function.()
-      rhs_execution_function.()
-      "uwa901j4uhb4aadmocdrbg1w9hmqez" |> IO.puts()
-      "uwa901j4uhb4aadmocdrbg1w9hmqez" |> IO.puts()
-      "uwa901j4uhb4aadmocdrbg1w9hmqez" |> IO.puts()
-    end
+      {
+        rule_name,
+        closure_function_params,
+        lhs_evaluation_function,
+        rhs_execution_function
+      }
 
-    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    # need to return a map or array of activations for each
-    # set of fact istances
-    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    
-    active? = false
+    end
+    |> Enum.filter(fn {_, _, lhs_evaluation_function, _} ->
+      lhs_evaluation_function.()
+    end)
 
     {
       :reply,
       {
         :ok,
-        active?
+        activations
       },
       state
     }
