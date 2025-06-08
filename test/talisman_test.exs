@@ -332,15 +332,7 @@ defmodule TalismanTest do
 
     #   @tag :skip
     it "rule candidacy checks works", %{inference_engine: inference_engine} do
-      InferenceEngine.filter_rules_by_rule_lhs_and_asserted_fact_template_names(inference_engine)
-
-      InferenceEngine.generate_rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings(
-        inference_engine
-      )
-
-      InferenceEngine.filter_rules_by_rule_lhs_and_asserted_fact_multiplicity(inference_engine)
-      InferenceEngine.generate_candidate_rule_activations(inference_engine)
-      InferenceEngine.generate_activated_rules(inference_engine)
+      InferenceEngine.run(inference_engine)
 
       "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" |> IO.puts()
       "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" |> IO.puts()

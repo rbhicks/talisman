@@ -11,9 +11,21 @@ defmodule Talisman.InferenceEngine do
   #  def reset ...
   #  def run ...
 
-  #  defp add_activated_rule ...
-  #  defp resolve_execution_order ...
+  def run(server) do
 
+    filter_rules_by_rule_lhs_and_asserted_fact_template_names(server)
+
+    generate_rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings(
+      server
+    )
+
+    filter_rules_by_rule_lhs_and_asserted_fact_multiplicity(server)
+    generate_candidate_rule_activations(server)
+    generate_activated_rules(server)
+
+    :ok
+  end
+  
   def filter_rules_by_rule_lhs_and_asserted_fact_template_names(server) do
     :ok = GenServer.call(server, :filter_rules_by_rule_lhs_and_asserted_fact_template_names)
   end
@@ -36,6 +48,14 @@ defmodule Talisman.InferenceEngine do
 
   def generate_activated_rules(server) do
     :ok = GenServer.call(server, :generate_activated_rules)
+  end
+
+  def notify_fact_assertion(server, fact_pid) do
+    GenServer.cast(server, {:notify_fact_assertion, fact_pid})
+  end
+
+  def notify_fact_retraction(server, fact_pid) do
+    GenServer.cast(server, {:notify_fact_retraction, fact_pid})    
   end
 
   def get_rules_filtered_by_lhs_and_asserted_fact_template_names(server) do
@@ -321,6 +341,38 @@ defmodule Talisman.InferenceEngine do
     }
   end
 
+  def handle_cast({:notify_fact_assertion, fact_pid}, %{run_in_progess: true} = state) do
+
+    {
+      :reply,
+      state
+    }
+  end
+
+  def handle_cast({:notify_fact_assertion, fact_pid}, %{run_in_progess: false} = state) do
+
+    {
+      :reply,
+      state
+    }
+  end
+
+  def handle_cast({:notify_fact_retraction, fact_pid}, %{run_in_progess: true} = state) do
+
+    {
+      :reply,
+      state
+    }
+  end
+    
+  def handle_cast({:notify_fact_retraction, fact_pid}, %{run_in_progess: false} = state) do
+
+    {
+      :reply,
+      state
+    }
+  end
+
   def handle_call(
         :get_rules_filtered_by_lhs_and_asserted_fact_template_names,
         _from,
@@ -416,7 +468,8 @@ defmodule Talisman.InferenceEngine do
         rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings: [],
         rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity: [],
         candidate_rule_activations: [],
-        activated_rules: []
+        activated_rules: [],
+        run_in_progess: false
       }
     }
   end
