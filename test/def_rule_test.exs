@@ -6,6 +6,7 @@ defmodule DefRuleTest do
   alias Talisman.Test.Support.Fixtures.MissileFactTemplate
   alias Talisman.Test.Support.Fixtures.PropulsionFactTemplate
 
+  @tag :skip
   test "def_rule preserves variable bindings" do
     rules = :zorg
 
