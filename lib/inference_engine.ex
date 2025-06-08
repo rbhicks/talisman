@@ -11,6 +11,14 @@ defmodule Talisman.InferenceEngine do
   #  def reset ...
   #  def run ...
 
+  def set_facts(server, facts) do
+    GenServer.call(server, {:set_facts, facts})
+  end
+
+  def set_rules(server, rules) do
+    GenServer.call(server, {:set_rules, rules})
+  end
+  
   def run(server) do
     filter_rules_by_rule_lhs_and_asserted_fact_template_names(server)
 
@@ -24,6 +32,22 @@ defmodule Talisman.InferenceEngine do
   end
 
   def filter_rules_by_rule_lhs_and_asserted_fact_template_names(server) do
+
+    # "m6gxzp6prerw3pq67w1gmw7yycl88d" |> IO.puts
+    # "m6gxzp6prerw3pq67w1gmw7yycl88d" |> IO.puts
+    # "m6gxzp6prerw3pq67w1gmw7yycl88d" |> IO.puts
+    # server |> IO.inspect(limit: :infinity)
+    # # "==============================" |> IO.puts
+    # # facts |> IO.inspect(limit: :infinity)
+    # # "==============================" |> IO.puts
+    # # rules |> IO.inspect(limit: :infinity)
+    # # "==============================" |> IO.puts
+    # # mapper |> IO.inspect(limit: :infinity)
+    # "u5dfmopx6vicnw59w4ioizyocd4ldc" |> IO.puts
+    # "u5dfmopx6vicnw59w4ioizyocd4ldc" |> IO.puts
+    # "u5dfmopx6vicnw59w4ioizyocd4ldc" |> IO.puts
+
+    
     :ok = GenServer.call(server, :filter_rules_by_rule_lhs_and_asserted_fact_template_names)
   end
 
@@ -48,6 +72,16 @@ defmodule Talisman.InferenceEngine do
   end
 
   def notify_fact_assertion(server, fact_pid) do
+
+    "g8ngya4qs359eaiuodrc200h0pp6f2" |> IO.puts
+    "g8ngya4qs359eaiuodrc200h0pp6f2" |> IO.puts
+    "g8ngya4qs359eaiuodrc200h0pp6f2" |> IO.puts
+    "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
+    "4pm6361ubyu4codnlxhdqkz9l8djfa" |> IO.puts
+    "4pm6361ubyu4codnlxhdqkz9l8djfa" |> IO.puts
+    "4pm6361ubyu4codnlxhdqkz9l8djfa" |> IO.puts
+
+    
     GenServer.cast(server, {:notify_fact_assertion, fact_pid})
   end
 
@@ -89,11 +123,29 @@ defmodule Talisman.InferenceEngine do
     activated_rules
   end
 
+  def handle_call({:set_facts, facts}, _, state) do
+    {
+      :reply,
+      :ok,
+      state
+      |> Map.put(:facts, facts)
+    }
+  end
+
+  def handle_call({:set_rules, rules}, _, state) do
+    {
+      :reply,
+      :ok,
+      state
+      |> Map.put(:rules, rules)
+    }
+  end
+
   def handle_call(
         :filter_rules_by_rule_lhs_and_asserted_fact_template_names,
         _from,
         %{facts: facts, rules: rules, mapper: mapper} = state
-      ) do
+      ) do    
     # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -450,12 +502,12 @@ defmodule Talisman.InferenceEngine do
     GenServer.start_link(__MODULE__, params)
   end
 
-  def init(facts: facts, rules: rules, mapper: mapper) do
+  def init(mapper: mapper) do
     {
       :ok,
       %{
-        facts: facts,
-        rules: rules,
+        facts: nil,
+        rules: nil,
         mapper: mapper,
         rules_filtered_by_lhs_and_asserted_fact_template_names: [],
         rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings: [],

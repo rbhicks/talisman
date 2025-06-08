@@ -37,25 +37,6 @@ defmodule TalismanTest do
     facts_supervisor = start_supervised!(facts_supervisor_child_spec)
     rules_supervisor = start_supervised!(rules_supervisor_child_spec)
 
-    facts_child_spec =
-      %{
-        id: :facts,
-        start: {
-          Facts,
-          :start,
-          [[facts_supervisor: facts_supervisor]]
-        }
-      }
-
-    rules_child_spec =
-      %{
-        id: :rules,
-        start: {
-          Rules,
-          :start,
-          [[rules_supervisor: rules_supervisor]]
-        }
-      }
 
     mapper_child_spec =
       %{
@@ -67,21 +48,45 @@ defmodule TalismanTest do
         }
       }
 
-    facts = start_supervised!(facts_child_spec)
-    rules = start_supervised!(rules_child_spec)
     mapper = start_supervised!(mapper_child_spec)
-
+    
     inference_engine_child_spec =
       %{
         id: :inference_engine,
         start: {
           InferenceEngine,
           :start,
-          [[facts: facts, rules: rules, mapper: mapper]]
+          [[mapper: mapper]]
+        }
+      }
+    
+    inference_engine = start_supervised!(inference_engine_child_spec)
+   
+    facts_child_spec =
+      %{
+        id: :facts,
+        start: {
+          Facts,
+          :start,
+          [[facts_supervisor: facts_supervisor, inference_engine: inference_engine]]
         }
       }
 
-    inference_engine = start_supervised!(inference_engine_child_spec)
+    rules_child_spec =
+      %{
+        id: :rules,
+        start: {
+          Rules,
+          :start,
+          [[rules_supervisor: rules_supervisor, inference_engine: inference_engine]]
+        }
+      }
+
+    facts = start_supervised!(facts_child_spec)
+    rules = start_supervised!(rules_child_spec)
+
+    InferenceEngine.set_facts(inference_engine, facts)
+    InferenceEngine.set_rules(inference_engine, rules)
 
     Facts.assert(
       facts,

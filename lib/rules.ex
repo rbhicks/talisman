@@ -51,15 +51,16 @@ defmodule Talisman.Rules do
     }
   end
 
-  def start([rules_supervisor]) do
-    GenServer.start_link(__MODULE__, rules_supervisor)
+  def start(params) do
+    GenServer.start_link(__MODULE__, params)
   end
 
-  def init({_, rules_supervisor}) do
+  def init(rules_supervisor: rules_supervisor, inference_engine: inference_engine) do
     {
       :ok,
       %{
         rules_supervisor: rules_supervisor,
+        inference_engine: inference_engine,
         rules: %{}
       }
     }
