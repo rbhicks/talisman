@@ -22,7 +22,7 @@ defmodule Talisman.Facts do
   def handle_call(
         {:assert, %fact_template_name{} = fact_template, mapper},
         _from,
-        %{facts_supervisor: facts_supervisor, facts: facts} = state
+        %{facts_supervisor: facts_supervisor, facts: facts, inference_engine: inference_engine} = state
       ) do
     asserted_fact_identity = "#{fact_template_name}->#{DateTime.utc_now(:microsecond)}"
     
@@ -48,6 +48,7 @@ defmodule Talisman.Facts do
 
     {_, {_, pid}, _} = response
 
+    InferenceEngine.notify_fact_assertion(inference_engine, pid)
     Mapper.update_fact_template_name_asserted_facts_mapping(mapper, fact_template_name, pid)
 
     response

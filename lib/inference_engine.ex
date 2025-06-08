@@ -9,7 +9,6 @@ defmodule Talisman.InferenceEngine do
 
   #  def load ...
   #  def reset ...
-  #  def run ...
 
   def set_facts(server, facts) do
     GenServer.call(server, {:set_facts, facts})
@@ -32,22 +31,6 @@ defmodule Talisman.InferenceEngine do
   end
 
   def filter_rules_by_rule_lhs_and_asserted_fact_template_names(server) do
-
-    # "m6gxzp6prerw3pq67w1gmw7yycl88d" |> IO.puts
-    # "m6gxzp6prerw3pq67w1gmw7yycl88d" |> IO.puts
-    # "m6gxzp6prerw3pq67w1gmw7yycl88d" |> IO.puts
-    # server |> IO.inspect(limit: :infinity)
-    # # "==============================" |> IO.puts
-    # # facts |> IO.inspect(limit: :infinity)
-    # # "==============================" |> IO.puts
-    # # rules |> IO.inspect(limit: :infinity)
-    # # "==============================" |> IO.puts
-    # # mapper |> IO.inspect(limit: :infinity)
-    # "u5dfmopx6vicnw59w4ioizyocd4ldc" |> IO.puts
-    # "u5dfmopx6vicnw59w4ioizyocd4ldc" |> IO.puts
-    # "u5dfmopx6vicnw59w4ioizyocd4ldc" |> IO.puts
-
-    
     :ok = GenServer.call(server, :filter_rules_by_rule_lhs_and_asserted_fact_template_names)
   end
 
@@ -72,21 +55,11 @@ defmodule Talisman.InferenceEngine do
   end
 
   def notify_fact_assertion(server, fact_pid) do
-
-    "g8ngya4qs359eaiuodrc200h0pp6f2" |> IO.puts
-    "g8ngya4qs359eaiuodrc200h0pp6f2" |> IO.puts
-    "g8ngya4qs359eaiuodrc200h0pp6f2" |> IO.puts
-    "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts
-    "4pm6361ubyu4codnlxhdqkz9l8djfa" |> IO.puts
-    "4pm6361ubyu4codnlxhdqkz9l8djfa" |> IO.puts
-    "4pm6361ubyu4codnlxhdqkz9l8djfa" |> IO.puts
-
-    
-    GenServer.cast(server, {:notify_fact_assertion, fact_pid})
+    GenServer.call(server, {:notify_fact_assertion, fact_pid})
   end
 
   def notify_fact_retraction(server, fact_pid) do
-    GenServer.cast(server, {:notify_fact_retraction, fact_pid})
+    GenServer.call(server, {:notify_fact_retraction, fact_pid})
   end
 
   def get_rules_filtered_by_lhs_and_asserted_fact_template_names(server) do
@@ -390,30 +363,34 @@ defmodule Talisman.InferenceEngine do
     }
   end
 
-  def handle_cast({:notify_fact_assertion, fact_pid}, %{run_in_progess: true} = state) do
+  def handle_call({:notify_fact_assertion, fact_pid}, _, %{run_in_progess: true} = state) do
     {
       :reply,
+      :ok,
       state
     }
   end
 
-  def handle_cast({:notify_fact_assertion, fact_pid}, %{run_in_progess: false} = state) do
+  def handle_call({:notify_fact_assertion, fact_pid}, _, %{run_in_progess: false} = state) do
     {
       :reply,
+      :ok,
       state
     }
   end
 
-  def handle_cast({:notify_fact_retraction, fact_pid}, %{run_in_progess: true} = state) do
+  def handle_call({:notify_fact_retraction, fact_pid}, _, %{run_in_progess: true} = state) do
     {
       :reply,
+      :ok,
       state
     }
   end
 
-  def handle_cast({:notify_fact_retraction, fact_pid}, %{run_in_progess: false} = state) do
+  def handle_call({:notify_fact_retraction, fact_pid}, _, %{run_in_progess: false} = state) do
     {
       :reply,
+      :ok,
       state
     }
   end
