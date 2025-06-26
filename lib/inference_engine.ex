@@ -17,7 +17,7 @@ defmodule Talisman.InferenceEngine do
   def set_rules(server, rules) do
     GenServer.call(server, {:set_rules, rules})
   end
-  
+
   def run(server) do
     filter_rules_by_rule_lhs_and_asserted_fact_template_names(server)
 
@@ -118,7 +118,7 @@ defmodule Talisman.InferenceEngine do
         :filter_rules_by_rule_lhs_and_asserted_fact_template_names,
         _from,
         %{facts: facts, rules: rules, mapper: mapper} = state
-      ) do    
+      ) do
     # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -297,7 +297,6 @@ defmodule Talisman.InferenceEngine do
             {:halt, false}
           end
         end)
-        |> IO.inspect(limit: :infinity)
       end)
 
     {
@@ -353,6 +352,20 @@ defmodule Talisman.InferenceEngine do
             Utilities.create_cartesian_product(asserted_facts)
           )
         }
+      end)
+      # the semantics of Rule.evaluate_lhs_for_asserted_facts is
+      # to return an empty list where the rhs execution function
+      # should be. so filter it.
+      #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      #this ^^^^ is wonky...fix it.
+      #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      |> Enum.reject(fn {_, _, rhs_execution_function} ->
+        rhs_execution_function
+        |> Enum.empty?()
       end)
 
     {

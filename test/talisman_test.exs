@@ -37,7 +37,6 @@ defmodule TalismanTest do
     facts_supervisor = start_supervised!(facts_supervisor_child_spec)
     rules_supervisor = start_supervised!(rules_supervisor_child_spec)
 
-
     mapper_child_spec =
       %{
         id: :mapper,
@@ -49,7 +48,7 @@ defmodule TalismanTest do
       }
 
     mapper = start_supervised!(mapper_child_spec)
-    
+
     inference_engine_child_spec =
       %{
         id: :inference_engine,
@@ -59,9 +58,9 @@ defmodule TalismanTest do
           [[mapper: mapper]]
         }
       }
-    
+
     inference_engine = start_supervised!(inference_engine_child_spec)
-   
+
     facts_child_spec =
       %{
         id: :facts,
@@ -370,7 +369,6 @@ defmodule TalismanTest do
       InferenceEngine.get_activated_rules(inference_engine)
       |> IO.inspect(limit: :infinity)
 
-
       "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" |> IO.puts()
       "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" |> IO.puts()
       "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" |> IO.puts()
@@ -382,7 +380,7 @@ defmodule TalismanTest do
       "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" |> IO.puts()
       "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" |> IO.puts()
       "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" |> IO.puts()
-      
+
       "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" |> IO.puts()
       "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" |> IO.puts()
       "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" |> IO.puts()

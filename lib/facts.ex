@@ -22,10 +22,11 @@ defmodule Talisman.Facts do
   def handle_call(
         {:assert, %fact_template_name{} = fact_template, mapper},
         _from,
-        %{facts_supervisor: facts_supervisor, facts: facts, inference_engine: inference_engine} = state
+        %{facts_supervisor: facts_supervisor, facts: facts, inference_engine: inference_engine} =
+          state
       ) do
     asserted_fact_identity = "#{fact_template_name}->#{DateTime.utc_now(:microsecond)}"
-    
+
     response =
       Utilities.generate_fact_assertion_or_rule_addition_response(
         facts_supervisor,
@@ -62,7 +63,7 @@ defmodule Talisman.Facts do
     }
   end
 
-  def start(params) do    
+  def start(params) do
     GenServer.start_link(__MODULE__, params)
   end
 
