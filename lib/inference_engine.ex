@@ -26,6 +26,7 @@ defmodule Talisman.InferenceEngine do
     filter_rules_by_rule_lhs_and_asserted_fact_multiplicity(server)
     generate_candidate_rule_activations(server)
     generate_activated_rules(server)
+    execute_activated_rules(server)
 
     :ok
   end
@@ -52,6 +53,10 @@ defmodule Talisman.InferenceEngine do
 
   def generate_activated_rules(server) do
     :ok = GenServer.call(server, :generate_activated_rules)
+  end
+
+  def execute_activated_rules(server) do
+    :ok = GenServer.call(server, :execute_activated_rules)
   end
 
   def notify_fact_assertion(server, fact_pid) do
@@ -359,7 +364,7 @@ defmodule Talisman.InferenceEngine do
       #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
       #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
       #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-      #this ^^^^ is wonky...fix it.
+      # this ^^^^ is wonky...fix it.
       #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
       #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
       #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -373,6 +378,24 @@ defmodule Talisman.InferenceEngine do
       :ok,
       state
       |> Map.put(:activated_rules, activated_rules)
+    }
+  end
+
+  def handle_call(
+        :execute_activated_rules,
+        _from,
+        %{activated_rules: activated_rules} = state
+      ) do
+    for {_, _, rhs_execution_functions} <- activated_rules do
+      for {_, rhs_execution_function} <- rhs_execution_functions do
+        rhs_execution_function.()
+      end
+    end
+
+    {
+      :reply,
+      :ok,
+      state
     }
   end
 

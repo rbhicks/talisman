@@ -361,13 +361,13 @@ defmodule TalismanTest do
 
       # "============================================================" |> IO.puts()
 
-      InferenceEngine.get_candidate_rule_activations(inference_engine)
-      |> IO.inspect(limit: :infinity)
+      # InferenceEngine.get_candidate_rule_activations(inference_engine)
+      # |> IO.inspect(limit: :infinity)
 
-      "============================================================" |> IO.puts()
+      # "============================================================" |> IO.puts()
 
-      InferenceEngine.get_activated_rules(inference_engine)
-      |> IO.inspect(limit: :infinity)
+      # InferenceEngine.get_activated_rules(inference_engine)
+      # |> IO.inspect(limit: :infinity)
 
       "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" |> IO.puts()
       "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" |> IO.puts()
@@ -377,6 +377,10 @@ defmodule TalismanTest do
       "instead, just review the activated rules upon fact assertion and rectraction." |> IO.puts()
       "this can be controlled/optimized by tracking whether or not an assertion" |> IO.puts()
       "or retraction occurs when a 'run' is in progress." |> IO.puts()
+      "============================================================" |> IO.puts()
+      "tighten everything and review comments" |> IO.puts()
+      "============================================================" |> IO.puts()
+      "break out handler logic into more easily testable functions" |> IO.puts()
       "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" |> IO.puts()
       "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" |> IO.puts()
       "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" |> IO.puts()
