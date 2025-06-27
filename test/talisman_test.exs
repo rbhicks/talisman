@@ -67,7 +67,13 @@ defmodule TalismanTest do
         start: {
           Facts,
           :start,
-          [[facts_supervisor: facts_supervisor, inference_engine: inference_engine, mapper: mapper]]
+          [
+            [
+              facts_supervisor: facts_supervisor,
+              inference_engine: inference_engine,
+              mapper: mapper
+            ]
+          ]
         }
       }
 

@@ -68,7 +68,13 @@ defmodule InferenceEngineTest do
         start: {
           Facts,
           :start,
-          [[facts_supervisor: facts_supervisor, inference_engine: inference_engine, mapper: mapper]]
+          [
+            [
+              facts_supervisor: facts_supervisor,
+              inference_engine: inference_engine,
+              mapper: mapper
+            ]
+          ]
         }
       }
 
@@ -195,7 +201,7 @@ defmodule InferenceEngineTest do
           true
         else
           false
-        end  
+        end
       end
 
       fn ->
@@ -214,7 +220,7 @@ defmodule InferenceEngineTest do
           true
         else
           false
-        end  
+        end
       end
 
       fn ->
@@ -233,7 +239,7 @@ defmodule InferenceEngineTest do
           true
         else
           false
-        end  
+        end
       end
 
       fn ->
@@ -353,13 +359,13 @@ defmodule InferenceEngineTest do
     it "simple rule test", %{inference_engine: inference_engine, facts: facts} do
       InferenceEngine.run(inference_engine)
 
-      # "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" |> IO.puts()
-      # "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" |> IO.puts()
-      # "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" |> IO.puts()
-      # Facts.get_asserted_facts(facts) |> IO.inspect(limit: :infinity)
-      # "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" |> IO.puts()
-      # "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" |> IO.puts()
-      # "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" |> IO.puts()
+      "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" |> IO.puts()
+      "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" |> IO.puts()
+      "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" |> IO.puts()
+      Facts.get_asserted_facts(facts) |> IO.inspect(limit: :infinity)
+      "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" |> IO.puts()
+      "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" |> IO.puts()
+      "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" |> IO.puts()
     end
   end
 end
