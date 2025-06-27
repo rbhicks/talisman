@@ -17,3 +17,7 @@ end
 defmodule Talisman.Test.Support.Fixtures.PropulsionFactTemplate do
   defstruct name: nil, type: nil, power: nil
 end
+
+defmodule Talisman.Test.Support.Fixtures.RuleTestResultFactTemplate do
+  defstruct result: nil
+end
