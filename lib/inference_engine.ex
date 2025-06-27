@@ -19,15 +19,7 @@ defmodule Talisman.InferenceEngine do
   end
 
   def run(server) do
-    filter_rules_by_rule_lhs_and_asserted_fact_template_names(server)
-
     GenServer.call(server, :activate_and_execute_rules)
-
-    :ok
-  end
-
-  def filter_rules_by_rule_lhs_and_asserted_fact_template_names(server) do
-    :ok = GenServer.call(server, :filter_rules_by_rule_lhs_and_asserted_fact_template_names)
   end
 
   def execute_activated_rules(server) do
@@ -53,10 +45,53 @@ defmodule Talisman.InferenceEngine do
   end
 
   def handle_call(
-        :filter_rules_by_rule_lhs_and_asserted_fact_template_names,
+        :activate_and_execute_rules,
         _from,
-        %{facts: facts, rules: rules, mapper: mapper} = state
+        %{
+          facts: facts,
+          rules: rules,
+          mapper: mapper
+        } = state
       ) do
+
+    rules_filtered_by_lhs_and_asserted_fact_template_names = filter_rules_by_rule_lhs_and_asserted_fact_template_names(facts, rules, mapper)
+    rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity = filter_rules_by_rule_lhs_and_asserted_fact_multiplicity(rules_filtered_by_lhs_and_asserted_fact_template_names, facts, rules)
+    rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings = generate_rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings(rules_filtered_by_lhs_and_asserted_fact_template_names, facts, rules, mapper)
+
+    activated_rules = rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings
+    |> generate_candidate_rule_activations(rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity)
+    |> generate_activated_rules()
+    
+    
+    for {_, _, rhs_execution_functions} <- activated_rules do
+      for {_, rhs_execution_function} <- rhs_execution_functions do
+        rhs_execution_function.()
+      end
+    end
+
+    {
+      :reply,
+      :ok,
+      state
+    }
+  end
+
+  def start(params) do
+    GenServer.start_link(__MODULE__, params)
+  end
+
+  def init(mapper: mapper) do
+    {
+      :ok,
+      %{
+        facts: nil,
+        rules: nil,
+        mapper: mapper
+      }
+    }
+  end
+
+  def filter_rules_by_rule_lhs_and_asserted_fact_template_names(facts, rules, mapper) do
     # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -93,72 +128,12 @@ defmodule Talisman.InferenceEngine do
         |> Kernel.++(acc)
       end)
 
-    rules_filtered_by_lhs_and_asserted_fact_template_names =
       mapped_rules
       |> Enum.filter(fn rule_name ->
         rule_lhs_fact_template_names[rule_name]
         |> MapSet.subset?(asserted_fact_templates_names)
       end)
       |> Enum.uniq()
-
-    {
-      :reply,
-      :ok,
-      state
-      |> Map.put(
-        :rules_filtered_by_lhs_and_asserted_fact_template_names,
-        rules_filtered_by_lhs_and_asserted_fact_template_names
-      )
-    }
-  end
-
-  def handle_call(
-        :activate_and_execute_rules,
-        _from,
-        %{
-          facts: facts,
-          rules: rules,
-          mapper: mapper,
-          rules_filtered_by_lhs_and_asserted_fact_template_names: rules_filtered_by_lhs_and_asserted_fact_template_names
-        } = state
-      ) do
-
-    rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity = filter_rules_by_rule_lhs_and_asserted_fact_multiplicity(rules_filtered_by_lhs_and_asserted_fact_template_names, facts, rules)
-    rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings = generate_rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings(rules_filtered_by_lhs_and_asserted_fact_template_names, facts, rules, mapper)
-
-    activated_rules = rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings
-    |> generate_candidate_rule_activations(rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity)
-    |> generate_activated_rules()
-    
-    
-    for {_, _, rhs_execution_functions} <- activated_rules do
-      for {_, rhs_execution_function} <- rhs_execution_functions do
-        rhs_execution_function.()
-      end
-    end
-
-    {
-      :reply,
-      :ok,
-      state
-    }
-  end
-
-  def start(params) do
-    GenServer.start_link(__MODULE__, params)
-  end
-
-  def init(mapper: mapper) do
-    {
-      :ok,
-      %{
-        facts: nil,
-        rules: nil,
-        mapper: mapper,
-        rules_filtered_by_lhs_and_asserted_fact_template_names: [],
-        rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings: []
-      }
-    }
   end
 
   def generate_rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings(rules_filtered_by_lhs_and_asserted_fact_template_names, facts, rules, mapper) do
