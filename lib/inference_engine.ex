@@ -19,7 +19,6 @@ defmodule Talisman.InferenceEngine do
   end
 
   def run(server) do
-    GenServer.call(server, :set_run_in_progress)
     filter_rules_by_rule_lhs_and_asserted_fact_template_names(server)
 
     generate_rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings(server)
@@ -29,7 +28,6 @@ defmodule Talisman.InferenceEngine do
     generate_activated_rules(server)
     execute_activated_rules(server)
 
-    GenServer.call(server, :clear_run_in_progress)
     :ok
   end
 
@@ -402,54 +400,6 @@ defmodule Talisman.InferenceEngine do
     }
   end
 
-  def handle_cast({:notify_fact_assertion, fact_pid}, %{run_in_progess: true} = state) do
-    {
-      :noreply,
-      state
-    }
-  end
-
-  def handle_cast({:notify_fact_assertion, fact_pid}, %{run_in_progess: false} = state) do
-    {
-      :noreply,
-      state
-    }
-  end
-
-  def handle_call(:set_run_in_progress, _, state) do
-    {
-      :reply,
-      :ok,
-      state
-      |> Map.put(:run_in_progress, true)
-    }
-  end
-
-  def handle_call(:clear_run_in_progress, _, state) do
-    {
-      :reply,
-      :ok,
-      state
-      |> Map.put(:run_in_progress, false)
-    }
-  end
-  
-  def handle_call({:notify_fact_retraction, fact_pid}, _, %{run_in_progess: true} = state) do
-    {
-      :reply,
-      :ok,
-      state
-    }
-  end
-
-  def handle_call({:notify_fact_retraction, fact_pid}, _, %{run_in_progess: false} = state) do
-    {
-      :reply,
-      :ok,
-      state
-    }
-  end
-
   def handle_call(
         :get_rules_filtered_by_lhs_and_asserted_fact_template_names,
         _from,
@@ -545,8 +495,7 @@ defmodule Talisman.InferenceEngine do
         rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings: [],
         rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity: [],
         candidate_rule_activations: [],
-        activated_rules: [],
-        run_in_progess: false
+        activated_rules: []
       }
     }
   end

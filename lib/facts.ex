@@ -49,7 +49,6 @@ defmodule Talisman.Facts do
 
     {_, {_, pid}, _} = response
 
-    InferenceEngine.notify_fact_assertion(inference_engine, pid)
     Mapper.update_fact_template_name_asserted_facts_mapping(mapper, fact_template_name, pid)
 
     response
