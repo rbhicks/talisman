@@ -6,8 +6,8 @@ defmodule Talisman.Facts do
   alias Talisman.Mapper
   alias Talisman.InferenceEngine
 
-  def assert(server, fact_template, mapper) do
-    GenServer.call(server, {:assert, fact_template, mapper})
+  def assert(server, fact_template) do
+    GenServer.call(server, {:assert, fact_template})
   end
 
   #  def retract ...
@@ -20,9 +20,9 @@ defmodule Talisman.Facts do
   end
 
   def handle_call(
-        {:assert, %fact_template_name{} = fact_template, mapper},
+        {:assert, %fact_template_name{} = fact_template},
         _from,
-        %{facts_supervisor: facts_supervisor, facts: facts, inference_engine: inference_engine} =
+        %{facts_supervisor: facts_supervisor, facts: facts, inference_engine: inference_engine, mapper: mapper} =
           state
       ) do
     asserted_fact_identity = "#{fact_template_name}->#{DateTime.utc_now(:microsecond)}"
@@ -67,12 +67,13 @@ defmodule Talisman.Facts do
     GenServer.start_link(__MODULE__, params)
   end
 
-  def init(facts_supervisor: facts_supervisor, inference_engine: inference_engine) do
+  def init(facts_supervisor: facts_supervisor, inference_engine: inference_engine, mapper: mapper) do
     {
       :ok,
       %{
         facts_supervisor: facts_supervisor,
         inference_engine: inference_engine,
+        mapper: mapper,
         facts: %{}
       }
     }

@@ -67,7 +67,7 @@ defmodule TalismanTest do
         start: {
           Facts,
           :start,
-          [[facts_supervisor: facts_supervisor, inference_engine: inference_engine]]
+          [[facts_supervisor: facts_supervisor, inference_engine: inference_engine, mapper: mapper]]
         }
       }
 
@@ -95,8 +95,7 @@ defmodule TalismanTest do
         propulsion: :solid_propellant,
         guidance: :ballistic_trajectory,
         warhead: :mirv
-      },
-      mapper
+      }
     )
 
     Facts.assert(
@@ -107,8 +106,7 @@ defmodule TalismanTest do
         propulsion: :solid_propellant,
         guidance: :semi_active_radar,
         warhead: :continuous_rod
-      },
-      mapper
+      }
     )
 
     Facts.assert(
@@ -119,8 +117,7 @@ defmodule TalismanTest do
         propulsion: :solid_propellant,
         guidance: :semi_active_radar,
         warhead: :continuous_rod
-      },
-      mapper
+      }
     )
 
     Facts.assert(
@@ -130,8 +127,7 @@ defmodule TalismanTest do
         type: :gravity_bomb,
         guidance: :glide,
         warhead: :thermonuclear
-      },
-      mapper
+      }
     )
 
     Facts.assert(
@@ -140,8 +136,7 @@ defmodule TalismanTest do
         name: :f107_wr_400,
         type: :turbofan,
         power: :"2.7_kN"
-      },
-      mapper
+      }
     )
 
     Facts.assert(
@@ -150,8 +145,7 @@ defmodule TalismanTest do
         name: :"f107_wr_105/401",
         type: :turbofan,
         power: :"6.22_kN"
-      },
-      mapper
+      }
     )
 
     Facts.assert(
@@ -160,8 +154,7 @@ defmodule TalismanTest do
         name: :W80,
         type: :thermonuclear,
         yield: :"21-628_TJ"
-      },
-      mapper
+      }
     )
 
     DefRule.def_rule(rules, :found_icbm, fn %MissileFactTemplate{} = missile ->
