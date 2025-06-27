@@ -99,16 +99,27 @@ defmodule InferenceEngineTest do
       }
     )
 
-    # Facts.assert(
-    #   facts,
-    #   %MissileFactTemplate{
-    #     name: :aim_9c_sidewinder,
-    #     type: :air_to_air,
-    #     propulsion: :solid_propellant,
-    #     guidance: :semi_active_radar,
-    #     warhead: :continuous_rod
-    #   }
-    # )
+    Facts.assert(
+      facts,
+      %MissileFactTemplate{
+        name: :minuteman_ii,
+        type: :icbm,
+        propulsion: :solid_propellant,
+        guidance: :ballistic_trajectory,
+        warhead: :mirv
+      }
+    )
+
+    Facts.assert(
+      facts,
+      %MissileFactTemplate{
+        name: :aim_9c_sidewinder,
+        type: :air_to_air,
+        propulsion: :solid_propellant,
+        guidance: :semi_active_radar,
+        warhead: :continuous_rod
+      }
+    )
 
     # Facts.assert(
     #   facts,
@@ -121,15 +132,35 @@ defmodule InferenceEngineTest do
     #   }
     # )
 
-    # Facts.assert(
-    #   facts,
-    #   %BombFactTemplate{
-    #     name: :b61,
-    #     type: :gravity_bomb,
-    #     guidance: :glide,
-    #     warhead: :thermonuclear
-    #   }
-    # )
+    Facts.assert(
+      facts,
+      %BombFactTemplate{
+        name: :b61,
+        type: :gravity_bomb,
+        guidance: :glide,
+        warhead: :thermonuclear
+      }
+    )
+
+    Facts.assert(
+      facts,
+      %BombFactTemplate{
+        name: :b61,
+        type: :gravity_bomb,
+        guidance: :glide,
+        warhead: :thermonuclear
+      }
+    )
+
+    Facts.assert(
+      facts,
+      %BombFactTemplate{
+        name: :b61,
+        type: :gravity_bomb,
+        guidance: :glide,
+        warhead: :thermonuclear
+      }
+    )
 
     # Facts.assert(
     #   facts,
@@ -172,6 +203,44 @@ defmodule InferenceEngineTest do
           facts,
           %RuleTestResultFactTemplate{
             result: :found_icbm
+          }
+        )
+      end
+    end)
+
+    DefRule.def_rule(rules, :found_air_to_air, fn %MissileFactTemplate{} = missile ->
+      fn ->
+        if missile.type == :air_to_air do
+          true
+        else
+          false
+        end  
+      end
+
+      fn ->
+        Facts.assert(
+          facts,
+          %RuleTestResultFactTemplate{
+            result: :found_air_to_air
+          }
+        )
+      end
+    end)
+
+    DefRule.def_rule(rules, :found_gravity_bomb, fn %BombFactTemplate{} = bomb ->
+      fn ->
+        if bomb.type == :gravity_bomb do
+          true
+        else
+          false
+        end  
+      end
+
+      fn ->
+        Facts.assert(
+          facts,
+          %RuleTestResultFactTemplate{
+            result: :found_gravity_bomb
           }
         )
       end
@@ -284,13 +353,13 @@ defmodule InferenceEngineTest do
     it "simple rule test", %{inference_engine: inference_engine, facts: facts} do
       InferenceEngine.run(inference_engine)
 
-      "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" |> IO.puts()
-      "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" |> IO.puts()
-      "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" |> IO.puts()
-      Facts.get_asserted_facts(facts) |> IO.inspect(limit: :infinity)
-      "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" |> IO.puts()
-      "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" |> IO.puts()
-      "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" |> IO.puts()
+      # "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" |> IO.puts()
+      # "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" |> IO.puts()
+      # "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" |> IO.puts()
+      # Facts.get_asserted_facts(facts) |> IO.inspect(limit: :infinity)
+      # "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" |> IO.puts()
+      # "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" |> IO.puts()
+      # "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" |> IO.puts()
     end
   end
 end

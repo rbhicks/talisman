@@ -56,11 +56,28 @@ defmodule Talisman.InferenceEngine do
 
     activated_rules = get_actitvated_rules(facts, rules, mapper)
     
-    for {_, _, rhs_execution_functions} <- activated_rules do
-      for {_, rhs_execution_function} <- rhs_execution_functions do
-        rhs_execution_function.()
-      end
-    end
+    # activated_rules is a flattened list with redundant data
+    # as it needs to be be that way to properly do rule processing
+    # except for rules that are purely for side effects, not most
+    # in all likelihood, we need to recheck activations every time
+    # a rule is fire in that the assertion, retraction, or updating
+    # of a fact could affect activations. to make this tractable,
+    # we need such a flattened list. we'll keep track of the rule
+    # and fact pid list that caused it to fire. if that same rule
+    # and fact list combination is still present, we skip executing
+    # the rule and move one until we're done.
+    #
+    # N.B.:
+    #       1) an updated fact will have a different pid, essentially
+    #          a different fact, so that won't be overlooked.
+    #       2) in the above case, and others, a rule may in fact fire
+    #          again.
+    #       3) yes, it's possible that this could result in an infinite
+    #          loop. however, this a rule logic problem and not a talisman
+    #          problem.
+
+
+    
     
     {
       :reply,
@@ -99,6 +116,15 @@ defmodule Talisman.InferenceEngine do
     activated_rules = rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings
     |> generate_candidate_rule_activations(rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity)
     |> generate_activated_rules()
+    # have to combine and flatten these to make the
+    # fact maintencance and rule execution logic work
+    |> Enum.map(fn {rule_name, rule_pid, activations} ->
+      activations
+      |> Enum.map(fn {fact_pids, rhs_execution_function} ->
+        {rule_name, rule_pid, fact_pids, rhs_execution_function}
+      end)
+    end)
+    |> Enum.flat_map(fn activation_info -> activation_info end)
   end
 
   def filter_rules_by_rule_lhs_and_asserted_fact_template_names(facts, rules, mapper) do
