@@ -23,7 +23,6 @@ defmodule Talisman.InferenceEngine do
 
     generate_rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings(server)
 
-    filter_rules_by_rule_lhs_and_asserted_fact_multiplicity(server)
     GenServer.call(server, :activate_and_execute_rules)
 
     :ok
@@ -41,36 +40,8 @@ defmodule Talisman.InferenceEngine do
       )
   end
 
-  def filter_rules_by_rule_lhs_and_asserted_fact_multiplicity(server) do
-    :ok = GenServer.call(server, :filter_rules_by_rule_lhs_and_asserted_fact_multiplicity)
-  end
-
   def execute_activated_rules(server) do
     :ok = GenServer.call(server, :execute_activated_rules)
-  end
-
-  def get_rules_filtered_by_lhs_and_asserted_fact_template_names(server) do
-    {:ok, rules_filtered_by_lhs_and_asserted_fact_template_names} =
-      GenServer.call(server, :get_rules_filtered_by_lhs_and_asserted_fact_template_names)
-
-    rules_filtered_by_lhs_and_asserted_fact_template_names
-  end
-
-  def get_rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings(server) do
-    {:ok, rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings} =
-      GenServer.call(
-        server,
-        :get_rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings
-      )
-
-    rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings
-  end
-
-  def get_rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity(server) do
-    {:ok, rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity} =
-      GenServer.call(server, :get_rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity)
-
-    rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity
   end
 
   def handle_call({:set_facts, facts}, _, state) do
@@ -235,64 +206,17 @@ defmodule Talisman.InferenceEngine do
   end
 
   def handle_call(
-        :filter_rules_by_rule_lhs_and_asserted_fact_multiplicity,
+        :activate_and_execute_rules,
         _from,
         %{
           facts: facts,
           rules: rules,
-          rules_filtered_by_lhs_and_asserted_fact_template_names:
-            rules_filtered_by_lhs_and_asserted_fact_template_names
+          rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings: rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings,
+          rules_filtered_by_lhs_and_asserted_fact_template_names: rules_filtered_by_lhs_and_asserted_fact_template_names
         } = state
       ) do
-    asserted_facts = Facts.get_asserted_facts(facts)
-    current_rules = Rules.get_rules(rules)
 
-    asserted_facts_template_name_frequencies =
-      asserted_facts
-      |> Map.values()
-      |> Enum.map(fn {asserted_fact_template_name, _} ->
-        asserted_fact_template_name
-      end)
-      |> Enum.frequencies()
-
-    rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity =
-      current_rules
-      |> Map.take(rules_filtered_by_lhs_and_asserted_fact_template_names)
-      |> Enum.filter(fn {_, {rule_name, rule_pid}} ->
-        lhs_fact_multiplicity = Rule.get_lhs_fact_multiplicity(rule_pid)
-
-        lhs_fact_multiplicity
-        |> Enum.reduce_while(true, fn {lhs_fact_template_name,
-                                       lhs_fact_template_name_multiplicity},
-                                      acc ->
-          if(
-            Map.get(asserted_facts_template_name_frequencies, lhs_fact_template_name) >=
-              lhs_fact_template_name_multiplicity
-          ) do
-            {:cont, acc}
-          else
-            {:halt, false}
-          end
-        end)
-      end)
-
-    {
-      :reply,
-      :ok,
-      state
-      |> Map.put(
-        :rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity,
-        rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity
-      )
-    }
-  end
-
-  def handle_call(
-        :activate_and_execute_rules,
-        _from,
-        %{rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings: rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings,
-    rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity: rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity} = state
-      ) do
+    rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity = filter_rules_by_rule_lhs_and_asserted_fact_multiplicity(rules_filtered_by_lhs_and_asserted_fact_template_names, facts, rules)
 
     activated_rules = rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings
     |> generate_candidate_rule_activations(rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity)
@@ -308,60 +232,6 @@ defmodule Talisman.InferenceEngine do
     {
       :reply,
       :ok,
-      state
-    }
-  end
-
-  def handle_call(
-        :get_rules_filtered_by_lhs_and_asserted_fact_template_names,
-        _from,
-        %{
-          rules_filtered_by_lhs_and_asserted_fact_template_names:
-            get_rules_filtered_by_lhs_and_asserted_fact_template_names
-        } = state
-      ) do
-    {
-      :reply,
-      {
-        :ok,
-        get_rules_filtered_by_lhs_and_asserted_fact_template_names
-      },
-      state
-    }
-  end
-
-  def handle_call(
-        :get_rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings,
-        _from,
-        %{
-          rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings:
-            rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings
-        } = state
-      ) do
-    {
-      :reply,
-      {
-        :ok,
-        rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings
-      },
-      state
-    }
-  end
-
-  def handle_call(
-        :get_rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity,
-        _from,
-        %{
-          rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity:
-            rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity
-        } = state
-      ) do
-    {
-      :reply,
-      {
-        :ok,
-        rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity
-      },
       state
     }
   end
@@ -382,6 +252,39 @@ defmodule Talisman.InferenceEngine do
         rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity: []
       }
     }
+  end
+
+  def filter_rules_by_rule_lhs_and_asserted_fact_multiplicity(rules_filtered_by_lhs_and_asserted_fact_template_names, facts, rules) do
+        asserted_facts = Facts.get_asserted_facts(facts)
+    current_rules = Rules.get_rules(rules)
+
+    asserted_facts_template_name_frequencies =
+      asserted_facts
+      |> Map.values()
+      |> Enum.map(fn {asserted_fact_template_name, _} ->
+        asserted_fact_template_name
+      end)
+      |> Enum.frequencies()
+
+      current_rules
+      |> Map.take(rules_filtered_by_lhs_and_asserted_fact_template_names)
+      |> Enum.filter(fn {_, {rule_name, rule_pid}} ->
+        lhs_fact_multiplicity = Rule.get_lhs_fact_multiplicity(rule_pid)
+
+        lhs_fact_multiplicity
+        |> Enum.reduce_while(true, fn {lhs_fact_template_name,
+                                       lhs_fact_template_name_multiplicity},
+                                      acc ->
+          if(
+            Map.get(asserted_facts_template_name_frequencies, lhs_fact_template_name) >=
+              lhs_fact_template_name_multiplicity
+          ) do
+            {:cont, acc}
+          else
+            {:halt, false}
+          end
+        end)
+      end)
   end
 
   def generate_candidate_rule_activations(rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings,
