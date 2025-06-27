@@ -54,21 +54,14 @@ defmodule Talisman.InferenceEngine do
         } = state
       ) do
 
-    rules_filtered_by_lhs_and_asserted_fact_template_names = filter_rules_by_rule_lhs_and_asserted_fact_template_names(facts, rules, mapper)
-    rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity = filter_rules_by_rule_lhs_and_asserted_fact_multiplicity(rules_filtered_by_lhs_and_asserted_fact_template_names, facts, rules)
-    rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings = generate_rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings(rules_filtered_by_lhs_and_asserted_fact_template_names, facts, rules, mapper)
-
-    activated_rules = rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings
-    |> generate_candidate_rule_activations(rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity)
-    |> generate_activated_rules()
-    
+    activated_rules = get_actitvated_rules(facts, rules, mapper)
     
     for {_, _, rhs_execution_functions} <- activated_rules do
       for {_, rhs_execution_function} <- rhs_execution_functions do
         rhs_execution_function.()
       end
     end
-
+    
     {
       :reply,
       :ok,
@@ -97,6 +90,16 @@ defmodule Talisman.InferenceEngine do
   ###################  not private so they can be tested  ########################
   ################################################################################
   ################################################################################
+
+  def get_actitvated_rules(facts, rules, mapper) do
+    rules_filtered_by_lhs_and_asserted_fact_template_names = filter_rules_by_rule_lhs_and_asserted_fact_template_names(facts, rules, mapper)
+    rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity = filter_rules_by_rule_lhs_and_asserted_fact_multiplicity(rules_filtered_by_lhs_and_asserted_fact_template_names, facts, rules)
+    rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings = generate_rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings(rules_filtered_by_lhs_and_asserted_fact_template_names, facts, rules, mapper)
+
+    activated_rules = rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings
+    |> generate_candidate_rule_activations(rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity)
+    |> generate_activated_rules()
+  end
 
   def filter_rules_by_rule_lhs_and_asserted_fact_template_names(facts, rules, mapper) do
     # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
