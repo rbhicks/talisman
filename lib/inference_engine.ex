@@ -54,7 +54,8 @@ defmodule Talisman.InferenceEngine do
         } = state
       ) do
 
-    activate_and_execute_rules(facts, rules, mapper, [])
+    get_actitvated_rules(facts, rules, mapper)
+    |> activate_and_execute_rules(facts, rules, mapper, [])
     
     {
       :reply,
@@ -85,8 +86,8 @@ defmodule Talisman.InferenceEngine do
   ################################################################################
   ################################################################################
 
-  def activate_and_execute_rules(facts, rules, mapper, executed_rule_info) do
-    activated_rules = get_actitvated_rules(facts, rules, mapper)
+  def activate_and_execute_rules([], _facts, _rules, _mapper, executed_rule_info), do: executed_rule_info
+  def activate_and_execute_rules(activated_rules, facts, rules, mapper, executed_rule_info) do
     
     # activated_rules is a flattened list with redundant data
     # as it needs to be be that way to properly do rule processing
@@ -108,14 +109,15 @@ defmodule Talisman.InferenceEngine do
     #          loop. however, this a rule logic problem and not a talisman
     #          problem.
 
-    "mgeslbj4a4exjpda5xecx6jfjen5ut" |> IO.puts
-    "mgeslbj4a4exjpda5xecx6jfjen5ut" |> IO.puts
-    "mgeslbj4a4exjpda5xecx6jfjen5ut" |> IO.puts
+    "xteyf1f57v35fl5l864oeva1manxg3" |> IO.puts
+    "xteyf1f57v35fl5l864oeva1manxg3" |> IO.puts
+    "xteyf1f57v35fl5l864oeva1manxg3" |> IO.puts
     activated_rules |> IO.inspect(limit: :infinity)
-    "aj5zus1m0jp4v9qlhsg2de967tpic7" |> IO.puts
-    "aj5zus1m0jp4v9qlhsg2de967tpic7" |> IO.puts
-    "aj5zus1m0jp4v9qlhsg2de967tpic7" |> IO.puts
+    "b8mihmaro94a75nqu0chizhvl8d16s" |> IO.puts
+    "b8mihmaro94a75nqu0chizhvl8d16s" |> IO.puts
+    "b8mihmaro94a75nqu0chizhvl8d16s" |> IO.puts
 
+#    activated_rules = get_actitvated_rules(facts, rules, mapper)
   end
 
   def get_actitvated_rules(facts, rules, mapper) do
