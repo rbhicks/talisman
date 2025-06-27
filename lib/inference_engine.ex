@@ -19,7 +19,7 @@ defmodule Talisman.InferenceEngine do
   end
 
   def run(server) do
-    GenServer.call(server, :activate_and_execute_rules)
+    GenServer.call(server, :run)
   end
 
   def execute_activated_rules(server) do
@@ -45,7 +45,7 @@ defmodule Talisman.InferenceEngine do
   end
 
   def handle_call(
-        :activate_and_execute_rules,
+        :run,
         _from,
         %{
           facts: facts,
@@ -54,30 +54,7 @@ defmodule Talisman.InferenceEngine do
         } = state
       ) do
 
-    activated_rules = get_actitvated_rules(facts, rules, mapper)
-    
-    # activated_rules is a flattened list with redundant data
-    # as it needs to be be that way to properly do rule processing
-    # except for rules that are purely for side effects, not most
-    # in all likelihood, we need to recheck activations every time
-    # a rule is fire in that the assertion, retraction, or updating
-    # of a fact could affect activations. to make this tractable,
-    # we need such a flattened list. we'll keep track of the rule
-    # and fact pid list that caused it to fire. if that same rule
-    # and fact list combination is still present, we skip executing
-    # the rule and move one until we're done.
-    #
-    # N.B.:
-    #       1) an updated fact will have a different pid, essentially
-    #          a different fact, so that won't be overlooked.
-    #       2) in the above case, and others, a rule may in fact fire
-    #          again.
-    #       3) yes, it's possible that this could result in an infinite
-    #          loop. however, this a rule logic problem and not a talisman
-    #          problem.
-
-
-    
+    activate_and_execute_rules(facts, rules, mapper, [])
     
     {
       :reply,
@@ -107,6 +84,39 @@ defmodule Talisman.InferenceEngine do
   ###################  not private so they can be tested  ########################
   ################################################################################
   ################################################################################
+
+  def activate_and_execute_rules(facts, rules, mapper, executed_rule_info) do
+    activated_rules = get_actitvated_rules(facts, rules, mapper)
+    
+    # activated_rules is a flattened list with redundant data
+    # as it needs to be be that way to properly do rule processing
+    # except for rules that are purely for side effects, not most
+    # in all likelihood, we need to recheck activations every time
+    # a rule is fire in that the assertion, retraction, or updating
+    # of a fact could affect activations. to make this tractable,
+    # we need such a flattened list. we'll keep track of the rule
+    # and fact pid list that caused it to fire. if that same rule
+    # and fact list combination is still present, we skip executing
+    # the rule and move one until we're done.
+    #
+    # N.B.:
+    #       1) an updated fact will have a different pid, essentially
+    #          a different fact, so that won't be overlooked.
+    #       2) in the above case, and others, a rule may in fact fire
+    #          again.
+    #       3) yes, it's possible that this could result in an infinite
+    #          loop. however, this a rule logic problem and not a talisman
+    #          problem.
+
+    "mgeslbj4a4exjpda5xecx6jfjen5ut" |> IO.puts
+    "mgeslbj4a4exjpda5xecx6jfjen5ut" |> IO.puts
+    "mgeslbj4a4exjpda5xecx6jfjen5ut" |> IO.puts
+    activated_rules |> IO.inspect(limit: :infinity)
+    "aj5zus1m0jp4v9qlhsg2de967tpic7" |> IO.puts
+    "aj5zus1m0jp4v9qlhsg2de967tpic7" |> IO.puts
+    "aj5zus1m0jp4v9qlhsg2de967tpic7" |> IO.puts
+
+  end
 
   def get_actitvated_rules(facts, rules, mapper) do
     rules_filtered_by_lhs_and_asserted_fact_template_names = filter_rules_by_rule_lhs_and_asserted_fact_template_names(facts, rules, mapper)
