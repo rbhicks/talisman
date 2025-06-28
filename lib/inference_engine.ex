@@ -100,11 +100,9 @@ defmodule Talisman.InferenceEngine do
     # the rule and move one until we're done.
     #
     # N.B.:
-    #       1) an updated fact will have a different pid, essentially
-    #          a different fact, so that won't be overlooked.
-    #       2) in the above case, and others, a rule may in fact fire
+    #       1) in the above case, and others, a rule may in fact fire
     #          again.
-    #       3) yes, it's possible that this could result in an infinite
+    #       2) yes, it's possible that this could result in an infinite
     #          loop. however, this a rule logic problem and not a talisman
     #          problem.
     rule_to_execute =
