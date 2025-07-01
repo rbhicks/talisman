@@ -11,6 +11,10 @@ defmodule Talisman.Facts do
   end
 
   #  def retract ...
+  def retract(server, fact_id) do
+    GenServer.call(server, {:retract, fact_id})
+  end
+
   #  def update ...
 
   def get_asserted_facts(server) do
@@ -59,6 +63,22 @@ defmodule Talisman.Facts do
     Mapper.update_fact_template_name_asserted_facts_mapping(mapper, fact_template_name, pid)
 
     response
+  end
+
+  def handle_call({:retract, fact_id}, _, %{facts: asserted_facts} = state) do
+
+    {_, fact_pid} = Map.get(asserted_facts, fact_id)
+
+    GenServer.stop(fact_pid) |> IO.inspect(limit: :infinity)
+
+    asserted_facts = Map.delete(asserted_facts, fact_id)
+    
+    {
+      :reply,
+      :ok,
+      state
+      |> Map.put(:facts, asserted_facts)
+    }
   end
 
   def handle_call(:get_asserted_facts, _from, %{facts: facts} = state) do

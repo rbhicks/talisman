@@ -19,5 +19,5 @@ defmodule Talisman.Test.Support.Fixtures.PropulsionFactTemplate do
 end
 
 defmodule Talisman.Test.Support.Fixtures.RuleTestResultFactTemplate do
-  defstruct result: nil
+  defstruct id: nil, result: nil
 end

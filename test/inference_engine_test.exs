@@ -243,6 +243,9 @@ defmodule InferenceEngineTest do
       end
 
       fn ->
+
+        Facts.retract(facts, bomb.id)
+        
         Facts.assert(
           facts,
           %RuleTestResultFactTemplate{
