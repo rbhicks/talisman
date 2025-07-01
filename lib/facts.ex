@@ -32,6 +32,8 @@ defmodule Talisman.Facts do
       ) do
     asserted_fact_identity = "#{fact_template_name}->#{DateTime.utc_now(:microsecond)}"
 
+    fact_template = %{fact_template | id: asserted_fact_identity}
+
     response =
       Utilities.generate_fact_assertion_or_rule_addition_response(
         facts_supervisor,
