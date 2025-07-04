@@ -10,7 +10,6 @@ defmodule Talisman.Facts do
     GenServer.call(server, {:assert, fact_template})
   end
 
-  #  def retract ...
   def retract(server, fact_id) do
     GenServer.call(server, {:retract, fact_id})
   end
