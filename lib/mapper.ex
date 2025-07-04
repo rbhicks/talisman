@@ -20,11 +20,21 @@ defmodule Talisman.Mapper do
     GenServer.call(server, :create_fact_template_name_to_rule_lhs_mapping)
   end
 
-  def update_fact_template_name_asserted_facts_mapping(server, fact_template_name, pid) do
+  def update_fact_template_name_asserted_facts_mapping_for_assert(server, fact_template_name, pid) do
     {:ok, fact_template_name_asserted_facts_mapping} =
       GenServer.call(
         server,
-        {:update_fact_template_name_asserted_facts_mapping, fact_template_name, pid}
+        {:update_fact_template_name_asserted_facts_mapping_for_assert, fact_template_name, pid}
+      )
+
+    fact_template_name_asserted_facts_mapping
+  end
+
+  def update_fact_template_name_asserted_facts_mapping_for_retract(server, fact_pid) do
+    {:ok, fact_template_name_asserted_facts_mapping} =
+      GenServer.call(
+        server,
+        {:update_fact_template_name_asserted_facts_mapping_for_retract, fact_pid}
       )
 
     fact_template_name_asserted_facts_mapping
@@ -111,7 +121,7 @@ defmodule Talisman.Mapper do
   end
 
   def handle_call(
-        {:update_fact_template_name_asserted_facts_mapping, fact_template_name, pid},
+        {:update_fact_template_name_asserted_facts_mapping_for_assert, fact_template_name, pid},
         _from,
         %{
           fact_template_name_to_asserted_facts_mapping:
@@ -127,6 +137,39 @@ defmodule Talisman.Mapper do
           [{fact_template_name, pid} | asserted_facts_for_fact_template_name]
         end
       )
+
+    {
+      :reply,
+      {:ok, fact_template_name_to_asserted_facts_mapping},
+      Map.put(
+        state,
+        :fact_template_name_to_asserted_facts_mapping,
+        fact_template_name_to_asserted_facts_mapping
+      )
+    }
+  end
+
+  def handle_call(
+        {:update_fact_template_name_asserted_facts_mapping_for_retract, fact_pid},
+        _from,
+        %{
+          fact_template_name_to_asserted_facts_mapping:
+            current_fact_template_name_to_asserted_facts_mapping
+        } = state
+      ) do
+    fact_template_name_to_asserted_facts_mapping =
+      current_fact_template_name_to_asserted_facts_mapping
+      |> Enum.reduce(%{}, fn {fact_template_name, fact_template_name_to_asserted_fact_mappings},
+                             acc ->
+        acc
+        |> Map.put(
+          fact_template_name,
+          fact_template_name_to_asserted_fact_mappings
+          |> Enum.reject(fn {_, mapped_fact_pid} = fact_template_name_to_asserted_fact_mapping ->
+            mapped_fact_pid == fact_pid
+          end)
+        )
+      end)
 
     {
       :reply,
