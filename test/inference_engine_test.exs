@@ -168,6 +168,26 @@ defmodule InferenceEngineTest do
       }
     )
 
+    Facts.assert(
+      facts,
+      %BombFactTemplate{
+        name: :moab,
+        type: :gravity_bomb,
+        guidance: :gps,
+        warhead: :fae
+      }
+    )
+
+    Facts.assert(
+      facts,
+      %BombFactTemplate{
+        name: :blu_109,
+        type: :gravity_bomb,
+        guidance: :gps,
+        warhead: :fae
+      }
+    )
+
     # Facts.assert(
     #   facts,
     #   %PropulsionFactTemplate{
@@ -235,7 +255,7 @@ defmodule InferenceEngineTest do
 
     DefRule.def_rule(rules, :found_gravity_bomb, fn %BombFactTemplate{} = bomb ->
       fn ->
-        if bomb.type == :gravity_bomb do
+        if bomb.type == :gravity_bomb and bomb.name == :blu_109 do
           true
         else
           false
@@ -251,6 +271,20 @@ defmodule InferenceEngineTest do
             result: :found_gravity_bomb
           }
         )
+      end
+    end)
+
+    DefRule.def_rule(rules, :update_gravity_bomb, fn %BombFactTemplate{} = bomb ->
+      fn ->
+        if bomb.type == :gravity_bomb and bomb.name == :moab do
+          true
+        else
+          false
+        end
+      end
+
+      fn ->
+        Facts.update(facts, bomb.id, %{name: :mop})
       end
     end)
 

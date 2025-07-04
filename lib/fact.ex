@@ -11,7 +11,7 @@ defmodule Talisman.Fact do
   end
 
   def set_field_values(server, field_values) do
-    GenServer.cast(server, :set_field_values)
+    GenServer.call(server, {:set_field_values, field_values})
   end
 
   def handle_call(:get_fact_instance, _from, {fact_instance, field_values, fact_id} = state) do
@@ -22,8 +22,18 @@ defmodule Talisman.Fact do
     {:reply, {:ok, field_values}, state}
   end
 
-  def handle_cast({:set_field_values, field_values}, _from, state) do
-    {:no_reply, Map.put(state, :field_values, field_values)}
+  def handle_call({:set_field_values, field_values}, _from, state) do
+
+    {current_fact_instance, current_field_values, fact_id} = state
+
+    new_fact_instance = field_values
+    |> Enum.reduce(current_fact_instance, fn {key, value}, acc ->
+      acc = Map.put(acc, key, value)
+    end)
+
+    new_field_values = Map.merge(current_field_values, field_values)
+    
+    {:reply, :ok, {new_fact_instance, new_field_values, fact_id}}
   end
 
   def start(fact_instance, fact_id) do
