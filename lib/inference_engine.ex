@@ -15,13 +15,14 @@ defmodule Talisman.InferenceEngine do
     GenServer.call(server, {:set_rules, rules})
   end
 
-  #  def load ...  
+  #  def load ...
+  #  def reset ???
 
   def run(server) do
     GenServer.call(server, :run)
   end
 
-  def reset(server) do
+  def clear(server) do
     GenServer.call(server, :reset)
   end
 
@@ -67,7 +68,7 @@ defmodule Talisman.InferenceEngine do
   end
 
   def handle_call(
-        :reset,
+        :clear,
         _from,
         %{
           facts: facts,
