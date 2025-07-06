@@ -7,9 +7,6 @@ defmodule Talisman.InferenceEngine do
   alias Talisman.Mapper
   alias Talisman.Utilities
 
-  #  def load ...
-  #  def reset ...
-
   def set_facts(server, facts) do
     GenServer.call(server, {:set_facts, facts})
   end
@@ -18,8 +15,14 @@ defmodule Talisman.InferenceEngine do
     GenServer.call(server, {:set_rules, rules})
   end
 
+  #  def load ...  
+
   def run(server) do
     GenServer.call(server, :run)
+  end
+
+  def reset(server) do
+    GenServer.call(server, :reset)
   end
 
   def execute_activated_rules(server) do
@@ -55,6 +58,24 @@ defmodule Talisman.InferenceEngine do
       ) do
     get_actitvated_rules(facts, rules, mapper)
     |> activate_and_execute_rules(facts, rules, mapper, [])
+
+    {
+      :reply,
+      :ok,
+      state
+    }
+  end
+
+  def handle_call(
+        :reset,
+        _from,
+        %{
+          facts: facts,
+          mapper: mapper
+        } = state
+      ) do
+    Facts.purge_asserted_facts(facts)
+    Mapper.purge_fact_template_name_to_asserted_facts_mapping(mapper)
 
     {
       :reply,

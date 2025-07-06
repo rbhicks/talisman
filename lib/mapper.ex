@@ -40,6 +40,13 @@ defmodule Talisman.Mapper do
     fact_template_name_asserted_facts_mapping
   end
 
+  def purge_fact_template_name_to_asserted_facts_mapping(
+        server,
+        :purge_fact_template_name_to_asserted_facts_mapping
+      ) do
+    GenServer.call(server, :purge_fact_template_name_to_asserted_facts_mapping)
+  end
+
   def get_fact_template_name_to_rule_lhs_mapping(server) do
     {:ok, fact_template_name_to_rule_lhs_mapping} =
       GenServer.call(server, :get_fact_template_name_to_rule_lhs_mapping)
@@ -179,6 +186,15 @@ defmodule Talisman.Mapper do
         :fact_template_name_to_asserted_facts_mapping,
         fact_template_name_to_asserted_facts_mapping
       )
+    }
+  end
+
+  def handle_call(:purge_fact_template_name_to_asserted_facts_mapping, _, state) do
+    {
+      :reply,
+      :ok,
+      state
+      |> Map.put(:purge_fact_template_name_to_asserted_facts_mapping, %{})
     }
   end
 
