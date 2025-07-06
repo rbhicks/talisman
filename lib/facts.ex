@@ -29,7 +29,7 @@ defmodule Talisman.Facts do
         _from,
         %{
           facts_supervisor: facts_supervisor,
-          facts: facts,
+          asserted_facts: asserted_facts,
           inference_engine: inference_engine,
           mapper: mapper
         } =
@@ -53,9 +53,9 @@ defmodule Talisman.Facts do
             ]
           }
         },
-        facts,
+        asserted_facts,
         fact_template_name,
-        :facts,
+        :asserted_facts,
         state
       )
 
@@ -70,7 +70,7 @@ defmodule Talisman.Facts do
     response
   end
 
-  def handle_call({:retract, fact_id}, _, %{facts: asserted_facts, mapper: mapper} = state) do
+  def handle_call({:retract, fact_id}, _, %{asserted_facts: asserted_facts, mapper: mapper} = state) do
     {_, fact_pid} = Map.get(asserted_facts, fact_id)
 
     GenServer.stop(fact_pid)
@@ -87,7 +87,7 @@ defmodule Talisman.Facts do
     }
   end
 
-  def handle_call({:update, fact_id, updates}, _, %{facts: asserted_facts} = state) do
+  def handle_call({:update, fact_id, updates}, _, %{asserted_facts: asserted_facts} = state) do
     {_, fact_pid} = Map.get(asserted_facts, fact_id)
 
     Fact.set_field_values(fact_pid, updates)
@@ -99,10 +99,10 @@ defmodule Talisman.Facts do
     }
   end
 
-  def handle_call(:get_asserted_facts, _from, %{facts: facts} = state) do
+  def handle_call(:get_asserted_facts, _from, %{asserted_facts: asserted_facts} = state) do
     {
       :reply,
-      {:ok, facts},
+      {:ok, asserted_facts},
       state
     }
   end
@@ -118,7 +118,7 @@ defmodule Talisman.Facts do
         facts_supervisor: facts_supervisor,
         inference_engine: inference_engine,
         mapper: mapper,
-        facts: %{}
+        asserted_facts: %{}
       }
     }
   end
