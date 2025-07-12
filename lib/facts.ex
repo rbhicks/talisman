@@ -33,7 +33,6 @@ defmodule Talisman.Facts do
         %{
           facts_supervisor: facts_supervisor,
           asserted_facts: asserted_facts,
-          inference_engine: inference_engine,
           mapper: mapper
         } =
           state
