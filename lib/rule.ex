@@ -1,7 +1,6 @@
 defmodule Talisman.Rule do
   use GenServer
 
-  alias Talisman.Utilities
   alias Talisman.Fact
 
   def get_lhs_fact_template_names(rule_pid) do
