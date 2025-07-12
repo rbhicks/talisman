@@ -8,6 +8,7 @@ defmodule InferenceEngineTest do
   alias Talisman.Test.Support.Fixtures.WarheadFactTemplate
   alias Talisman.Test.Support.Fixtures.PropulsionFactTemplate
   alias Talisman.Test.Support.Fixtures.RuleTestResultFactTemplate
+  alias Talisman.Fact
   alias Talisman.Rule
   alias Talisman.Mapper
   alias Talisman.Facts
@@ -395,13 +396,19 @@ defmodule InferenceEngineTest do
     it "simple rule test", %{inference_engine: inference_engine, facts: facts} do
       InferenceEngine.run(inference_engine)
 
-      "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" |> IO.puts()
-      "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" |> IO.puts()
-      "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" |> IO.puts()
-      Facts.get_asserted_facts(facts) |> IO.inspect(limit: :infinity)
-      "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" |> IO.puts()
-      "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" |> IO.puts()
-      "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" |> IO.puts()
+      result_frequencies = Facts.get_asserted_facts(facts)
+      |> Enum.filter(fn {_, {fact_template_name, _}} ->
+        fact_template_name == Talisman.Test.Support.Fixtures.RuleTestResultFactTemplate
+      end)
+      |> Enum.map(fn {_, {_, result_pid}} ->
+        Fact.get_field_values(result_pid)
+        |> Map.get(:result)
+      end)
+      |> Enum.frequencies()
+
+      assert result_frequencies.found_icbm == 2
+      assert result_frequencies.found_air_to_air == 1
+      assert result_frequencies.found_gravity_bomb == 1      
     end
   end
 end
