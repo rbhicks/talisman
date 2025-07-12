@@ -179,35 +179,11 @@ defmodule Talisman.InferenceEngine do
   end
 
   def filter_rules_by_rule_lhs_and_asserted_fact_template_names(facts, rules, mapper) do
-    # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    # look into tightening this up
-    # look into tightening this up
-    # look into tightening this up
-    # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     asserted_facts = Facts.get_asserted_facts(facts)
     fact_template_to_rule_lhs_mapping = Mapper.get_fact_template_name_to_rule_lhs_mapping(mapper)
-
     asserted_fact_templates_names = get_asserted_fact_templates_names(asserted_facts)
-
-    rule_lhs_fact_template_names =
-      for {_, {rule_name, rule_pid}} <- rules |> Rules.get_rules() do
-        {rule_name, rule_pid |> Rule.get_lhs_fact_template_names() |> MapSet.new()}
-      end
-
-    mapped_rules =
-      asserted_fact_templates_names
-      |> Enum.filter(fn asserted_fact_template_name ->
-        Map.get(fact_template_to_rule_lhs_mapping, asserted_fact_template_name)
-      end)
-      |> Enum.reduce([], fn asserted_fact_template_name, acc ->
-        fact_template_to_rule_lhs_mapping
-        |> Map.get(asserted_fact_template_name)
-        |> Kernel.++(acc)
-      end)
+    rule_lhs_fact_template_names = get_rule_lhs_fact_template_names(rules)
+    mapped_rules = get_mapped_rules(asserted_fact_templates_names, fact_template_to_rule_lhs_mapping)
 
     mapped_rules
     |> Enum.filter(fn rule_name ->
@@ -369,5 +345,23 @@ defmodule Talisman.InferenceEngine do
       asserted_fact_template_name
     end
     |> MapSet.new()
+  end
+
+  defp get_rule_lhs_fact_template_names(rules) do
+    for {_, {rule_name, rule_pid}} <- rules |> Rules.get_rules() do
+      {rule_name, rule_pid |> Rule.get_lhs_fact_template_names() |> MapSet.new()}
+    end
+  end
+
+  defp get_mapped_rules(asserted_fact_templates_names, fact_template_to_rule_lhs_mapping) do
+    asserted_fact_templates_names
+    |> Enum.filter(fn asserted_fact_template_name ->
+      Map.get(fact_template_to_rule_lhs_mapping, asserted_fact_template_name)
+      end)
+      |> Enum.reduce([], fn asserted_fact_template_name, acc ->
+      fact_template_to_rule_lhs_mapping
+      |> Map.get(asserted_fact_template_name)
+      |> Kernel.++(acc)
+    end)
   end
 end
