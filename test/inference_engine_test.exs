@@ -608,7 +608,6 @@ defmodule InferenceEngineTest do
   end
 
   def process_mapping_for_assertion(mapping) do
-    ack =
       mapping
       |> Enum.map(fn {rule_name, _, template_mappings} ->
         {rule_name,
