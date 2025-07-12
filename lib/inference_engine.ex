@@ -191,13 +191,7 @@ defmodule Talisman.InferenceEngine do
     asserted_facts = Facts.get_asserted_facts(facts)
     fact_template_to_rule_lhs_mapping = Mapper.get_fact_template_name_to_rule_lhs_mapping(mapper)
 
-    asserted_fact_templates_names =
-      for {_, {asserted_fact_template_name, _}} <- asserted_facts do
-        asserted_fact_template_name
-      end
-      |> MapSet.new()
-      |> MapSet.to_list()
-      |> MapSet.new()
+    asserted_fact_templates_names = get_asserted_fact_templates_names(asserted_facts)
 
     rule_lhs_fact_template_names =
       for {_, {rule_name, rule_pid}} <- rules |> Rules.get_rules() do
@@ -364,5 +358,16 @@ defmodule Talisman.InferenceEngine do
       rhs_execution_function
       |> Enum.empty?()
     end)
+  end
+
+  #################################################################
+  #####################internal functions##########################
+  #################################################################
+
+  defp get_asserted_fact_templates_names(asserted_facts) do
+    for {_, {asserted_fact_template_name, _}} <- asserted_facts do
+      asserted_fact_template_name
+    end
+    |> MapSet.new()
   end
 end
