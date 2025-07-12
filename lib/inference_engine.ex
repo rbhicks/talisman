@@ -248,7 +248,7 @@ defmodule Talisman.InferenceEngine do
 
     current_rules
     |> Map.take(rules_filtered_by_lhs_and_asserted_fact_template_names)
-    |> Enum.filter(fn {_, {rule_name, rule_pid}} ->
+    |> Enum.filter(fn {_, {_rule_name, rule_pid}} ->
       lhs_fact_multiplicity = Rule.get_lhs_fact_multiplicity(rule_pid)
 
       lhs_fact_multiplicity
