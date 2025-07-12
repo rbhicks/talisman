@@ -199,18 +199,6 @@ defmodule Talisman.InferenceEngine do
         rules,
         mapper
       ) do
-    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    # woeful duplication or effort, recalculation,
-    # inefficiency, etc. get it working and then consolidate
-    # all the stage calculations
-    # also, "stage two candidate ......" may need a new name,
-    # i.e., does it accurately reflect what's happeneing?
-    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
     fact_template_name_to_asserted_facts_mapping =
       Mapper.get_fact_template_name_to_asserted_facts_mapping(mapper)
 
