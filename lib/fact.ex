@@ -7,7 +7,8 @@ defmodule Talisman.Fact do
   end
 
   def get_field_values(server) do
-    GenServer.call(server, :get_field_values)
+    {:ok, field_values} = GenServer.call(server, :get_field_values)
+    field_values
   end
 
   def set_field_values(server, field_values) do
