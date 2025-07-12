@@ -446,7 +446,7 @@ defmodule InferenceEngineTest do
       assert Facts.get_asserted_facts(facts) == %{}
     end
 
-    it "", %{facts: facts, rules: rules, mapper: mapper} do
+    it "lhs/asserted fact rule filtering works", %{facts: facts, rules: rules, mapper: mapper} do
       sorted_expected_rules = [
         :found_air_to_air,
         :found_f22_aim_9c_loadout,
@@ -461,6 +461,117 @@ defmodule InferenceEngineTest do
       
       assert sorted_expected_rules == sorted_rules_filtered_by_lhs_and_asserted_fact_template_names
     end
+
+    it "rule name/rule pid/fact template name/asserted fact pid mapping works", %{facts: facts, rules: rules, mapper: mapper} do
+      sorted_expected_mappings =
+        [
+          {
+            :found_air_to_air,
+            [
+              [
+                Talisman.Test.Support.Fixtures.MissileFactTemplate,
+                Talisman.Test.Support.Fixtures.MissileFactTemplate,
+                Talisman.Test.Support.Fixtures.MissileFactTemplate,
+                Talisman.Test.Support.Fixtures.MissileFactTemplate
+              ]
+            ]
+          },
+          {
+            :found_f22_aim_9c_loadout,
+            [
+              [
+                Talisman.Test.Support.Fixtures.MissileFactTemplate,
+                Talisman.Test.Support.Fixtures.MissileFactTemplate,
+                Talisman.Test.Support.Fixtures.MissileFactTemplate,
+                Talisman.Test.Support.Fixtures.MissileFactTemplate
+              ],
+              [
+                Talisman.Test.Support.Fixtures.MissileFactTemplate,
+                Talisman.Test.Support.Fixtures.MissileFactTemplate,
+                Talisman.Test.Support.Fixtures.MissileFactTemplate,
+                Talisman.Test.Support.Fixtures.MissileFactTemplate
+              ]
+            ]
+          },
+          {
+            :found_gravity_bomb,
+            [
+              [
+                Talisman.Test.Support.Fixtures.BombFactTemplate,
+                Talisman.Test.Support.Fixtures.BombFactTemplate,
+                Talisman.Test.Support.Fixtures.BombFactTemplate,
+                Talisman.Test.Support.Fixtures.BombFactTemplate
+              ]
+            ]
+          },
+          {
+            :found_icbm,
+            [
+              [
+                Talisman.Test.Support.Fixtures.MissileFactTemplate,
+                Talisman.Test.Support.Fixtures.MissileFactTemplate,
+                Talisman.Test.Support.Fixtures.MissileFactTemplate,
+                Talisman.Test.Support.Fixtures.MissileFactTemplate
+              ]
+            ]
+          },
+          {
+            :found_jet_powered_missile,
+            [
+              [
+                Talisman.Test.Support.Fixtures.MissileFactTemplate,
+                Talisman.Test.Support.Fixtures.MissileFactTemplate,
+                Talisman.Test.Support.Fixtures.MissileFactTemplate,
+                Talisman.Test.Support.Fixtures.MissileFactTemplate
+              ],
+              [
+                Talisman.Test.Support.Fixtures.PropulsionFactTemplate
+              ]
+            ]
+          },
+          {
+            :found_nuclear_cruise_missile,
+            [
+              [
+                Talisman.Test.Support.Fixtures.WarheadFactTemplate
+              ],
+              [
+                Talisman.Test.Support.Fixtures.PropulsionFactTemplate
+              ],
+              [
+                Talisman.Test.Support.Fixtures.MissileFactTemplate,
+                Talisman.Test.Support.Fixtures.MissileFactTemplate,
+                Talisman.Test.Support.Fixtures.MissileFactTemplate,
+                Talisman.Test.Support.Fixtures.MissileFactTemplate
+              ]
+            ]
+          },
+          {
+            :update_gravity_bomb,
+            [
+              [
+                Talisman.Test.Support.Fixtures.BombFactTemplate,
+                Talisman.Test.Support.Fixtures.BombFactTemplate,
+                Talisman.Test.Support.Fixtures.BombFactTemplate,
+                Talisman.Test.Support.Fixtures.BombFactTemplate
+              ]
+            ]
+          }
+        ]
+      rules_filtered_by_lhs_and_asserted_fact_template_names =
+        InferenceEngine.filter_rules_by_rule_lhs_and_asserted_fact_template_names(facts, rules, mapper)
+
+      processed_rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings =
+        InferenceEngine.generate_rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings(
+          rules_filtered_by_lhs_and_asserted_fact_template_names,
+          facts,
+          rules,
+          mapper
+        )
+      |> process_mapping_for_assertion()
+
+      assert processed_rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings == sorted_expected_mappings
+    end
   end
 
   def get_result_frequencies(facts) do
@@ -473,5 +584,21 @@ defmodule InferenceEngineTest do
       |> Map.get(:result)
     end)
     |> Enum.frequencies()
+  end
+
+  def process_mapping_for_assertion(mapping) do
+    ack = mapping
+    |> Enum.map(fn {rule_name, _, template_mappings} ->
+      { rule_name,
+        template_mappings
+        |> Enum.map(fn template_mapping ->
+          template_mapping
+          |> Enum.map(fn {fact_template_name, _} ->
+            fact_template_name
+          end)
+        end)
+      }
+    end)
+    |> Enum.sort()
   end
 end
