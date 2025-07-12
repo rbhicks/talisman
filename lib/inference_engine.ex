@@ -161,7 +161,6 @@ defmodule Talisman.InferenceEngine do
         mapper
       )
 
-    activated_rules =
       rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings
       |> generate_candidate_rule_activations(
         rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity
