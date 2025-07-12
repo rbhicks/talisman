@@ -434,6 +434,10 @@ defmodule InferenceEngineTest do
     end
   end
 
+  # this test really only needs to be run once. it's almost unecessary...
+  # it also breaks all the other tests. i've yet to find a way to use
+  # async and force a test to run last, so i'll leave it here, but skip
+  # it. if ever needed, it can be run manually.
   describe "inference engine functions" do
     @tag :skip
     it "clear works", %{inference_engine: inference_engine, facts: facts} do
