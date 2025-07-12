@@ -15,7 +15,7 @@ defmodule Talisman.Fact do
     GenServer.call(server, {:set_field_values, field_values})
   end
 
-  def handle_call(:get_fact_instance, _from, {fact_instance, field_values, fact_id} = state) do
+  def handle_call(:get_fact_instance, _from, {fact_instance, _field_values, fact_id} = state) do
     {:reply, {:ok, fact_instance}, state}
   end
 
