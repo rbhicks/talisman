@@ -189,32 +189,23 @@ defmodule InferenceEngineTest do
       }
     )
 
-    # Facts.assert(
-    #   facts,
-    #   %PropulsionFactTemplate{
-    #     name: :f107_wr_400,
-    #     type: :turbofan,
-    #     power: :"2.7_kN"
-    #   }
-    # )
+    Facts.assert(
+      facts,
+      %PropulsionFactTemplate{
+        name: :"f107_wr_105/401",
+        type: :turbofan,
+        power: :"6.22_kN"
+      }
+    )
 
-    # Facts.assert(
-    #   facts,
-    #   %PropulsionFactTemplate{
-    #     name: :"f107_wr_105/401",
-    #     type: :turbofan,
-    #     power: :"6.22_kN"
-    #   }
-    # )
-
-    # Facts.assert(
-    #   facts,
-    #   %WarheadFactTemplate{
-    #     name: :W80,
-    #     type: :thermonuclear,
-    #     yield: :"21-628_TJ"
-    #   }
-    # )
+    Facts.assert(
+      facts,
+      %WarheadFactTemplate{
+        name: :W80,
+        type: :thermonuclear,
+        yield: :"21-628_TJ"
+      }
+    )
 
     DefRule.def_rule(rules, :found_icbm, fn %MissileFactTemplate{} = missile ->
       fn ->
@@ -316,74 +307,55 @@ defmodule InferenceEngineTest do
       end
     end)
 
-    # DefRule.def_rule(rules, :assess_total_missile_yield, fn %MissileFactTemplate{} = missile,
-    #                                                         %WarheadFactTemplate{} = warhead ->
-    #   fn ->
-    #     # "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
-    #     # "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
-    #     # "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
-    #     # missile |> IO.inspect(limit: :infinity)
-    #     # "+++++++++++++++++++++++++++++++++++" |> IO.puts()
-    #     # "+++++++++++++++++++++++++++++++++++" |> IO.puts()
-    #     # "+++++++++++++++++++++++++++++++++++" |> IO.puts()
-    #     false
-    #   end
+    # N.B.: these next two multi fact template LHS rules wouldn't actually work
+    # in practice as the fact templates don't have a "connecting field"; i.e., not
+    # the actual individual fact id, but an id-like field that connects the components
+    # of an aggregate together. this is a fuction of the expert system itself not
+    # talisman. these tests just make sure that multiplicity works. were there such
+    # a "connecting field", it would have the same semantics and the same functionality
+    # as these tests. so, while these rules are faulty at the expert system level the
+    # the tests for talisman are valid.
+    DefRule.def_rule(rules, :found_jet_powered_missile, fn %MissileFactTemplate{} = _missile,
+                                                           %PropulsionFactTemplate{} = propulsion ->
+      fn ->
+        if propulsion.type == :turbofan do
+          true
+        else
+          false
+        end  
+      end
 
-    #   fn ->
-    #     "()()()()()()()()()()()()()()()()()()" |> IO.puts()
-    #     "fox-1" |> IO.puts()
-    #     "()()()()()()()()()()()()()()()()()()" |> IO.puts()
-    #   end
-    # end)
+      fn ->
+        Facts.assert(
+          facts,
+          %RuleTestResultFactTemplate{
+            result: :found_jet_powered_missile
+          }
+        )
+      end
+    end)
 
-    #   fn ->
-    #     "()()()()()()()()()()()()()()()()()()" |> IO.puts()
-    #     "fox-1" |> IO.puts()
-    #     "()()()()()()()()()()()()()()()()()()" |> IO.puts()
-    #   end
-    # end)
+    DefRule.def_rule(rules, :found_nuclear_cruise_missile, fn %WarheadFactTemplate{} = warhead,
+                                                              %PropulsionFactTemplate{} =
+                                                                propulsion,
+                                                              %MissileFactTemplate{} = _missile ->
+      fn ->
+        if warhead.type == :thermonuclear and propulsion.type == :turbofan do
+          true
+        else
+          false
+        end
+      end
 
-    # DefRule.def_rule(rules, :found_jet_powered_missile, fn %MissileFactTemplate{} = missile,
-    #                                                        %PropulsionFactTemplate{} = propulsion ->
-    #   fn ->
-    #     # "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
-    #     # "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
-    #     # "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
-    #     # propulsion |> IO.inspect(limit: :infinity)
-    #     # "+++++++++++++++++++++++++++++++++++" |> IO.puts()
-    #     # "+++++++++++++++++++++++++++++++++++" |> IO.puts()
-    #     # "+++++++++++++++++++++++++++++++++++" |> IO.puts()
-    #     true
-    #   end
-
-    #   fn ->
-    #     "()()()()()()()()()()()()()()()()()()" |> IO.puts()
-    #     "fox-1" |> IO.puts()
-    #     "()()()()()()()()()()()()()()()()()()" |> IO.puts()
-    #   end
-    # end)
-
-    # DefRule.def_rule(rules, :found_nuclear_cruise_missile, fn %WarheadFactTemplate{} = warhead,
-    #                                                           %PropulsionFactTemplate{} =
-    #                                                             propulsion,
-    #                                                           %MissileFactTemplate{} = missile ->
-    #   fn ->
-    #     # "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
-    #     # "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
-    #     # "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
-    #     # warhead |> IO.inspect(limit: :infinity)
-    #     # "+++++++++++++++++++++++++++++++++++" |> IO.puts()
-    #     # "+++++++++++++++++++++++++++++++++++" |> IO.puts()
-    #     # "+++++++++++++++++++++++++++++++++++" |> IO.puts()
-    #     true
-    #   end
-
-    #   fn ->
-    #     "()()()()()()()()()()()()()()()()()()" |> IO.puts()
-    #     "fox-1" |> IO.puts()
-    #     "()()()()()()()()()()()()()()()()()()" |> IO.puts()
-    #   end
-    # end)
+      fn ->
+        Facts.assert(
+          facts,
+          %RuleTestResultFactTemplate{
+            result: :found_nuclear_cruise_missile
+          }
+        )
+      end
+    end)
 
     for {_, {rule_name, rule_pid}} <- Rules.get_rules(rules) do
       Mapper.add_rule_fact_template_names(
@@ -441,6 +413,18 @@ defmodule InferenceEngineTest do
       updated_gravity_bomb_field_values = Fact.get_field_values(updated_gravity_bomb_pid)
 
       assert updated_gravity_bomb_field_values.name == :mop
+    end
+
+    it "two different fact template LHS test", %{facts: facts} do
+      result_frequencies = get_result_frequencies(facts)
+
+      assert result_frequencies.found_jet_powered_missile == 4
+    end
+
+    it "three different fact template LHS test", %{facts: facts} do
+      result_frequencies = get_result_frequencies(facts)
+
+      assert result_frequencies.found_nuclear_cruise_missile == 4      
     end
   end
 
