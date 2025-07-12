@@ -40,10 +40,7 @@ defmodule Talisman.Mapper do
     fact_template_name_asserted_facts_mapping
   end
 
-  def purge_fact_template_name_to_asserted_facts_mapping(
-        server,
-        :purge_fact_template_name_to_asserted_facts_mapping
-      ) do
+  def purge_fact_template_name_to_asserted_facts_mapping(server) do
     GenServer.call(server, :purge_fact_template_name_to_asserted_facts_mapping)
   end
 

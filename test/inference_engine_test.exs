@@ -380,8 +380,8 @@ defmodule InferenceEngineTest do
   end
 
   describe "rule activations" do
-    #   @tag :skip
-    it "simple rule test", %{facts: facts} do
+    #@tag :skip
+    it "a simple rule works", %{facts: facts} do
       result_frequencies = get_result_frequencies(facts)
 
       assert result_frequencies.found_icbm == 2
@@ -389,12 +389,14 @@ defmodule InferenceEngineTest do
       assert result_frequencies.found_gravity_bomb == 1      
     end
 
-    it "multiple facts of same type rule test", %{facts: facts} do
+    #@tag :skip
+    it "multiple facts of same type rule works", %{facts: facts} do
       result_frequencies = get_result_frequencies(facts)
       assert result_frequencies.found_f22_aim_9c_loadout == 2
     end
 
-    it "rule that updates a fact test", %{facts: facts} do
+    #@tag :skip
+    it "rule that updates a fact works", %{facts: facts} do
       result_frequencies = get_result_frequencies(facts)
       asserted_facts = Facts.get_asserted_facts(facts)
 
@@ -415,16 +417,27 @@ defmodule InferenceEngineTest do
       assert updated_gravity_bomb_field_values.name == :mop
     end
 
-    it "two different fact template LHS test", %{facts: facts} do
+    #@tag :skip
+    it "two different fact template LHS works", %{facts: facts} do
       result_frequencies = get_result_frequencies(facts)
 
       assert result_frequencies.found_jet_powered_missile == 4
     end
 
-    it "three different fact template LHS test", %{facts: facts} do
+    #@tag :skip
+    it "three different fact template LHS works", %{facts: facts} do
       result_frequencies = get_result_frequencies(facts)
 
       assert result_frequencies.found_nuclear_cruise_missile == 4      
+    end
+  end
+
+  describe "inference engine functions" do
+    @tag :skip
+    it "clear works", %{inference_engine: inference_engine, facts: facts} do
+      InferenceEngine.clear(inference_engine)
+
+      assert Facts.get_asserted_facts(facts) == %{}
     end
   end
 
