@@ -269,13 +269,13 @@ defmodule InferenceEngineTest do
     DefRule.def_rule(rules, :found_f22_aim_9c_loadout, fn %MissileFactTemplate{} = missile_0,
                                                           %MissileFactTemplate{} = missile_1 ->
       fn ->
-        if missile_0.name == :aim_9c_sidewinder and missile_1.name == :aim_9c_sidewinder do         
+        if missile_0.name == :aim_9c_sidewinder and missile_1.name == :aim_9c_sidewinder do
           true
         else
           false
         end
       end
-      
+
       fn ->
         Facts.assert(
           facts,
@@ -285,7 +285,7 @@ defmodule InferenceEngineTest do
         )
       end
     end)
-        
+
     DefRule.def_rule(rules, :update_gravity_bomb, fn %BombFactTemplate{} = bomb ->
       fn ->
         if bomb.type == :gravity_bomb and bomb.name == :moab do
@@ -322,7 +322,7 @@ defmodule InferenceEngineTest do
           true
         else
           false
-        end  
+        end
       end
 
       fn ->
@@ -380,55 +380,57 @@ defmodule InferenceEngineTest do
   end
 
   describe "rule activations" do
-    #@tag :skip
+    # @tag :skip
     it "a simple rule works", %{facts: facts} do
       result_frequencies = get_result_frequencies(facts)
 
       assert result_frequencies.found_icbm == 2
       assert result_frequencies.found_air_to_air == 2
-      assert result_frequencies.found_gravity_bomb == 1      
+      assert result_frequencies.found_gravity_bomb == 1
     end
 
-    #@tag :skip
+    # @tag :skip
     it "multiple facts of same type rule works", %{facts: facts} do
       result_frequencies = get_result_frequencies(facts)
       assert result_frequencies.found_f22_aim_9c_loadout == 2
     end
 
-    #@tag :skip
+    # @tag :skip
     it "rule that updates a fact works", %{facts: facts} do
       result_frequencies = get_result_frequencies(facts)
       asserted_facts = Facts.get_asserted_facts(facts)
 
-      {{_, updated_gravity_bomb_id}, _} = result_frequencies
-      |> Enum.filter(fn {key, _} ->
-        is_tuple(key)
-      end)
-      |> Enum.filter(fn {{type, id}, _} ->
-        type == :update_gravity_bomb
-      end)
-      |> hd()
+      {{_, updated_gravity_bomb_id}, _} =
+        result_frequencies
+        |> Enum.filter(fn {key, _} ->
+          is_tuple(key)
+        end)
+        |> Enum.filter(fn {{type, id}, _} ->
+          type == :update_gravity_bomb
+        end)
+        |> hd()
 
-      {_, updated_gravity_bomb_pid} = asserted_facts
-      |> Map.get(updated_gravity_bomb_id)
+      {_, updated_gravity_bomb_pid} =
+        asserted_facts
+        |> Map.get(updated_gravity_bomb_id)
 
       updated_gravity_bomb_field_values = Fact.get_field_values(updated_gravity_bomb_pid)
 
       assert updated_gravity_bomb_field_values.name == :mop
     end
 
-    #@tag :skip
+    # @tag :skip
     it "two different fact template LHS works", %{facts: facts} do
       result_frequencies = get_result_frequencies(facts)
 
       assert result_frequencies.found_jet_powered_missile == 4
     end
 
-    #@tag :skip
+    # @tag :skip
     it "three different fact template LHS works", %{facts: facts} do
       result_frequencies = get_result_frequencies(facts)
 
-      assert result_frequencies.found_nuclear_cruise_missile == 4      
+      assert result_frequencies.found_nuclear_cruise_missile == 4
     end
   end
 
@@ -442,15 +444,14 @@ defmodule InferenceEngineTest do
   end
 
   def get_result_frequencies(facts) do
-      Facts.get_asserted_facts(facts)
-      |> Enum.filter(fn {_, {fact_template_name, _}} ->
-        fact_template_name == Talisman.Test.Support.Fixtures.RuleTestResultFactTemplate
-      end)
-      |> Enum.map(fn {_, {_, result_pid}} ->
-        Fact.get_field_values(result_pid)
-        |> Map.get(:result)
-      end)
-      |> Enum.frequencies()
+    Facts.get_asserted_facts(facts)
+    |> Enum.filter(fn {_, {fact_template_name, _}} ->
+      fact_template_name == Talisman.Test.Support.Fixtures.RuleTestResultFactTemplate
+    end)
+    |> Enum.map(fn {_, {_, result_pid}} ->
+      Fact.get_field_values(result_pid)
+      |> Map.get(:result)
+    end)
+    |> Enum.frequencies()
   end
 end
-
