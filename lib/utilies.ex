@@ -35,7 +35,10 @@ defmodule Talisman.Utilities do
       cartesian_product_element
       |> Enum.frequencies()
       |> Map.values()
-      |> Enum.reduce_while(false, fn value, acc ->
+      # don't need the accumulator because were using
+      # reduce_while just for the break and return a
+      # boolean directly.
+      |> Enum.reduce_while(false, fn value, _acc ->
         if value == 1 do
           {:cont, true}
         else
