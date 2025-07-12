@@ -206,10 +206,9 @@ defmodule Talisman.InferenceEngine do
 
     fact_template_to_rule_lhs_mapping = Mapper.get_fact_template_name_to_rule_lhs_mapping(mapper)
 
-    asserted_fact_templates_names =
-      for {_, {asserted_fact_template_name, _}} <- Facts.get_asserted_facts(facts) do
-        asserted_fact_template_name
-      end
+    for {_, {asserted_fact_template_name, _}} <- Facts.get_asserted_facts(facts) do
+      asserted_fact_template_name
+    end
 
     get_filtered_rules(rules, rules_filtered_by_lhs_and_asserted_fact_template_names)
     |> get_filtered_rules_information()
