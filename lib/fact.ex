@@ -29,7 +29,7 @@ defmodule Talisman.Fact do
     new_fact_instance =
       field_values
       |> Enum.reduce(current_fact_instance, fn {key, value}, acc ->
-        acc = Map.put(acc, key, value)
+        Map.put(acc, key, value)
       end)
 
     new_field_values = Map.merge(current_field_values, field_values)
