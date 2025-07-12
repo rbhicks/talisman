@@ -23,7 +23,7 @@ defmodule Talisman.InferenceEngine do
   end
 
   def clear(server) do
-    GenServer.call(server, :reset)
+    GenServer.call(server, :clear)
   end
 
   def execute_activated_rules(server) do
