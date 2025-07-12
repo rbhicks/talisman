@@ -574,6 +574,10 @@ defmodule InferenceEngineTest do
     end
   end
 
+  #############################################################################
+  ##############################helper functions###############################
+  #############################################################################
+
   def get_result_frequencies(facts) do
     Facts.get_asserted_facts(facts)
     |> Enum.filter(fn {_, {fact_template_name, _}} ->

@@ -221,11 +221,7 @@ defmodule Talisman.InferenceEngine do
         asserted_fact_template_name
       end
 
-    rules
-    |> Rules.get_rules()
-    |> Enum.filter(fn {_, {rule_name, _rule_pid}} ->
-      rules_filtered_by_lhs_and_asserted_fact_template_names |> Enum.member?(rule_name)
-    end)
+    get_filtered_rules(rules, rules_filtered_by_lhs_and_asserted_fact_template_names)
     |> Enum.reduce([], fn {_, {rule_name, rule_pid}}, acc ->
       rule_info = {rule_name, rule_pid, Rule.get_lhs_fact_template_names(rule_pid)}
 
@@ -362,6 +358,14 @@ defmodule Talisman.InferenceEngine do
       fact_template_to_rule_lhs_mapping
       |> Map.get(asserted_fact_template_name)
       |> Kernel.++(acc)
+    end)
+  end
+
+  defp get_filtered_rules(rules, rules_filtered_by_lhs_and_asserted_fact_template_names) do
+    rules
+    |> Rules.get_rules()
+    |> Enum.filter(fn {_, {rule_name, _rule_pid}} ->
+      rules_filtered_by_lhs_and_asserted_fact_template_names |> Enum.member?(rule_name)
     end)
   end
 end
