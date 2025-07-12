@@ -405,7 +405,7 @@ defmodule InferenceEngineTest do
         |> Enum.filter(fn {key, _} ->
           is_tuple(key)
         end)
-        |> Enum.filter(fn {{type, id}, _} ->
+        |> Enum.filter(fn {{type, _id}, _} ->
           type == :update_gravity_bomb
         end)
         |> hd()
