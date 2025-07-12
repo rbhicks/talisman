@@ -57,13 +57,6 @@ defmodule DefRule do
     |> Enum.filter(& &1)
   end
 
-  def crack_variable_names_from_ast_node(closure_function_head)
-      when is_list(closure_function_head) do
-    closure_function_head
-    |> Enum.map(&crack_variable_name_from_ast_node/1)
-    |> Enum.filter(& &1)
-  end
-
   def crack_function_info_from_ast_node(
         {:fn, _,
          [
@@ -81,8 +74,6 @@ defmodule DefRule do
 
     fact_template_names =
       crack_fact_template_names_from_ast_node(closure_function_head, __CALLER__)
-
-    variable_names = crack_variable_names_from_ast_node(closure_function_head)
 
     unique_fact_template_names = Enum.uniq(fact_template_names)
 
