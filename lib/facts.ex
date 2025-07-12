@@ -4,7 +4,6 @@ defmodule Talisman.Facts do
   alias Talisman.Fact
   alias Talisman.Utilities
   alias Talisman.Mapper
-  alias Talisman.InferenceEngine
 
   def assert(server, fact_template) do
     GenServer.call(server, {:assert, fact_template})
