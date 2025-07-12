@@ -128,16 +128,16 @@ defmodule InferenceEngineTest do
       }
     )
 
-    # Facts.assert(
-    #   facts,
-    #   %MissileFactTemplate{
-    #     name: :aim_9c_sidewinder,
-    #     type: :air_to_air,
-    #     propulsion: :solid_propellant,
-    #     guidance: :semi_active_radar,
-    #     warhead: :continuous_rod
-    #   }
-    # )
+    Facts.assert(
+      facts,
+      %MissileFactTemplate{
+        name: :aim_9c_sidewinder,
+        type: :air_to_air,
+        propulsion: :solid_propellant,
+        guidance: :semi_active_radar,
+        warhead: :continuous_rod
+      }
+    )
 
     Facts.assert(
       facts,
@@ -275,6 +275,26 @@ defmodule InferenceEngineTest do
       end
     end)
 
+    DefRule.def_rule(rules, :found_f22_aim_9c_loadout, fn %MissileFactTemplate{} = missile_0,
+                                                          %MissileFactTemplate{} = missile_1 ->
+      fn ->
+        if missile_0.name == :aim_9c_sidewinder and missile_1.name == :aim_9c_sidewinder do         
+          true
+        else
+          false
+        end
+      end
+      
+      fn ->
+        Facts.assert(
+          facts,
+          %RuleTestResultFactTemplate{
+            result: :found_f22_aim_9c_loadout
+          }
+        )
+      end
+    end)
+        
     DefRule.def_rule(rules, :update_gravity_bomb, fn %BombFactTemplate{} = bomb ->
       fn ->
         if bomb.type == :gravity_bomb and bomb.name == :moab do
@@ -286,6 +306,13 @@ defmodule InferenceEngineTest do
 
       fn ->
         Facts.update(facts, bomb.id, %{name: :mop})
+
+        Facts.assert(
+          facts,
+          %RuleTestResultFactTemplate{
+            result: {:update_gravity_bomb, bomb.id}
+          }
+        )
       end
     end)
 
@@ -308,19 +335,6 @@ defmodule InferenceEngineTest do
     #     "()()()()()()()()()()()()()()()()()()" |> IO.puts()
     #   end
     # end)
-
-    # DefRule.def_rule(rules, :found_f22_aim_9c_loadout, fn %MissileFactTemplate{} = sidewinder_0,
-    #                                                       %MissileFactTemplate{} = sidewinder_1 ->
-    #   fn ->
-    #     # "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
-    #     # "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
-    #     # "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" |> IO.puts()
-    #     # sidewinder_0 |> IO.inspect(limit: :infinity)
-    #     # "+++++++++++++++++++++++++++++++++++" |> IO.puts()
-    #     # "+++++++++++++++++++++++++++++++++++" |> IO.puts()
-    #     # "+++++++++++++++++++++++++++++++++++" |> IO.puts()
-    #     false
-    #   end
 
     #   fn ->
     #     "()()()()()()()()()()()()()()()()()()" |> IO.puts()
@@ -381,6 +395,8 @@ defmodule InferenceEngineTest do
 
     Mapper.create_fact_template_name_to_rule_lhs_mapping(mapper)
 
+    InferenceEngine.run(inference_engine)
+
     %{
       facts_supervisor: facts_supervisor,
       rules_supervisor: rules_supervisor,
@@ -393,10 +409,43 @@ defmodule InferenceEngineTest do
 
   describe "rule activations" do
     #   @tag :skip
-    it "simple rule test", %{inference_engine: inference_engine, facts: facts} do
-      InferenceEngine.run(inference_engine)
+    it "simple rule test", %{facts: facts} do
+      result_frequencies = get_result_frequencies(facts)
 
-      result_frequencies = Facts.get_asserted_facts(facts)
+      assert result_frequencies.found_icbm == 2
+      assert result_frequencies.found_air_to_air == 2
+      assert result_frequencies.found_gravity_bomb == 1      
+    end
+
+    it "multiple facts of same type rule test", %{facts: facts} do
+      result_frequencies = get_result_frequencies(facts)
+      assert result_frequencies.found_f22_aim_9c_loadout == 2
+    end
+
+    it "rule that updates a fact test", %{facts: facts} do
+      result_frequencies = get_result_frequencies(facts)
+      asserted_facts = Facts.get_asserted_facts(facts)
+
+      {{_, updated_gravity_bomb_id}, _} = result_frequencies
+      |> Enum.filter(fn {key, _} ->
+        is_tuple(key)
+      end)
+      |> Enum.filter(fn {{type, id}, _} ->
+        type == :update_gravity_bomb
+      end)
+      |> hd()
+
+      {_, updated_gravity_bomb_pid} = asserted_facts
+      |> Map.get(updated_gravity_bomb_id)
+
+      updated_gravity_bomb_field_values = Fact.get_field_values(updated_gravity_bomb_pid)
+
+      assert updated_gravity_bomb_field_values.name == :mop
+    end
+  end
+
+  def get_result_frequencies(facts) do
+      Facts.get_asserted_facts(facts)
       |> Enum.filter(fn {_, {fact_template_name, _}} ->
         fact_template_name == Talisman.Test.Support.Fixtures.RuleTestResultFactTemplate
       end)
@@ -405,10 +454,6 @@ defmodule InferenceEngineTest do
         |> Map.get(:result)
       end)
       |> Enum.frequencies()
-
-      assert result_frequencies.found_icbm == 2
-      assert result_frequencies.found_air_to_air == 1
-      assert result_frequencies.found_gravity_bomb == 1      
-    end
   end
 end
+
