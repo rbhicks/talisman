@@ -608,17 +608,17 @@ defmodule InferenceEngineTest do
   end
 
   def process_mapping_for_assertion(mapping) do
-      mapping
-      |> Enum.map(fn {rule_name, _, template_mappings} ->
-        {rule_name,
-         template_mappings
-         |> Enum.map(fn template_mapping ->
-           template_mapping
-           |> Enum.map(fn {fact_template_name, _} ->
-             fact_template_name
-           end)
-         end)}
-      end)
-      |> Enum.sort()
+    mapping
+    |> Enum.map(fn {rule_name, _, template_mappings} ->
+      {rule_name,
+       template_mappings
+       |> Enum.map(fn template_mapping ->
+         template_mapping
+         |> Enum.map(fn {fact_template_name, _} ->
+           fact_template_name
+         end)
+       end)}
+    end)
+    |> Enum.sort()
   end
 end

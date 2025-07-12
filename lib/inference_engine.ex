@@ -161,20 +161,20 @@ defmodule Talisman.InferenceEngine do
         mapper
       )
 
-      rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings
-      |> generate_candidate_rule_activations(
-        rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity
-      )
-      |> generate_activated_rules()
-      # have to combine and flatten these to make the
-      # fact maintencance and rule execution logic work
-      |> Enum.map(fn {rule_name, rule_pid, activations} ->
-        activations
-        |> Enum.map(fn {fact_pids, rhs_execution_function} ->
-          {rule_name, rule_pid, fact_pids, rhs_execution_function}
-        end)
+    rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings
+    |> generate_candidate_rule_activations(
+      rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity
+    )
+    |> generate_activated_rules()
+    # have to combine and flatten these to make the
+    # fact maintencance and rule execution logic work
+    |> Enum.map(fn {rule_name, rule_pid, activations} ->
+      activations
+      |> Enum.map(fn {fact_pids, rhs_execution_function} ->
+        {rule_name, rule_pid, fact_pids, rhs_execution_function}
       end)
-      |> Enum.flat_map(fn activation_info -> activation_info end)
+    end)
+    |> Enum.flat_map(fn activation_info -> activation_info end)
   end
 
   def filter_rules_by_rule_lhs_and_asserted_fact_template_names(facts, rules, mapper) do
