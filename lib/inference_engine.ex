@@ -357,7 +357,7 @@ defmodule Talisman.InferenceEngine do
          fact_template_name_to_asserted_facts_mapping
        ) do
     filered_rules_information
-    |> Enum.filter(fn {rule_name, rule_pid, rule_lhs_fact_template_names} ->
+    |> Enum.filter(fn {rule_name, _rule_pid, rule_lhs_fact_template_names} ->
       rule_lhs_fact_template_names
       |> Enum.reduce_while(true, fn rule_lhs_fact_template_name, acc ->
         if(
