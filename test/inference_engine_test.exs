@@ -454,15 +454,26 @@ defmodule InferenceEngineTest do
         :found_icbm,
         :found_jet_powered_missile,
         :found_nuclear_cruise_missile,
-        :update_gravity_bomb]
+        :update_gravity_bomb
+      ]
+
       sorted_rules_filtered_by_lhs_and_asserted_fact_template_names =
-        InferenceEngine.filter_rules_by_rule_lhs_and_asserted_fact_template_names(facts, rules, mapper)
+        InferenceEngine.filter_rules_by_rule_lhs_and_asserted_fact_template_names(
+          facts,
+          rules,
+          mapper
+        )
         |> Enum.sort()
-      
-      assert sorted_expected_rules == sorted_rules_filtered_by_lhs_and_asserted_fact_template_names
+
+      assert sorted_expected_rules ==
+               sorted_rules_filtered_by_lhs_and_asserted_fact_template_names
     end
 
-    it "rule name/rule pid/fact template name/asserted fact pid mapping works", %{facts: facts, rules: rules, mapper: mapper} do
+    it "rule name/rule pid/fact template name/asserted fact pid mapping works", %{
+      facts: facts,
+      rules: rules,
+      mapper: mapper
+    } do
       sorted_expected_mappings =
         [
           {
@@ -558,8 +569,13 @@ defmodule InferenceEngineTest do
             ]
           }
         ]
+
       rules_filtered_by_lhs_and_asserted_fact_template_names =
-        InferenceEngine.filter_rules_by_rule_lhs_and_asserted_fact_template_names(facts, rules, mapper)
+        InferenceEngine.filter_rules_by_rule_lhs_and_asserted_fact_template_names(
+          facts,
+          rules,
+          mapper
+        )
 
       processed_rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings =
         InferenceEngine.generate_rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings(
@@ -568,14 +584,15 @@ defmodule InferenceEngineTest do
           rules,
           mapper
         )
-      |> process_mapping_for_assertion()
+        |> process_mapping_for_assertion()
 
-      assert processed_rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings == sorted_expected_mappings
+      assert processed_rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings ==
+               sorted_expected_mappings
     end
   end
 
   #############################################################################
-  ##############################helper functions###############################
+  ############################## helper functions###############################
   #############################################################################
 
   def get_result_frequencies(facts) do
@@ -591,18 +608,18 @@ defmodule InferenceEngineTest do
   end
 
   def process_mapping_for_assertion(mapping) do
-    ack = mapping
-    |> Enum.map(fn {rule_name, _, template_mappings} ->
-      { rule_name,
-        template_mappings
-        |> Enum.map(fn template_mapping ->
-          template_mapping
-          |> Enum.map(fn {fact_template_name, _} ->
-            fact_template_name
-          end)
-        end)
-      }
-    end)
-    |> Enum.sort()
+    ack =
+      mapping
+      |> Enum.map(fn {rule_name, _, template_mappings} ->
+        {rule_name,
+         template_mappings
+         |> Enum.map(fn template_mapping ->
+           template_mapping
+           |> Enum.map(fn {fact_template_name, _} ->
+             fact_template_name
+           end)
+         end)}
+      end)
+      |> Enum.sort()
   end
 end

@@ -183,7 +183,9 @@ defmodule Talisman.InferenceEngine do
     fact_template_to_rule_lhs_mapping = Mapper.get_fact_template_name_to_rule_lhs_mapping(mapper)
     asserted_fact_templates_names = get_asserted_fact_templates_names(asserted_facts)
     rule_lhs_fact_template_names = get_rule_lhs_fact_template_names(rules)
-    mapped_rules = get_mapped_rules(asserted_fact_templates_names, fact_template_to_rule_lhs_mapping)
+
+    mapped_rules =
+      get_mapped_rules(asserted_fact_templates_names, fact_template_to_rule_lhs_mapping)
 
     mapped_rules
     |> Enum.filter(fn rule_name ->
@@ -211,7 +213,9 @@ defmodule Talisman.InferenceEngine do
 
     get_filtered_rules(rules, rules_filtered_by_lhs_and_asserted_fact_template_names)
     |> get_filtered_rules_information()
-    |> filter_filtered_rules_information_by_asserted_fact_mappings(fact_template_to_rule_lhs_mapping)
+    |> filter_filtered_rules_information_by_asserted_fact_mappings(
+      fact_template_to_rule_lhs_mapping
+    )
     |> Enum.reduce([], fn {rule_name, rule_pid, rule_lhs_fact_template_names}, acc ->
       [
         {
@@ -303,7 +307,7 @@ defmodule Talisman.InferenceEngine do
   end
 
   #################################################################
-  #####################internal functions##########################
+  ##################### internal functions##########################
   #################################################################
 
   defp get_asserted_fact_templates_names(asserted_facts) do
@@ -323,8 +327,8 @@ defmodule Talisman.InferenceEngine do
     asserted_fact_templates_names
     |> Enum.filter(fn asserted_fact_template_name ->
       Map.get(fact_template_to_rule_lhs_mapping, asserted_fact_template_name)
-      end)
-      |> Enum.reduce([], fn asserted_fact_template_name, acc ->
+    end)
+    |> Enum.reduce([], fn asserted_fact_template_name, acc ->
       fact_template_to_rule_lhs_mapping
       |> Map.get(asserted_fact_template_name)
       |> Kernel.++(acc)
@@ -348,7 +352,10 @@ defmodule Talisman.InferenceEngine do
     end)
   end
 
-  defp filter_filtered_rules_information_by_asserted_fact_mappings(filered_rules_information, fact_template_name_to_asserted_facts_mapping) do
+  defp filter_filtered_rules_information_by_asserted_fact_mappings(
+         filered_rules_information,
+         fact_template_name_to_asserted_facts_mapping
+       ) do
     filered_rules_information
     |> Enum.filter(fn {rule_name, rule_pid, rule_lhs_fact_template_names} ->
       rule_lhs_fact_template_names
