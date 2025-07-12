@@ -434,16 +434,32 @@ defmodule InferenceEngineTest do
     end
   end
 
-  # this test really only needs to be run once. it's almost unecessary...
-  # it also breaks all the other tests. i've yet to find a way to use
-  # async and force a test to run last, so i'll leave it here, but skip
-  # it. if ever needed, it can be run manually.
   describe "inference engine functions" do
     @tag :skip
+    # this test really only needs to be run once. it's almost unecessary...
+    # it also breaks all the other tests. i've yet to find a way to use
+    # async and force a test to run last, so i'll leave it here, but skip
+    # it. if ever needed, it can be run manually.
     it "clear works", %{inference_engine: inference_engine, facts: facts} do
       InferenceEngine.clear(inference_engine)
 
       assert Facts.get_asserted_facts(facts) == %{}
+    end
+
+    it "", %{facts: facts, rules: rules, mapper: mapper} do
+      sorted_expected_rules = [
+        :found_air_to_air,
+        :found_f22_aim_9c_loadout,
+        :found_gravity_bomb,
+        :found_icbm,
+        :found_jet_powered_missile,
+        :found_nuclear_cruise_missile,
+        :update_gravity_bomb]
+      sorted_rules_filtered_by_lhs_and_asserted_fact_template_names =
+        InferenceEngine.filter_rules_by_rule_lhs_and_asserted_fact_template_names(facts, rules, mapper)
+        |> Enum.sort()
+      
+      assert sorted_expected_rules == sorted_rules_filtered_by_lhs_and_asserted_fact_template_names
     end
   end
 
