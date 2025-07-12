@@ -169,7 +169,7 @@ defmodule Talisman.Mapper do
         |> Map.put(
           fact_template_name,
           fact_template_name_to_asserted_fact_mappings
-          |> Enum.reject(fn {_, mapped_fact_pid} = fact_template_name_to_asserted_fact_mapping ->
+          |> Enum.reject(fn {_, mapped_fact_pid} ->
             mapped_fact_pid == fact_pid
           end)
         )
