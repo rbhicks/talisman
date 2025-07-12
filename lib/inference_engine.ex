@@ -222,26 +222,8 @@ defmodule Talisman.InferenceEngine do
       end
 
     get_filtered_rules(rules, rules_filtered_by_lhs_and_asserted_fact_template_names)
-    |> Enum.reduce([], fn {_, {rule_name, rule_pid}}, acc ->
-      rule_info = {rule_name, rule_pid, Rule.get_lhs_fact_template_names(rule_pid)}
-
-      [rule_info | acc]
-    end)
-    |> Enum.filter(fn {rule_name, rule_pid, rule_lhs_fact_template_names} ->
-      rule_lhs_fact_template_names
-      |> Enum.reduce_while(true, fn rule_lhs_fact_template_name, acc ->
-        if(
-          Map.has_key?(
-            fact_template_name_to_asserted_facts_mapping,
-            rule_lhs_fact_template_name
-          )
-        ) do
-          {:cont, acc}
-        else
-          {:halt, false}
-        end
-      end)
-    end)
+    |> get_filtered_rules_information()
+    |> filter_filtered_rules_information_by_asserted_fact_mappings(fact_template_to_rule_lhs_mapping)
     |> Enum.reduce([], fn {rule_name, rule_pid, rule_lhs_fact_template_names}, acc ->
       [
         {
@@ -366,6 +348,34 @@ defmodule Talisman.InferenceEngine do
     |> Rules.get_rules()
     |> Enum.filter(fn {_, {rule_name, _rule_pid}} ->
       rules_filtered_by_lhs_and_asserted_fact_template_names |> Enum.member?(rule_name)
+    end)
+  end
+
+  defp get_filtered_rules_information(filtered_rules) do
+    filtered_rules
+    |> Enum.reduce([], fn {_, {rule_name, rule_pid}}, acc ->
+      rule_info = {rule_name, rule_pid, Rule.get_lhs_fact_template_names(rule_pid)}
+
+      [rule_info | acc]
+    end)
+  end
+
+  defp filter_filtered_rules_information_by_asserted_fact_mappings(filered_rules_information, fact_template_name_to_asserted_facts_mapping) do
+    filered_rules_information
+    |> Enum.filter(fn {rule_name, rule_pid, rule_lhs_fact_template_names} ->
+      rule_lhs_fact_template_names
+      |> Enum.reduce_while(true, fn rule_lhs_fact_template_name, acc ->
+        if(
+          Map.has_key?(
+            fact_template_name_to_asserted_facts_mapping,
+            rule_lhs_fact_template_name
+          )
+        ) do
+          {:cont, acc}
+        else
+          {:halt, false}
+        end
+      end)
     end)
   end
 end
