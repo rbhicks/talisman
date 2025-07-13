@@ -273,12 +273,17 @@ defmodule Talisman.InferenceEngine do
   def generate_activated_rules(candidate_rule_activations) do
     candidate_rule_activations
     |> Enum.map(fn {rule_name, rule_pid, asserted_facts} ->
+
+      asserted_fact_lhs_sets = asserted_facts
+      |> Utilities.create_cartesian_product()
+      |> remove_redundant_asserted_fact_lhs_sets()
+      
       {
         rule_name,
         rule_pid,
         Rule.evaluate_lhs_for_asserted_facts(
           rule_pid,
-          Utilities.create_cartesian_product(asserted_facts)
+          asserted_fact_lhs_sets
         )
       }
     end)
@@ -364,5 +369,19 @@ defmodule Talisman.InferenceEngine do
         end
       end)
     end)
+  end
+
+  # this prevents additional activations when the same fact template
+  # is used multiple times and the only difference is the order.
+  defp remove_redundant_asserted_fact_lhs_sets(asserted_facts_cartesian_product) do
+    "hi5c1uh9s69qt5jlyyer7wcj9hsj5b" |> IO.puts
+      "hi5c1uh9s69qt5jlyyer7wcj9hsj5b" |> IO.puts
+      "hi5c1uh9s69qt5jlyyer7wcj9hsj5b" |> IO.puts
+      asserted_facts_cartesian_product |> IO.inspect(limit: :infinity)
+      "1hpndqzwna335c1ictgwpe8nbk8rih" |> IO.puts
+      "1hpndqzwna335c1ictgwpe8nbk8rih" |> IO.puts
+      "1hpndqzwna335c1ictgwpe8nbk8rih" |> IO.puts
+
+      asserted_facts_cartesian_product
   end
 end
