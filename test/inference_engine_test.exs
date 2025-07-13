@@ -392,7 +392,7 @@ defmodule InferenceEngineTest do
     # @tag :skip
     it "multiple facts of same type rule works", %{facts: facts} do
       result_frequencies = get_result_frequencies(facts)
-      assert result_frequencies.found_f22_aim_9c_loadout == 2
+      assert result_frequencies.found_f22_aim_9c_loadout == 1
     end
 
     # @tag :skip

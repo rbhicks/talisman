@@ -273,11 +273,11 @@ defmodule Talisman.InferenceEngine do
   def generate_activated_rules(candidate_rule_activations) do
     candidate_rule_activations
     |> Enum.map(fn {rule_name, rule_pid, asserted_facts} ->
+      asserted_fact_lhs_sets =
+        asserted_facts
+        |> Utilities.create_cartesian_product()
+        |> remove_redundant_asserted_fact_lhs_sets()
 
-      asserted_fact_lhs_sets = asserted_facts
-      |> Utilities.create_cartesian_product()
-      |> remove_redundant_asserted_fact_lhs_sets()
-      
       {
         rule_name,
         rule_pid,
@@ -374,14 +374,21 @@ defmodule Talisman.InferenceEngine do
   # this prevents additional activations when the same fact template
   # is used multiple times and the only difference is the order.
   defp remove_redundant_asserted_fact_lhs_sets(asserted_facts_cartesian_product) do
-    "hi5c1uh9s69qt5jlyyer7wcj9hsj5b" |> IO.puts
-      "hi5c1uh9s69qt5jlyyer7wcj9hsj5b" |> IO.puts
-      "hi5c1uh9s69qt5jlyyer7wcj9hsj5b" |> IO.puts
-      asserted_facts_cartesian_product |> IO.inspect(limit: :infinity)
-      "1hpndqzwna335c1ictgwpe8nbk8rih" |> IO.puts
-      "1hpndqzwna335c1ictgwpe8nbk8rih" |> IO.puts
-      "1hpndqzwna335c1ictgwpe8nbk8rih" |> IO.puts
-
+    {unique_asserted_fact_lhs_sets, _sorted_added_asserted_fact_lhs_sets} =
       asserted_facts_cartesian_product
+      |> Enum.reduce({[], []}, fn asserted_fact_lhs_set,
+                                  {acc_unique_asserted_fact_lhs_sets,
+                                   acc_sorted_added_asserted_fact_lhs_sets} = acc ->
+        sorted_asserted_fact_lhs_set = Enum.sort(asserted_fact_lhs_set)
+
+        if not Enum.member?(acc_sorted_added_asserted_fact_lhs_sets, sorted_asserted_fact_lhs_set) do
+          {[asserted_fact_lhs_set | acc_unique_asserted_fact_lhs_sets],
+           [sorted_asserted_fact_lhs_set | acc_sorted_added_asserted_fact_lhs_sets]}
+        else
+          acc
+        end
+      end)
+
+    unique_asserted_fact_lhs_sets
   end
 end
