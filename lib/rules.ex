@@ -4,6 +4,14 @@ defmodule Talisman.Rules do
   alias Talisman.Rule
   alias Talisman.Utilities
 
+  def set_rules_supervisor(server, rules_supervisor) do
+    GenServer.call(server, {:set_rules_supervisor, rules_supervisor})
+  end
+  
+  def set_inference_engine(server, inference_engine) do
+    GenServer.call(server, {:set_inference_engine, inference_engine})
+  end
+
   def get_rules(server) do
     {:ok, rules} = GenServer.call(server, :get_rules)
     rules
@@ -13,6 +21,24 @@ defmodule Talisman.Rules do
     GenServer.call(server, {:add_rule, rule_name, rule})
   end
 
+    def handle_call({:set_rules_supervisor, rules_supervisor}, _, state) do
+    {
+      :reply,
+      :ok,
+      state
+      |> Map.put(:rules_supervisor, rules_supervisor)
+    }
+  end
+  
+  def handle_call({:set_inference_engine, inference_engine}, _, state) do
+    {
+      :reply,
+      :ok,
+      state
+      |> Map.put(:inference_engine, inference_engine)
+    }
+  end
+    
   def handle_call(
         {:add_rule, rule_name, rule},
         _from,
@@ -51,16 +77,16 @@ defmodule Talisman.Rules do
     }
   end
 
-  def start(params) do
-    GenServer.start_link(__MODULE__, params)
+  def start() do
+    GenServer.start_link(__MODULE__, nil)
   end
 
-  def init(rules_supervisor: rules_supervisor, inference_engine: inference_engine) do
+  def init(_) do
     {
       :ok,
       %{
-        rules_supervisor: rules_supervisor,
-        inference_engine: inference_engine,
+        rules_supervisor: nil,
+        inference_engine: nil,
         rules: %{}
       }
     }

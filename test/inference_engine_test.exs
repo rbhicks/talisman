@@ -79,7 +79,7 @@ defmodule InferenceEngineTest do
         start: {
           Rules,
           :start,
-          [[rules_supervisor: rules_supervisor, inference_engine: inference_engine]]
+          []
         }
       }
 
@@ -89,6 +89,9 @@ defmodule InferenceEngineTest do
     Facts.set_facts_supervisor(facts, facts_supervisor)
     Facts.set_inference_engine(facts, inference_engine)
     Facts.set_mapper(facts, mapper)
+
+    Rules.set_rules_supervisor(rules, rules_supervisor)
+    Rules.set_inference_engine(rules, inference_engine)
 
     InferenceEngine.set_facts(inference_engine, facts)
     InferenceEngine.set_rules(inference_engine, rules)
