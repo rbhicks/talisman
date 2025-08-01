@@ -57,7 +57,7 @@ defmodule InferenceEngineTest do
         start: {
           InferenceEngine,
           :start,
-          [[mapper: mapper]]
+          []
         }
       }
 
@@ -94,6 +94,7 @@ defmodule InferenceEngineTest do
 
     InferenceEngine.set_facts(inference_engine, facts)
     InferenceEngine.set_rules(inference_engine, rules)
+    InferenceEngine.set_mapper(inference_engine, mapper)
 
     Facts.assert(
       facts,

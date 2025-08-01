@@ -15,6 +15,10 @@ defmodule Talisman.InferenceEngine do
     GenServer.call(server, {:set_rules, rules})
   end
 
+  def set_mapper(server, mapper) do
+    GenServer.call(server, {:set_mapper, mapper})
+  end
+
   #  def load ...
   #  def reset ???
 
@@ -45,6 +49,15 @@ defmodule Talisman.InferenceEngine do
       :ok,
       state
       |> Map.put(:rules, rules)
+    }
+  end
+
+  def handle_call({:set_mapper, mapper}, _, state) do
+    {
+      :reply,
+      :ok,
+      state
+      |> Map.put(:mapper, mapper)
     }
   end
 
@@ -85,17 +98,17 @@ defmodule Talisman.InferenceEngine do
     }
   end
 
-  def start(params) do
-    GenServer.start_link(__MODULE__, params)
+  def start() do
+    GenServer.start_link(__MODULE__, nil)
   end
 
-  def init(mapper: mapper) do
+  def init(_) do
     {
       :ok,
       %{
         facts: nil,
         rules: nil,
-        mapper: mapper
+        mapper: nil
       }
     }
   end
