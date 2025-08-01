@@ -5,6 +5,18 @@ defmodule Talisman.Facts do
   alias Talisman.Utilities
   alias Talisman.Mapper
 
+  def set_facts_supervisor(server, facts_supervisor) do
+    GenServer.call(server, {:set_facts_supervisor, facts_supervisor})
+  end
+  
+  def set_inference_engine(server, inference_engine) do
+    GenServer.call(server, {:set_inference_engine, inference_engine})
+  end
+    
+  def set_mapper(server, mapper) do
+    GenServer.call(server, {:set_mapper, mapper})
+  end
+
   def assert(server, fact_template) do
     GenServer.call(server, {:assert, fact_template})
   end
@@ -25,6 +37,33 @@ defmodule Talisman.Facts do
     {:ok, asserted_facts} = GenServer.call(server, :get_asserted_facts)
 
     asserted_facts
+  end
+
+  def handle_call({:set_facts_supervisor, facts_supervisor}, _, state) do
+    {
+      :reply,
+      :ok,
+      state
+      |> Map.put(:facts_supervisor, facts_supervisor)
+    }
+  end
+  
+  def handle_call({:set_inference_engine, inference_engine}, _, state) do
+    {
+      :reply,
+      :ok,
+      state
+      |> Map.put(:inference_engine, inference_engine)
+    }
+  end
+    
+  def handle_call({:set_mapper, mapper}, _, state) do
+    {
+      :reply,
+      :ok,
+      state
+      |> Map.put(:mapper, mapper)
+    }
   end
 
   def handle_call(
@@ -122,17 +161,17 @@ defmodule Talisman.Facts do
     }
   end
 
-  def start(params) do
-    GenServer.start_link(__MODULE__, params)
+  def start() do
+    GenServer.start_link(__MODULE__, nil)
   end
 
-  def init(facts_supervisor: facts_supervisor, inference_engine: inference_engine, mapper: mapper) do
+  def init(_) do
     {
       :ok,
       %{
-        facts_supervisor: facts_supervisor,
-        inference_engine: inference_engine,
-        mapper: mapper,
+        facts_supervisor: nil,
+        inference_engine: nil,
+        mapper: nil,
         asserted_facts: %{}
       }
     }

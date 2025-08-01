@@ -69,13 +69,7 @@ defmodule InferenceEngineTest do
         start: {
           Facts,
           :start,
-          [
-            [
-              facts_supervisor: facts_supervisor,
-              inference_engine: inference_engine,
-              mapper: mapper
-            ]
-          ]
+          []
         }
       }
 
@@ -91,6 +85,10 @@ defmodule InferenceEngineTest do
 
     facts = start_supervised!(facts_child_spec)
     rules = start_supervised!(rules_child_spec)
+
+    Facts.set_facts_supervisor(facts, facts_supervisor)
+    Facts.set_inference_engine(facts, inference_engine)
+    Facts.set_mapper(facts, mapper)
 
     InferenceEngine.set_facts(inference_engine, facts)
     InferenceEngine.set_rules(inference_engine, rules)
