@@ -8,6 +8,7 @@ defmodule Talisman do
   alias Talisman.Facts
   alias Talisman.Rules
   alias Talisman.InferenceEngine
+  alias Talisman.Rule
 
   def start(_type, _args) do
     children = [
@@ -131,7 +132,27 @@ defmodule Talisman do
     Registry.lookup(Talisman.Registry, :inference_engine)
     |> hd()
     |> elem(1)
-    |> InferenceEngine.load(rule_compile_modules)
+    |> InferenceEngine.compile_rules(rule_compile_modules)
+
+    for {_, {rule_name, rule_pid}} <-
+          Rules.get_rules(
+            Registry.lookup(Talisman.Registry, :rules)
+            |> hd()
+            |> elem(1)
+          ) do
+      Mapper.add_rule_fact_template_names(
+        Registry.lookup(Talisman.Registry, :mapper)
+        |> hd()
+        |> elem(1),
+        rule_name,
+        Rule.get_lhs_fact_template_names(rule_pid)
+      )
+    end
+
+    Registry.lookup(Talisman.Registry, :mapper)
+    |> hd()
+    |> elem(1)
+    |> Mapper.create_fact_template_name_to_rule_lhs_mapping()    
   end
   
   def run() do
