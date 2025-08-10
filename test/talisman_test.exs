@@ -588,16 +588,6 @@ defmodule TalismanTest do
     end
   end
 
-  describe "api tests" do
-    it "run api call should work" do
-      true
-    end
-
-    it "clear api call should work" do
-      true
-    end
-  end
-
   #############################################################################
   ############################## helper functions###############################
   #############################################################################
