@@ -1,4 +1,4 @@
-defmodule InferenceEngineTest do
+defmodule TalismanTest do
   use ExSpec, async: true
 
   require DefRule
@@ -588,6 +588,16 @@ defmodule InferenceEngineTest do
     end
   end
 
+  describe "api tests" do
+    it "run api call should work" do
+      true
+    end
+
+    it "clear api call should work" do
+      true
+    end
+  end
+  
   #############################################################################
   ############################## helper functions###############################
   #############################################################################
