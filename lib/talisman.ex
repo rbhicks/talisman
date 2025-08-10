@@ -114,11 +114,15 @@ defmodule Talisman do
 
   def run() do
     Registry.lookup(Talisman.Registry, :inference_engine)
+    |> hd()
+    |> elem(1)
     |> InferenceEngine.run()
   end
 
   def clear() do
-    Registry.lookup(Talisman.Registry, :clear)
+    Registry.lookup(Talisman.Registry, :inference_engine)
+    |> hd()
+    |> elem(1)
     |> InferenceEngine.clear()
   end
 end
