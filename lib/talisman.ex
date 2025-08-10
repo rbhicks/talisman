@@ -39,6 +39,7 @@ defmodule Talisman do
     {:ok, rules_supervisor_pid} = TalismanDynamicSupervisor.start_talisman_genserver(rules_supervisor_child_spec)
 
     {:ok, _} = Registry.register(Talisman.Registry, :facts_supervisor, facts_supervisor_pid)
+    {:ok, _} = Registry.register(Talisman.Registry, :rules_supervisor, rules_supervisor_pid)
     
     "dijfd83gi156niost84s7xokwuu9d7" |> IO.puts
     "dijfd83gi156niost84s7xokwuu9d7" |> IO.puts
@@ -50,6 +51,8 @@ defmodule Talisman do
     rules_supervisor_pid |> IO.inspect(limit: :infinity)
     "==============================" |> IO.puts
     Registry.lookup(Talisman.Registry, :facts_supervisor) |> IO.inspect(limit: :infinity)
+    "==============================" |> IO.puts
+    Registry.lookup(Talisman.Registry, :rules_supervisor) |> IO.inspect(limit: :infinity)
     "9grcvmtv8d0b2xklwzbqaamtl02lr5" |> IO.puts
     "9grcvmtv8d0b2xklwzbqaamtl02lr5" |> IO.puts
     "9grcvmtv8d0b2xklwzbqaamtl02lr5" |> IO.puts
