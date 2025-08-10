@@ -8,11 +8,11 @@ defmodule Talisman.Facts do
   def set_facts_supervisor(server, facts_supervisor) do
     GenServer.call(server, {:set_facts_supervisor, facts_supervisor})
   end
-  
+
   def set_inference_engine(server, inference_engine) do
     GenServer.call(server, {:set_inference_engine, inference_engine})
   end
-    
+
   def set_mapper(server, mapper) do
     GenServer.call(server, {:set_mapper, mapper})
   end
@@ -47,7 +47,7 @@ defmodule Talisman.Facts do
       |> Map.put(:facts_supervisor, facts_supervisor)
     }
   end
-  
+
   def handle_call({:set_inference_engine, inference_engine}, _, state) do
     {
       :reply,
@@ -56,7 +56,7 @@ defmodule Talisman.Facts do
       |> Map.put(:inference_engine, inference_engine)
     }
   end
-    
+
   def handle_call({:set_mapper, mapper}, _, state) do
     {
       :reply,

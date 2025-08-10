@@ -7,7 +7,7 @@ defmodule Talisman.Rules do
   def set_rules_supervisor(server, rules_supervisor) do
     GenServer.call(server, {:set_rules_supervisor, rules_supervisor})
   end
-  
+
   def set_inference_engine(server, inference_engine) do
     GenServer.call(server, {:set_inference_engine, inference_engine})
   end
@@ -21,7 +21,7 @@ defmodule Talisman.Rules do
     GenServer.call(server, {:add_rule, rule_name, rule})
   end
 
-    def handle_call({:set_rules_supervisor, rules_supervisor}, _, state) do
+  def handle_call({:set_rules_supervisor, rules_supervisor}, _, state) do
     {
       :reply,
       :ok,
@@ -29,7 +29,7 @@ defmodule Talisman.Rules do
       |> Map.put(:rules_supervisor, rules_supervisor)
     }
   end
-  
+
   def handle_call({:set_inference_engine, inference_engine}, _, state) do
     {
       :reply,
@@ -38,7 +38,7 @@ defmodule Talisman.Rules do
       |> Map.put(:inference_engine, inference_engine)
     }
   end
-    
+
   def handle_call(
         {:add_rule, rule_name, rule},
         _from,
