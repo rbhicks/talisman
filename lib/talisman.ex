@@ -4,6 +4,10 @@ defmodule Talisman do
   """
 
   alias Talisman.TalismanDynamicSupervisor
+  alias Talisman.Mapper
+  alias Talisman.Facts
+  alias Talisman.Rules
+  alias Talisman.InferenceEngine
   
   def start(_type, _args) do
     
@@ -35,24 +39,86 @@ defmodule Talisman do
         }
       }
 
+    mapper_child_spec =
+      %{
+        id: :mapper,
+        start: {
+          Mapper,
+          :start,
+          []
+        }
+      }
+
+    inference_engine_child_spec =
+      %{
+        id: :inference_engine,
+        start: {
+          InferenceEngine,
+          :start,
+          []
+        }
+      }
+
+    facts_child_spec =
+      %{
+        id: :facts,
+        start: {
+          Facts,
+          :start,
+          []
+        }
+      }
+
+    rules_child_spec =
+      %{
+        id: :rules,
+        start: {
+          Rules,
+          :start,
+          []
+        }
+      }
+
     {:ok, facts_supervisor_pid} = TalismanDynamicSupervisor.start_talisman_genserver(facts_supervisor_child_spec)
     {:ok, rules_supervisor_pid} = TalismanDynamicSupervisor.start_talisman_genserver(rules_supervisor_child_spec)
+    {:ok, mapper_pid} = TalismanDynamicSupervisor.start_talisman_genserver(mapper_child_spec)
+    {:ok, inference_engine_pid} = TalismanDynamicSupervisor.start_talisman_genserver(inference_engine_child_spec)
+    {:ok, facts_pid} = TalismanDynamicSupervisor.start_talisman_genserver(facts_child_spec)
+    {:ok, rules_pid} = TalismanDynamicSupervisor.start_talisman_genserver(rules_child_spec)
 
     {:ok, _} = Registry.register(Talisman.Registry, :facts_supervisor, facts_supervisor_pid)
     {:ok, _} = Registry.register(Talisman.Registry, :rules_supervisor, rules_supervisor_pid)
+    {:ok, _} = Registry.register(Talisman.Registry, :mapper, mapper_pid)
+    {:ok, _} = Registry.register(Talisman.Registry, :inference_engine, inference_engine_pid)
+    {:ok, _} = Registry.register(Talisman.Registry, :facts, facts_pid)
+    {:ok, _} = Registry.register(Talisman.Registry, :rules, rules_pid)
+
+    Facts.set_facts_supervisor(facts_pid, facts_supervisor_pid)
+    Facts.set_inference_engine(facts_pid, inference_engine_pid)
+    Facts.set_mapper(facts_pid, mapper_pid)
+
+    Rules.set_rules_supervisor(rules_pid, rules_supervisor_pid)
+    Rules.set_inference_engine(rules_pid, inference_engine_pid)
+
+    InferenceEngine.set_facts(inference_engine_pid, facts_pid)
+    InferenceEngine.set_rules(inference_engine_pid, rules_pid)
+    InferenceEngine.set_mapper(inference_engine_pid, mapper_pid)
+
     
     "dijfd83gi156niost84s7xokwuu9d7" |> IO.puts
     "dijfd83gi156niost84s7xokwuu9d7" |> IO.puts
     "dijfd83gi156niost84s7xokwuu9d7" |> IO.puts
-    Supervisor.which_children(supervisor_id) |> IO.inspect(limit: :infinity)
-    "==============================" |> IO.puts
-    facts_supervisor_pid |> IO.inspect(limit: :infinity)
-    "==============================" |> IO.puts
-    rules_supervisor_pid |> IO.inspect(limit: :infinity)
-    "==============================" |> IO.puts
     Registry.lookup(Talisman.Registry, :facts_supervisor) |> IO.inspect(limit: :infinity)
     "==============================" |> IO.puts
     Registry.lookup(Talisman.Registry, :rules_supervisor) |> IO.inspect(limit: :infinity)
+    "==============================" |> IO.puts
+    Registry.lookup(Talisman.Registry, :mapper) |> IO.inspect(limit: :infinity)
+    "==============================" |> IO.puts
+    Registry.lookup(Talisman.Registry, :inference_engine) |> IO.inspect(limit: :infinity)
+    "==============================" |> IO.puts
+    Registry.lookup(Talisman.Registry, :facts) |> IO.inspect(limit: :infinity)
+    "==============================" |> IO.puts
+    Registry.lookup(Talisman.Registry, :rules) |> IO.inspect(limit: :infinity)
     "9grcvmtv8d0b2xklwzbqaamtl02lr5" |> IO.puts
     "9grcvmtv8d0b2xklwzbqaamtl02lr5" |> IO.puts
     "9grcvmtv8d0b2xklwzbqaamtl02lr5" |> IO.puts
