@@ -111,4 +111,14 @@ defmodule Talisman do
 
     {:ok, supervisor_id}
   end
+
+  def run() do
+    Registry.lookup(Talisman.Registry, :inference_engine)
+    |> InferenceEngine.run()
+  end
+
+  def run() do
+    Registry.lookup(Talisman.Registry, :clear)
+    |> InferenceEngine.clear()
+  end
 end

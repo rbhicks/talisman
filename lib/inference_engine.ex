@@ -30,10 +30,6 @@ defmodule Talisman.InferenceEngine do
     GenServer.call(server, :clear)
   end
 
-  def execute_activated_rules(server) do
-    :ok = GenServer.call(server, :execute_activated_rules)
-  end
-
   def handle_call({:set_facts, facts}, _, state) do
     {
       :reply,
