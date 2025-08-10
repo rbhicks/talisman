@@ -23,6 +23,10 @@ defmodule Talisman.InferenceEngine do
     GenServer.call(server, {:load, fact_load_modules})
   end
 
+  def compile_rules(server, rule_compile_modules) do
+    GenServer.call(server, {:compile_rules, rule_compile_modules})
+  end
+
   # ???????????????
   # ???????????????
   # ???????????????
@@ -75,6 +79,25 @@ defmodule Talisman.InferenceEngine do
       ) do
     for fact_load_module <- fact_load_modules do
       apply(fact_load_module, :load, [facts])
+    end
+
+    {
+      :reply,
+      :ok,
+      state
+    }
+  end
+
+  def handle_call(
+        {:compile_rules, rule_compile_modules},
+        _from,
+        %{
+          facts: facts,
+          rules: rules
+        } = state
+      ) do
+    for rule_compile_module <- rule_compile_modules do
+      apply(rule_compile_module, :compile_rules, [facts, rules])
     end
 
     {

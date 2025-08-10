@@ -126,7 +126,14 @@ defmodule Talisman do
     |> elem(1)
     |> InferenceEngine.load(fact_load_modules)
   end
-
+  
+  def compile_rules(rule_compile_modules) do
+    Registry.lookup(Talisman.Registry, :inference_engine)
+    |> hd()
+    |> elem(1)
+    |> InferenceEngine.load(rule_compile_modules)
+  end
+  
   def run() do
     Registry.lookup(Talisman.Registry, :inference_engine)
     |> hd()
