@@ -24,3 +24,6 @@ talisman-*.tar
 
 # Temporary files, for example, from tests.
 /tmp/
+
+# ignore the tacit fact and rules files
+lib/expert_system
