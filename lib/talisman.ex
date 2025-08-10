@@ -117,7 +117,7 @@ defmodule Talisman do
     |> InferenceEngine.run()
   end
 
-  def run() do
+  def clear() do
     Registry.lookup(Talisman.Registry, :clear)
     |> InferenceEngine.clear()
   end

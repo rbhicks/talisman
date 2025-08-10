@@ -19,136 +19,114 @@ defmodule InferenceEngineTest do
     Registry.lookup(Talisman.Registry, :facts)
     |> hd()
     |> elem(1)
-    |> Facts.assert(
-      %MissileFactTemplate{
-        name: :minuteman_ii,
-        type: :icbm,
-        propulsion: :solid_propellant,
-        guidance: :ballistic_trajectory,
-        warhead: :mirv
-      }
-    )
+    |> Facts.assert(%MissileFactTemplate{
+      name: :minuteman_ii,
+      type: :icbm,
+      propulsion: :solid_propellant,
+      guidance: :ballistic_trajectory,
+      warhead: :mirv
+    })
 
     Registry.lookup(Talisman.Registry, :facts)
     |> hd()
     |> elem(1)
-    |> Facts.assert(
-      %MissileFactTemplate{
-        name: :minuteman_ii,
-        type: :icbm,
-        propulsion: :solid_propellant,
-        guidance: :ballistic_trajectory,
-        warhead: :mirv
-      }
-    )
+    |> Facts.assert(%MissileFactTemplate{
+      name: :minuteman_ii,
+      type: :icbm,
+      propulsion: :solid_propellant,
+      guidance: :ballistic_trajectory,
+      warhead: :mirv
+    })
 
     Registry.lookup(Talisman.Registry, :facts)
     |> hd()
     |> elem(1)
-    |> Facts.assert(
-      %MissileFactTemplate{
-        name: :aim_9c_sidewinder,
-        type: :air_to_air,
-        propulsion: :solid_propellant,
-        guidance: :semi_active_radar,
-        warhead: :continuous_rod
-      }
-    )
+    |> Facts.assert(%MissileFactTemplate{
+      name: :aim_9c_sidewinder,
+      type: :air_to_air,
+      propulsion: :solid_propellant,
+      guidance: :semi_active_radar,
+      warhead: :continuous_rod
+    })
 
     Registry.lookup(Talisman.Registry, :facts)
     |> hd()
     |> elem(1)
-    |> Facts.assert(
-      %MissileFactTemplate{
-        name: :aim_9c_sidewinder,
-        type: :air_to_air,
-        propulsion: :solid_propellant,
-        guidance: :semi_active_radar,
-        warhead: :continuous_rod
-      }
-    )
+    |> Facts.assert(%MissileFactTemplate{
+      name: :aim_9c_sidewinder,
+      type: :air_to_air,
+      propulsion: :solid_propellant,
+      guidance: :semi_active_radar,
+      warhead: :continuous_rod
+    })
 
     Registry.lookup(Talisman.Registry, :facts)
     |> hd()
     |> elem(1)
-    |> Facts.assert(
-      %BombFactTemplate{
-        name: :b61,
-        type: :gravity_bomb,
-        guidance: :glide,
-        warhead: :thermonuclear
-      }
-    )
+    |> Facts.assert(%BombFactTemplate{
+      name: :b61,
+      type: :gravity_bomb,
+      guidance: :glide,
+      warhead: :thermonuclear
+    })
 
     Registry.lookup(Talisman.Registry, :facts)
     |> hd()
     |> elem(1)
-    |> Facts.assert(
-      %BombFactTemplate{
-        name: :b61,
-        type: :gravity_bomb,
-        guidance: :glide,
-        warhead: :thermonuclear
-      }
-    )
+    |> Facts.assert(%BombFactTemplate{
+      name: :b61,
+      type: :gravity_bomb,
+      guidance: :glide,
+      warhead: :thermonuclear
+    })
 
     Registry.lookup(Talisman.Registry, :facts)
     |> hd()
     |> elem(1)
-    |> Facts.assert(
-      %BombFactTemplate{
-        name: :b61,
-        type: :gravity_bomb,
-        guidance: :glide,
-        warhead: :thermonuclear
-      }
-    )
+    |> Facts.assert(%BombFactTemplate{
+      name: :b61,
+      type: :gravity_bomb,
+      guidance: :glide,
+      warhead: :thermonuclear
+    })
 
     Registry.lookup(Talisman.Registry, :facts)
     |> hd()
     |> elem(1)
-    |> Facts.assert(
-      %BombFactTemplate{
-        name: :moab,
-        type: :gravity_bomb,
-        guidance: :gps,
-        warhead: :fae
-      }
-    )
+    |> Facts.assert(%BombFactTemplate{
+      name: :moab,
+      type: :gravity_bomb,
+      guidance: :gps,
+      warhead: :fae
+    })
 
     Registry.lookup(Talisman.Registry, :facts)
     |> hd()
     |> elem(1)
-    |> Facts.assert(
-      %BombFactTemplate{
-        name: :blu_109,
-        type: :gravity_bomb,
-        guidance: :gps,
-        warhead: :fae
-      }
-    )
+    |> Facts.assert(%BombFactTemplate{
+      name: :blu_109,
+      type: :gravity_bomb,
+      guidance: :gps,
+      warhead: :fae
+    })
 
     Registry.lookup(Talisman.Registry, :facts)
     |> hd()
     |> elem(1)
-    |> Facts.assert(
-      %PropulsionFactTemplate{
-        name: :"f107_wr_105/401",
-        type: :turbofan,
-        power: :"6.22_kN"
-      }
-    )
+    |> Facts.assert(%PropulsionFactTemplate{
+      name: :"f107_wr_105/401",
+      type: :turbofan,
+      power: :"6.22_kN"
+    })
 
     Registry.lookup(Talisman.Registry, :facts)
     |> hd()
     |> elem(1)
-    |> Facts.assert(
-      %WarheadFactTemplate{
-        name: :W80,
-        type: :thermonuclear,
-        yield: :"21-628_TJ"
-      }
-    )
+    |> Facts.assert(%WarheadFactTemplate{
+      name: :W80,
+      type: :thermonuclear,
+      yield: :"21-628_TJ"
+    })
 
     Registry.lookup(Talisman.Registry, :rules)
     |> hd()
@@ -174,7 +152,6 @@ defmodule InferenceEngineTest do
       end
     end)
 
-    
     Registry.lookup(Talisman.Registry, :rules)
     |> hd()
     |> elem(1)
@@ -212,10 +189,12 @@ defmodule InferenceEngineTest do
       end
 
       fn ->
-        Facts.retract(Registry.lookup(Talisman.Registry, :facts)
+        Facts.retract(
+          Registry.lookup(Talisman.Registry, :facts)
           |> hd()
           |> elem(1),
-          bomb.id)
+          bomb.id
+        )
 
         Facts.assert(
           Registry.lookup(Talisman.Registry, :facts)
@@ -232,7 +211,7 @@ defmodule InferenceEngineTest do
     |> hd()
     |> elem(1)
     |> DefRule.def_rule(:found_f22_aim_9c_loadout, fn %MissileFactTemplate{} = missile_0,
-                                                          %MissileFactTemplate{} = missile_1 ->
+                                                      %MissileFactTemplate{} = missile_1 ->
       fn ->
         if missile_0.name == :aim_9c_sidewinder and missile_1.name == :aim_9c_sidewinder do
           true
@@ -266,10 +245,13 @@ defmodule InferenceEngineTest do
       end
 
       fn ->
-        Facts.update(Registry.lookup(Talisman.Registry, :facts)
+        Facts.update(
+          Registry.lookup(Talisman.Registry, :facts)
           |> hd()
           |> elem(1),
-          bomb.id, %{name: :mop})
+          bomb.id,
+          %{name: :mop}
+        )
 
         Facts.assert(
           Registry.lookup(Talisman.Registry, :facts)
@@ -294,7 +276,7 @@ defmodule InferenceEngineTest do
     |> hd()
     |> elem(1)
     |> DefRule.def_rule(:found_jet_powered_missile, fn %MissileFactTemplate{} = _missile,
-                                                           %PropulsionFactTemplate{} = propulsion ->
+                                                       %PropulsionFactTemplate{} = propulsion ->
       fn ->
         if propulsion.type == :turbofan do
           true
@@ -319,9 +301,9 @@ defmodule InferenceEngineTest do
     |> hd()
     |> elem(1)
     |> DefRule.def_rule(:found_nuclear_cruise_missile, fn %WarheadFactTemplate{} = warhead,
-                                                              %PropulsionFactTemplate{} =
-                                                                propulsion,
-                                                              %MissileFactTemplate{} = _missile ->
+                                                          %PropulsionFactTemplate{} =
+                                                            propulsion,
+                                                          %MissileFactTemplate{} = _missile ->
       fn ->
         if warhead.type == :thermonuclear and propulsion.type == :turbofan do
           true
@@ -342,9 +324,12 @@ defmodule InferenceEngineTest do
       end
     end)
 
-    for {_, {rule_name, rule_pid}} <- Rules.get_rules(Registry.lookup(Talisman.Registry, :rules)
-        |> hd()
-        |> elem(1)) do
+    for {_, {rule_name, rule_pid}} <-
+          Rules.get_rules(
+            Registry.lookup(Talisman.Registry, :rules)
+            |> hd()
+            |> elem(1)
+          ) do
       Mapper.add_rule_fact_template_names(
         Registry.lookup(Talisman.Registry, :mapper)
         |> hd()
@@ -353,6 +338,7 @@ defmodule InferenceEngineTest do
         Rule.get_lhs_fact_template_names(rule_pid)
       )
     end
+
     Registry.lookup(Talisman.Registry, :mapper)
     |> hd()
     |> elem(1)
@@ -361,27 +347,33 @@ defmodule InferenceEngineTest do
     Registry.lookup(Talisman.Registry, :inference_engine)
     |> hd()
     |> elem(1)
-    |>InferenceEngine.run()
+    |> InferenceEngine.run()
 
     %{
-      facts_supervisor: Registry.lookup(Talisman.Registry, :facts_supervisor)
-      |> hd()
-      |> elem(1),
-      rules_supervisor: Registry.lookup(Talisman.Registry, :rules_supervisor)
-      |> hd()
-      |> elem(1),
-      facts: Registry.lookup(Talisman.Registry, :facts)
-      |> hd()
-      |> elem(1),
-      rules: Registry.lookup(Talisman.Registry, :rules)
-      |> hd()
-      |> elem(1),
-      inference_engine: Registry.lookup(Talisman.Registry, :inference_engine)
-      |> hd()
-      |> elem(1),
-      mapper: Registry.lookup(Talisman.Registry, :mapper)
-      |> hd()
-      |> elem(1)
+      facts_supervisor:
+        Registry.lookup(Talisman.Registry, :facts_supervisor)
+        |> hd()
+        |> elem(1),
+      rules_supervisor:
+        Registry.lookup(Talisman.Registry, :rules_supervisor)
+        |> hd()
+        |> elem(1),
+      facts:
+        Registry.lookup(Talisman.Registry, :facts)
+        |> hd()
+        |> elem(1),
+      rules:
+        Registry.lookup(Talisman.Registry, :rules)
+        |> hd()
+        |> elem(1),
+      inference_engine:
+        Registry.lookup(Talisman.Registry, :inference_engine)
+        |> hd()
+        |> elem(1),
+      mapper:
+        Registry.lookup(Talisman.Registry, :mapper)
+        |> hd()
+        |> elem(1)
     }
   end
 
