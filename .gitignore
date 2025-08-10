@@ -27,3 +27,6 @@ talisman-*.tar
 
 # ignore the tacit fact and rules files
 lib/expert_system
+
+# temporary holding dir for expert system experiments
+tank
