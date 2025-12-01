@@ -12,15 +12,7 @@ defmodule Talisman do
   alias Talisman.InferenceEngine
   alias Talisman.Rule
 
-  def start(_type, _args) do
-
-    "xlzr0onfkzkzaw436bitxfdhtaw42g" |> IO.puts
-    "xlzr0onfkzkzaw436bitxfdhtaw42g" |> IO.puts
-    "xlzr0onfkzkzaw436bitxfdhtaw42g" |> IO.puts
-    "wirpeb8ekpuw7lujfqg34i7b3to3a8" |> IO.puts
-    "wirpeb8ekpuw7lujfqg34i7b3to3a8" |> IO.puts
-    "wirpeb8ekpuw7lujfqg34i7b3to3a8" |> IO.puts
-    
+  def start(_type, _args) do    
     children = [
       Talisman.TalismanDynamicSupervisor,
       {Registry, keys: :unique, name: Talisman.Registry}
