@@ -3,6 +3,8 @@ defmodule Talisman do
   Documentation for `Talisman`.
   """
 
+  use Application
+
   alias Talisman.TalismanDynamicSupervisor
   alias Talisman.Mapper
   alias Talisman.Facts
