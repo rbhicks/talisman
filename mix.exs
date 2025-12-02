@@ -27,7 +27,7 @@ defmodule Talisman.MixProject do
   defp deps do
     [
       {:benchee, "~> 1.3"},
-      {:ex_spec, "~> 2.0"},
+      {:ex_spec, "~> 2.0", only: :test},
       {:credo, "~> 1.7"}
     ]
   end
