@@ -51,7 +51,7 @@ defmodule Talisman do
         start: {
           DynamicSupervisor,
           :start_link,
-          [[name: :facts_supervisor]]
+          [[name: facts_supervisor_name]]
         }
       }
 
@@ -61,7 +61,7 @@ defmodule Talisman do
         start: {
           DynamicSupervisor,
           :start_link,
-          [[name: :rules_supervisor]]
+          [[name: rules_supervisor_name]]
         }
       }
 
