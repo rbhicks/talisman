@@ -138,27 +138,27 @@ defmodule Talisman do
     InferenceEngine.set_mapper(inference_engine_pid, mapper_pid)
   end
 
-  def load(fact_load_modules) do
-    Registry.lookup(Talisman.Registry, :inference_engine)
+  def load(inference_engine_id, fact_load_modules) do
+    Registry.lookup(Talisman.Registry, inference_engine_id)
     |> hd()
     |> elem(1)
     |> InferenceEngine.load(fact_load_modules)
   end
   
-  def compile_rules(rule_compile_modules) do
-    Registry.lookup(Talisman.Registry, :inference_engine)
+  def compile_rules(inference_engine_id, rules_id, mapper_id, rule_compile_modules) do
+    Registry.lookup(Talisman.Registry, inference_engine_id)
     |> hd()
     |> elem(1)
     |> InferenceEngine.compile_rules(rule_compile_modules)
 
     for {_, {rule_name, rule_pid}} <-
           Rules.get_rules(
-            Registry.lookup(Talisman.Registry, :rules)
+            Registry.lookup(Talisman.Registry, rules_id)
             |> hd()
             |> elem(1)
           ) do
       Mapper.add_rule_fact_template_names(
-        Registry.lookup(Talisman.Registry, :mapper)
+        Registry.lookup(Talisman.Registry, mapper_id)
         |> hd()
         |> elem(1),
         rule_name,
@@ -166,21 +166,21 @@ defmodule Talisman do
       )
     end
 
-    Registry.lookup(Talisman.Registry, :mapper)
+    Registry.lookup(Talisman.Registry, mapper_id)
     |> hd()
     |> elem(1)
     |> Mapper.create_fact_template_name_to_rule_lhs_mapping()    
   end
   
-  def run() do
-    Registry.lookup(Talisman.Registry, :inference_engine)
+  def run(inference_engine_id) do
+    Registry.lookup(Talisman.Registry, inference_engine_id)
     |> hd()
     |> elem(1)
     |> InferenceEngine.run()
   end
 
-  def clear() do
-    Registry.lookup(Talisman.Registry, :inference_engine)
+  def clear(inference_engine_id) do
+    Registry.lookup(Talisman.Registry, inference_engine_id)
     |> hd()
     |> elem(1)
     |> InferenceEngine.clear()
