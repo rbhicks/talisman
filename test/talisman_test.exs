@@ -16,7 +16,10 @@ defmodule TalismanTest do
   alias Talisman.InferenceEngine
 
   setup_all do
-    Registry.lookup(Talisman.Registry, :facts)
+
+    Talisman.create_talisman_instance("talisman_test")
+    
+    Registry.lookup(Talisman.Registry, :talisman_test_facts)
     |> hd()
     |> elem(1)
     |> Facts.assert(%MissileFactTemplate{
@@ -27,7 +30,7 @@ defmodule TalismanTest do
       warhead: :mirv
     })
 
-    Registry.lookup(Talisman.Registry, :facts)
+    Registry.lookup(Talisman.Registry, :talisman_test_facts)
     |> hd()
     |> elem(1)
     |> Facts.assert(%MissileFactTemplate{
@@ -38,7 +41,7 @@ defmodule TalismanTest do
       warhead: :mirv
     })
 
-    Registry.lookup(Talisman.Registry, :facts)
+    Registry.lookup(Talisman.Registry, :talisman_test_facts)
     |> hd()
     |> elem(1)
     |> Facts.assert(%MissileFactTemplate{
@@ -49,7 +52,7 @@ defmodule TalismanTest do
       warhead: :continuous_rod
     })
 
-    Registry.lookup(Talisman.Registry, :facts)
+    Registry.lookup(Talisman.Registry, :talisman_test_facts)
     |> hd()
     |> elem(1)
     |> Facts.assert(%MissileFactTemplate{
@@ -60,7 +63,7 @@ defmodule TalismanTest do
       warhead: :continuous_rod
     })
 
-    Registry.lookup(Talisman.Registry, :facts)
+    Registry.lookup(Talisman.Registry, :talisman_test_facts)
     |> hd()
     |> elem(1)
     |> Facts.assert(%BombFactTemplate{
@@ -70,7 +73,7 @@ defmodule TalismanTest do
       warhead: :thermonuclear
     })
 
-    Registry.lookup(Talisman.Registry, :facts)
+    Registry.lookup(Talisman.Registry, :talisman_test_facts)
     |> hd()
     |> elem(1)
     |> Facts.assert(%BombFactTemplate{
@@ -80,7 +83,7 @@ defmodule TalismanTest do
       warhead: :thermonuclear
     })
 
-    Registry.lookup(Talisman.Registry, :facts)
+    Registry.lookup(Talisman.Registry, :talisman_test_facts)
     |> hd()
     |> elem(1)
     |> Facts.assert(%BombFactTemplate{
@@ -90,7 +93,7 @@ defmodule TalismanTest do
       warhead: :thermonuclear
     })
 
-    Registry.lookup(Talisman.Registry, :facts)
+    Registry.lookup(Talisman.Registry, :talisman_test_facts)
     |> hd()
     |> elem(1)
     |> Facts.assert(%BombFactTemplate{
@@ -100,7 +103,7 @@ defmodule TalismanTest do
       warhead: :fae
     })
 
-    Registry.lookup(Talisman.Registry, :facts)
+    Registry.lookup(Talisman.Registry, :talisman_test_facts)
     |> hd()
     |> elem(1)
     |> Facts.assert(%BombFactTemplate{
@@ -110,7 +113,7 @@ defmodule TalismanTest do
       warhead: :fae
     })
 
-    Registry.lookup(Talisman.Registry, :facts)
+    Registry.lookup(Talisman.Registry, :talisman_test_facts)
     |> hd()
     |> elem(1)
     |> Facts.assert(%PropulsionFactTemplate{
@@ -119,7 +122,7 @@ defmodule TalismanTest do
       power: :"6.22_kN"
     })
 
-    Registry.lookup(Talisman.Registry, :facts)
+    Registry.lookup(Talisman.Registry, :talisman_test_facts)
     |> hd()
     |> elem(1)
     |> Facts.assert(%WarheadFactTemplate{
@@ -128,7 +131,7 @@ defmodule TalismanTest do
       yield: :"21-628_TJ"
     })
 
-    Registry.lookup(Talisman.Registry, :rules)
+    Registry.lookup(Talisman.Registry, :talisman_test_rules)
     |> hd()
     |> elem(1)
     |> DefRule.def_rule(:found_icbm, fn %MissileFactTemplate{} = missile ->
@@ -142,7 +145,7 @@ defmodule TalismanTest do
 
       fn ->
         Facts.assert(
-          Registry.lookup(Talisman.Registry, :facts)
+          Registry.lookup(Talisman.Registry, :talisman_test_facts)
           |> hd()
           |> elem(1),
           %RuleTestResultFactTemplate{
@@ -152,7 +155,7 @@ defmodule TalismanTest do
       end
     end)
 
-    Registry.lookup(Talisman.Registry, :rules)
+    Registry.lookup(Talisman.Registry, :talisman_test_rules)
     |> hd()
     |> elem(1)
     |> DefRule.def_rule(:found_air_to_air, fn %MissileFactTemplate{} = missile ->
@@ -166,7 +169,7 @@ defmodule TalismanTest do
 
       fn ->
         Facts.assert(
-          Registry.lookup(Talisman.Registry, :facts)
+          Registry.lookup(Talisman.Registry, :talisman_test_facts)
           |> hd()
           |> elem(1),
           %RuleTestResultFactTemplate{
@@ -176,7 +179,7 @@ defmodule TalismanTest do
       end
     end)
 
-    Registry.lookup(Talisman.Registry, :rules)
+    Registry.lookup(Talisman.Registry, :talisman_test_rules)
     |> hd()
     |> elem(1)
     |> DefRule.def_rule(:found_gravity_bomb, fn %BombFactTemplate{} = bomb ->
@@ -190,14 +193,14 @@ defmodule TalismanTest do
 
       fn ->
         Facts.retract(
-          Registry.lookup(Talisman.Registry, :facts)
+          Registry.lookup(Talisman.Registry, :talisman_test_facts)
           |> hd()
           |> elem(1),
           bomb.id
         )
 
         Facts.assert(
-          Registry.lookup(Talisman.Registry, :facts)
+          Registry.lookup(Talisman.Registry, :talisman_test_facts)
           |> hd()
           |> elem(1),
           %RuleTestResultFactTemplate{
@@ -207,7 +210,7 @@ defmodule TalismanTest do
       end
     end)
 
-    Registry.lookup(Talisman.Registry, :rules)
+    Registry.lookup(Talisman.Registry, :talisman_test_rules)
     |> hd()
     |> elem(1)
     |> DefRule.def_rule(:found_f22_aim_9c_loadout, fn %MissileFactTemplate{} = missile_0,
@@ -222,7 +225,7 @@ defmodule TalismanTest do
 
       fn ->
         Facts.assert(
-          Registry.lookup(Talisman.Registry, :facts)
+          Registry.lookup(Talisman.Registry, :talisman_test_facts)
           |> hd()
           |> elem(1),
           %RuleTestResultFactTemplate{
@@ -232,7 +235,7 @@ defmodule TalismanTest do
       end
     end)
 
-    Registry.lookup(Talisman.Registry, :rules)
+    Registry.lookup(Talisman.Registry, :talisman_test_rules)
     |> hd()
     |> elem(1)
     |> DefRule.def_rule(:update_gravity_bomb, fn %BombFactTemplate{} = bomb ->
@@ -246,7 +249,7 @@ defmodule TalismanTest do
 
       fn ->
         Facts.update(
-          Registry.lookup(Talisman.Registry, :facts)
+          Registry.lookup(Talisman.Registry, :talisman_test_facts)
           |> hd()
           |> elem(1),
           bomb.id,
@@ -254,7 +257,7 @@ defmodule TalismanTest do
         )
 
         Facts.assert(
-          Registry.lookup(Talisman.Registry, :facts)
+          Registry.lookup(Talisman.Registry, :talisman_test_facts)
           |> hd()
           |> elem(1),
           %RuleTestResultFactTemplate{
@@ -272,7 +275,7 @@ defmodule TalismanTest do
     # a "connecting field", it would have the same semantics and the same functionality
     # as these tests. so, while these rules are faulty at the expert system level the
     # the tests for talisman are valid.
-    Registry.lookup(Talisman.Registry, :rules)
+    Registry.lookup(Talisman.Registry, :talisman_test_rules)
     |> hd()
     |> elem(1)
     |> DefRule.def_rule(:found_jet_powered_missile, fn %MissileFactTemplate{} = _missile,
@@ -287,7 +290,7 @@ defmodule TalismanTest do
 
       fn ->
         Facts.assert(
-          Registry.lookup(Talisman.Registry, :facts)
+          Registry.lookup(Talisman.Registry, :talisman_test_facts)
           |> hd()
           |> elem(1),
           %RuleTestResultFactTemplate{
@@ -297,7 +300,7 @@ defmodule TalismanTest do
       end
     end)
 
-    Registry.lookup(Talisman.Registry, :rules)
+    Registry.lookup(Talisman.Registry, :talisman_test_rules)
     |> hd()
     |> elem(1)
     |> DefRule.def_rule(:found_nuclear_cruise_missile, fn %WarheadFactTemplate{} = warhead,
@@ -314,7 +317,7 @@ defmodule TalismanTest do
 
       fn ->
         Facts.assert(
-          Registry.lookup(Talisman.Registry, :facts)
+          Registry.lookup(Talisman.Registry, :talisman_test_facts)
           |> hd()
           |> elem(1),
           %RuleTestResultFactTemplate{
@@ -326,12 +329,12 @@ defmodule TalismanTest do
 
     for {_, {rule_name, rule_pid}} <-
           Rules.get_rules(
-            Registry.lookup(Talisman.Registry, :rules)
+            Registry.lookup(Talisman.Registry, :talisman_test_rules)
             |> hd()
             |> elem(1)
           ) do
       Mapper.add_rule_fact_template_names(
-        Registry.lookup(Talisman.Registry, :mapper)
+        Registry.lookup(Talisman.Registry, :talisman_test_mapper)
         |> hd()
         |> elem(1),
         rule_name,
@@ -339,39 +342,39 @@ defmodule TalismanTest do
       )
     end
 
-    Registry.lookup(Talisman.Registry, :mapper)
+    Registry.lookup(Talisman.Registry, :talisman_test_mapper)
     |> hd()
     |> elem(1)
     |> Mapper.create_fact_template_name_to_rule_lhs_mapping()
 
-    Registry.lookup(Talisman.Registry, :inference_engine)
+    Registry.lookup(Talisman.Registry, :talisman_test_inference_engine)
     |> hd()
     |> elem(1)
     |> InferenceEngine.run()
 
     %{
       facts_supervisor:
-        Registry.lookup(Talisman.Registry, :facts_supervisor)
+        Registry.lookup(Talisman.Registry, :talisman_test_facts_supervisor)
         |> hd()
         |> elem(1),
       rules_supervisor:
-        Registry.lookup(Talisman.Registry, :rules_supervisor)
+        Registry.lookup(Talisman.Registry, :talisman_test_rules_supervisor)
         |> hd()
         |> elem(1),
       facts:
-        Registry.lookup(Talisman.Registry, :facts)
+        Registry.lookup(Talisman.Registry, :talisman_test_facts)
         |> hd()
         |> elem(1),
       rules:
-        Registry.lookup(Talisman.Registry, :rules)
+        Registry.lookup(Talisman.Registry, :talisman_test_rules)
         |> hd()
         |> elem(1),
       inference_engine:
-        Registry.lookup(Talisman.Registry, :inference_engine)
+        Registry.lookup(Talisman.Registry, :talisman_test_inference_engine)
         |> hd()
         |> elem(1),
       mapper:
-        Registry.lookup(Talisman.Registry, :mapper)
+        Registry.lookup(Talisman.Registry, :talisman_test_mapper)
         |> hd()
         |> elem(1)
     }

@@ -18,11 +18,36 @@ defmodule Talisman do
       {Registry, keys: :unique, name: Talisman.Registry}
     ]
 
-    {:ok, supervisor_id} = Supervisor.start_link(children, strategy: :one_for_one)
+    Supervisor.start_link(children, strategy: :one_for_one)
+  end
 
-    facts_supervisor_child_spec =
+  ####################################################################
+  ####################################################################
+  ####################################################################
+  ########################### client API #############################
+  ####################################################################
+  ####################################################################
+  ####################################################################
+
+  def create_talisman_instance(name_prefix) do
+
+    facts_supervisor_name = name_prefix <> "_facts_supervisor"
+    |> String.to_atom()
+    rules_supervisor_name = name_prefix <> "_rules_supervisor"
+    |> String.to_atom()
+    mapper_name = name_prefix <> "_mapper"
+    |> String.to_atom()
+    inference_engine_name = name_prefix <> "_inference_engine"
+    |> String.to_atom()
+    facts_name = name_prefix <> "_facts"
+    |> String.to_atom()
+    rules_name = name_prefix <> "_rules"
+    |> String.to_atom()
+    
+    
+    facts_supervisor_child_spec = 
       %{
-        id: :facts_supervisor,
+        id: facts_supervisor_name,
         start: {
           DynamicSupervisor,
           :start_link,
@@ -32,7 +57,7 @@ defmodule Talisman do
 
     rules_supervisor_child_spec =
       %{
-        id: :rules_supervisor,
+        id: rules_supervisor_name,
         start: {
           DynamicSupervisor,
           :start_link,
@@ -42,7 +67,7 @@ defmodule Talisman do
 
     mapper_child_spec =
       %{
-        id: :mapper,
+        id: mapper_name,
         start: {
           Mapper,
           :start,
@@ -52,7 +77,7 @@ defmodule Talisman do
 
     inference_engine_child_spec =
       %{
-        id: :inference_engine,
+        id: inference_engine_name,
         start: {
           InferenceEngine,
           :start,
@@ -62,7 +87,7 @@ defmodule Talisman do
 
     facts_child_spec =
       %{
-        id: :facts,
+        id: facts_name,
         start: {
           Facts,
           :start,
@@ -72,7 +97,7 @@ defmodule Talisman do
 
     rules_child_spec =
       %{
-        id: :rules,
+        id: rules_name,
         start: {
           Rules,
           :start,
@@ -94,12 +119,12 @@ defmodule Talisman do
     {:ok, facts_pid} = TalismanDynamicSupervisor.start_talisman_genserver(facts_child_spec)
     {:ok, rules_pid} = TalismanDynamicSupervisor.start_talisman_genserver(rules_child_spec)
 
-    {:ok, _} = Registry.register(Talisman.Registry, :facts_supervisor, facts_supervisor_pid)
-    {:ok, _} = Registry.register(Talisman.Registry, :rules_supervisor, rules_supervisor_pid)
-    {:ok, _} = Registry.register(Talisman.Registry, :mapper, mapper_pid)
-    {:ok, _} = Registry.register(Talisman.Registry, :inference_engine, inference_engine_pid)
-    {:ok, _} = Registry.register(Talisman.Registry, :facts, facts_pid)
-    {:ok, _} = Registry.register(Talisman.Registry, :rules, rules_pid)
+    {:ok, _} = Registry.register(Talisman.Registry, facts_supervisor_name, facts_supervisor_pid)
+    {:ok, _} = Registry.register(Talisman.Registry, rules_supervisor_name, rules_supervisor_pid)
+    {:ok, _} = Registry.register(Talisman.Registry, mapper_name, mapper_pid)
+    {:ok, _} = Registry.register(Talisman.Registry, inference_engine_name, inference_engine_pid)
+    {:ok, _} = Registry.register(Talisman.Registry, facts_name, facts_pid)
+    {:ok, _} = Registry.register(Talisman.Registry, rules_name, rules_pid)
 
     Facts.set_facts_supervisor(facts_pid, facts_supervisor_pid)
     Facts.set_inference_engine(facts_pid, inference_engine_pid)
@@ -111,17 +136,7 @@ defmodule Talisman do
     InferenceEngine.set_facts(inference_engine_pid, facts_pid)
     InferenceEngine.set_rules(inference_engine_pid, rules_pid)
     InferenceEngine.set_mapper(inference_engine_pid, mapper_pid)
-
-    {:ok, supervisor_id}
   end
-
-  ####################################################################
-  ####################################################################
-  ####################################################################
-  ########################### client API #############################
-  ####################################################################
-  ####################################################################
-  ####################################################################
 
   def load(fact_load_modules) do
     Registry.lookup(Talisman.Registry, :inference_engine)
