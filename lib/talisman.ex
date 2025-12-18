@@ -145,12 +145,7 @@ defmodule Talisman do
     |> InferenceEngine.load(fact_load_modules)
   end
   
-  def compile_rules(inference_engine_id, rules_id, mapper_id, rule_compile_modules) do
-    Registry.lookup(Talisman.Registry, inference_engine_id)
-    |> hd()
-    |> elem(1)
-    |> InferenceEngine.compile_rules(rule_compile_modules)
-
+  def compile_rules(rules_id, mapper_id) do
     for {_, {rule_name, rule_pid}} <-
           Rules.get_rules(
             Registry.lookup(Talisman.Registry, rules_id)
