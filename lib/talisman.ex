@@ -152,6 +152,21 @@ defmodule Talisman do
             |> hd()
             |> elem(1)
           ) do
+
+      "hw0bc9jd84o4rjavo0m5u0j41v60do" |> IO.puts
+      "hw0bc9jd84o4rjavo0m5u0j41v60do" |> IO.puts
+      "hw0bc9jd84o4rjavo0m5u0j41v60do" |> IO.puts
+      rules_id |> IO.inspect(limit: :infinity)
+      "==============================" |> IO.puts
+      mapper_id |> IO.inspect(limit: :infinity)
+      "==============================" |> IO.puts
+      rule_name |> IO.inspect(limit: :infinity)
+      "==============================" |> IO.puts
+      rule_pid |> IO.inspect(limit: :infinity)
+      "dpnly6dsmgm03ug5a02vkkslgkbn3t" |> IO.puts
+      "dpnly6dsmgm03ug5a02vkkslgkbn3t" |> IO.puts
+      "dpnly6dsmgm03ug5a02vkkslgkbn3t" |> IO.puts
+      
       Mapper.add_rule_fact_template_names(
         Registry.lookup(Talisman.Registry, mapper_id)
         |> hd()
