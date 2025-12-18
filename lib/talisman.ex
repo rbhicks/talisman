@@ -43,24 +43,6 @@ defmodule Talisman do
     |> String.to_atom()
     rules_name = name_prefix <> "_rules"
     |> String.to_atom()
-
-    "9put464n0ecf5epemf7u4lr0c3i7qe" |> IO.puts
-    "9put464n0ecf5epemf7u4lr0c3i7qe" |> IO.puts
-    "9put464n0ecf5epemf7u4lr0c3i7qe" |> IO.puts
-    facts_supervisor_name |> IO.inspect(limit: :infinity)
-    "==============================" |> IO.puts
-    rules_supervisor_name |> IO.inspect(limit: :infinity)
-    "==============================" |> IO.puts
-    mapper_name |> IO.inspect(limit: :infinity)
-    "==============================" |> IO.puts
-    inference_engine_name |> IO.inspect(limit: :infinity)
-    "==============================" |> IO.puts
-    facts_name |> IO.inspect(limit: :infinity)
-    "==============================" |> IO.puts
-    rules_name |> IO.inspect(limit: :infinity)
-    "odp5tsoa37k1h4jteej3idhvyojlo5" |> IO.puts
-    "odp5tsoa37k1h4jteej3idhvyojlo5" |> IO.puts
-    "odp5tsoa37k1h4jteej3idhvyojlo5" |> IO.puts
     
     facts_supervisor_child_spec = 
       %{
@@ -135,6 +117,25 @@ defmodule Talisman do
 
     {:ok, facts_pid} = TalismanDynamicSupervisor.start_talisman_genserver(facts_child_spec)
     {:ok, rules_pid} = TalismanDynamicSupervisor.start_talisman_genserver(rules_child_spec)
+
+    "9put464n0ecf5epemf7u4lr0c3i7qe" |> IO.puts
+    "9put464n0ecf5epemf7u4lr0c3i7qe" |> IO.puts
+    "9put464n0ecf5epemf7u4lr0c3i7qe" |> IO.puts
+    {facts_supervisor_name, facts_supervisor_pid} |> IO.inspect(limit: :infinity)
+    "==============================" |> IO.puts
+    {rules_supervisor_name, rules_supervisor_pid} |> IO.inspect(limit: :infinity)
+    "==============================" |> IO.puts
+    {mapper_name, mapper_pid} |> IO.inspect(limit: :infinity)
+    "==============================" |> IO.puts
+    {inference_engine_name, inference_engine_pid} |> IO.inspect(limit: :infinity)
+    "==============================" |> IO.puts
+    {facts_name, facts_pid} |> IO.inspect(limit: :infinity)
+    "==============================" |> IO.puts
+    {rules_name, rules_pid} |> IO.inspect(limit: :infinity)
+    "odp5tsoa37k1h4jteej3idhvyojlo5" |> IO.puts
+    "odp5tsoa37k1h4jteej3idhvyojlo5" |> IO.puts
+    "odp5tsoa37k1h4jteej3idhvyojlo5" |> IO.puts
+
 
     {:ok, _} = Registry.register(Talisman.Registry, facts_supervisor_name, facts_supervisor_pid)
     {:ok, _} = Registry.register(Talisman.Registry, rules_supervisor_name, rules_supervisor_pid)
