@@ -53,7 +53,7 @@ defmodule Talisman.Fact do
       :ok,
       {
         fact_instance,
-        %{fact_pid: self()}
+        %{}
         |> Enum.into(Map.from_struct(fact_instance)),
         fact_id
       }
