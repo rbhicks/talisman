@@ -48,12 +48,12 @@ defmodule Talisman.Fact do
     GenServer.start_link(__MODULE__, {fact_instance, fact_id}, name: {:global, fact_id})
   end
 
-  def init({fact_instance, fact_id}) do
+  def init({fact_instance, fact_id}) do    
     {
       :ok,
       {
         fact_instance,
-        %{}
+        %{fact_pid: self()}
         |> Enum.into(Map.from_struct(fact_instance)),
         fact_id
       }
