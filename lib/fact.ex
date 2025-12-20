@@ -46,7 +46,7 @@ defmodule Talisman.Fact do
       :ok,
       {
         fact_instance,
-        %{}
+        %{fact_id: fact_id}
         |> Enum.into(Map.from_struct(fact_instance)),
         fact_id
       }
