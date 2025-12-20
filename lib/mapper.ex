@@ -238,8 +238,7 @@ defmodule Talisman.Mapper do
         # more dynamic (also why its api function
         # is called 'update_...' instead of 'create...'
         fact_template_name_to_asserted_facts_mapping: %{}
-      },
-      10000
+      }
     }
   end
 end

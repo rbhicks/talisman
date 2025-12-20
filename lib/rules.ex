@@ -88,8 +88,7 @@ defmodule Talisman.Rules do
         rules_supervisor: nil,
         inference_engine: nil,
         rules: %{}
-      },
-      10000
+      }
     }
   end
 end

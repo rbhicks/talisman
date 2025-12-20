@@ -173,8 +173,7 @@ defmodule Talisman.Facts do
         inference_engine: nil,
         mapper: nil,
         asserted_facts: %{}
-      },
-      10000
+      }
     }
   end
 end

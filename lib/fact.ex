@@ -51,8 +51,7 @@ defmodule Talisman.Fact do
         %{}
         |> Enum.into(Map.from_struct(fact_instance)),
         fact_id
-      },
-      10000
+      }
     }
   end
 end
