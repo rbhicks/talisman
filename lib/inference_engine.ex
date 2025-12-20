@@ -155,7 +155,8 @@ defmodule Talisman.InferenceEngine do
         facts: nil,
         rules: nil,
         mapper: nil
-      }
+      },
+      10000
     }
   end
 
