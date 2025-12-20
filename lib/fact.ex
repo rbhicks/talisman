@@ -19,8 +19,10 @@ defmodule Talisman.Fact do
     {:reply, {:ok, fact_instance}, state}
   end
 
-  def handle_call(:get_field_values, _from, {_fact_instance, field_values, _fact_id} = state) do
-    {:reply, {:ok, field_values}, state}
+  def handle_call(:get_field_values, _from, {_fact_instance, field_values, fact_id} = state) do
+    # it's a bit of a kludge to slam the fact_id in here, but it'll
+    # work...review later..
+    {:reply, {:ok, field_values |> Map.put(:fact_id, fact_id)}, state}
   end
 
   def handle_call({:set_field_values, field_values}, _from, state) do
