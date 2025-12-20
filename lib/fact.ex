@@ -20,7 +20,17 @@ defmodule Talisman.Fact do
   end
 
   def handle_call(:get_field_values, _from, {_fact_instance, field_values, _fact_id} = state) do
-    {:reply, {:ok, field_values}, state}
+    {
+      :reply,
+      {
+        :ok,
+        # a bit of a kludge...but this might be the best place to
+        # add the fact pid. investigate...
+        field_values
+        |> Map.put(:fact_pid, self())
+      },
+      state
+    }
   end
 
   def handle_call({:set_field_values, field_values}, _from, state) do
@@ -46,7 +56,7 @@ defmodule Talisman.Fact do
       :ok,
       {
         fact_instance,
-        %{fact_id: fact_id}
+        %{}
         |> Enum.into(Map.from_struct(fact_instance)),
         fact_id
       }
