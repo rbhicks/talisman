@@ -24,10 +24,7 @@ defmodule Talisman.Fact do
       :reply,
       {
         :ok,
-        # a bit of a kludge...but this might be the best place to
-        # add the fact pid. investigate...
         field_values
-        |> Map.put(:fact_pid, self())
       },
       state
     }
