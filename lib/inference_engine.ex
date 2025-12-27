@@ -116,7 +116,7 @@ defmodule Talisman.InferenceEngine do
           mapper: mapper
         } = state
       ) do
-    get_actitvated_rules(facts, rules, mapper)
+    get_activated_rules(facts, rules, mapper)
     |> activate_and_execute_rules(facts, rules, mapper, [])
 
     {
@@ -194,14 +194,14 @@ defmodule Talisman.InferenceEngine do
 
     execute_rule(rule_to_execute)
 
-    (get_actitvated_rules(facts, rules, mapper) -- executed_rules)
+    (get_activated_rules(facts, rules, mapper) -- executed_rules)
     |> activate_and_execute_rules(facts, rules, mapper, [rule_to_execute | executed_rules])
   end
 
   def execute_rule(nil), do: nil
   def execute_rule({_, _, _, rhs_execution_function}), do: rhs_execution_function.()
 
-  def get_actitvated_rules(facts, rules, mapper) do
+  def get_activated_rules(facts, rules, mapper) do
     rules_filtered_by_lhs_and_asserted_fact_template_names =
       filter_rules_by_rule_lhs_and_asserted_fact_template_names(facts, rules, mapper)
 
