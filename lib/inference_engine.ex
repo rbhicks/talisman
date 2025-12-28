@@ -131,7 +131,7 @@ defmodule Talisman.InferenceEngine do
     fact_template_to_rule_lhs_mapping = Mapper.get_fact_template_name_to_rule_lhs_mapping(mapper)
 
     get_activated_rules(asserted_facts, current_rules, asserted_facts_template_name_frequencies, fact_template_to_rule_lhs_mapping, facts, rules, mapper)
-    |> activate_and_execute_rules(facts, rules, mapper, [], asserted_facts, current_rules, asserted_facts_template_name_frequencies, fact_template_to_rule_lhs_mapping)
+    |> activate_and_execute_rules(facts, rules, mapper, [], current_rules, asserted_facts_template_name_frequencies, fact_template_to_rule_lhs_mapping)
 
     {
       :reply,
@@ -180,9 +180,9 @@ defmodule Talisman.InferenceEngine do
   ################################################################################
   ################################################################################
 
-  def activate_and_execute_rules([], _facts, _rules, _mapper, executed_rules, _asserted_facts, _current_rules, _asserted_facts_template_name_frequencies, _fact_template_to_rule_lhs_mapping), do: executed_rules
+  def activate_and_execute_rules([], _facts, _rules, _mapper, executed_rules, _current_rules, _asserted_facts_template_name_frequencies, _fact_template_to_rule_lhs_mapping), do: executed_rules
 
-  def activate_and_execute_rules(activated_rules, facts, rules, mapper, executed_rules, asserted_facts, current_rules, asserted_facts_template_name_frequencies, fact_template_to_rule_lhs_mapping) do
+  def activate_and_execute_rules(activated_rules, facts, rules, mapper, executed_rules, current_rules, asserted_facts_template_name_frequencies, fact_template_to_rule_lhs_mapping) do
     # activated_rules is a flattened list with redundant data
     # as it needs to be be that way to properly do rule processing
     # except for rules that are purely for side effects, not most
@@ -208,8 +208,10 @@ defmodule Talisman.InferenceEngine do
 
     execute_rule(rule_to_execute)
 
+    asserted_facts = Facts.get_asserted_facts(facts)
+
     (get_activated_rules(asserted_facts, current_rules, asserted_facts_template_name_frequencies, fact_template_to_rule_lhs_mapping, facts, rules, mapper) -- executed_rules)
-    |> activate_and_execute_rules(facts, rules, mapper, [rule_to_execute | executed_rules], asserted_facts, current_rules, asserted_facts_template_name_frequencies, fact_template_to_rule_lhs_mapping)
+    |> activate_and_execute_rules(facts, rules, mapper, [rule_to_execute | executed_rules], current_rules, asserted_facts_template_name_frequencies, fact_template_to_rule_lhs_mapping)
   end
 
   def execute_rule(nil), do: nil
