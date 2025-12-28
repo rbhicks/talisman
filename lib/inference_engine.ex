@@ -19,6 +19,10 @@ defmodule Talisman.InferenceEngine do
     GenServer.call(server, {:set_mapper, mapper})
   end
 
+  def set_asserted_facts(server, asserted_facts) do
+    GenServer.call(server, {:set_asserted_facts, asserted_facts})
+  end
+
   def load(server, fact_load_modules) do
     GenServer.call(server, {:load, fact_load_modules})
   end
@@ -67,6 +71,15 @@ defmodule Talisman.InferenceEngine do
       :ok,
       state
       |> Map.put(:mapper, mapper)
+    }
+  end
+
+  def handle_call({:set_asserted_facts, asserted_facts}, _, state) do
+    {
+      :reply,
+      :ok,
+      state
+      |> Map.put(:asserted_facts, asserted_facts)
     }
   end
 
@@ -168,7 +181,8 @@ defmodule Talisman.InferenceEngine do
       %{
         facts: nil,
         rules: nil,
-        mapper: nil
+        mapper: nil,
+        asserted_facts: nil
       }
     }
   end
