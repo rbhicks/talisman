@@ -183,7 +183,7 @@ defmodule Talisman.InferenceEngine do
         facts: nil,
         rules: nil,
         mapper: nil,
-        asserted_facts: nil
+        asserted_facts: %{}
       }
     }
   end
