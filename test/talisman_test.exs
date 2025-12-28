@@ -458,11 +458,14 @@ defmodule TalismanTest do
         :update_gravity_bomb
       ]
 
+      asserted_facts = Facts.get_asserted_facts(facts)
+      fact_template_to_rule_lhs_mapping = Mapper.get_fact_template_name_to_rule_lhs_mapping(mapper)
+
       sorted_rules_filtered_by_lhs_and_asserted_fact_template_names =
         InferenceEngine.filter_rules_by_rule_lhs_and_asserted_fact_template_names(
-          facts,
-          rules,
-          mapper
+          asserted_facts,
+          fact_template_to_rule_lhs_mapping,
+          rules
         )
         |> Enum.sort()
 
@@ -571,16 +574,21 @@ defmodule TalismanTest do
           }
         ]
 
+      asserted_facts = Facts.get_asserted_facts(facts)
+
+      fact_template_to_rule_lhs_mapping = Mapper.get_fact_template_name_to_rule_lhs_mapping(mapper)
+
       rules_filtered_by_lhs_and_asserted_fact_template_names =
         InferenceEngine.filter_rules_by_rule_lhs_and_asserted_fact_template_names(
-          facts,
-          rules,
-          mapper
+          asserted_facts,
+          fact_template_to_rule_lhs_mapping,
+          rules
         )
 
       processed_rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings =
         InferenceEngine.generate_rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings(
           rules_filtered_by_lhs_and_asserted_fact_template_names,
+          fact_template_to_rule_lhs_mapping,
           rules,
           mapper
         )

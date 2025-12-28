@@ -202,19 +202,34 @@ defmodule Talisman.InferenceEngine do
   def execute_rule({_, _, _, rhs_execution_function}), do: rhs_execution_function.()
 
   def get_activated_rules(facts, rules, mapper) do
+
+    asserted_facts = Facts.get_asserted_facts(facts)
+    current_rules = Rules.get_rules(rules)
+
+    asserted_facts_template_name_frequencies =
+      asserted_facts
+      |> Map.values()
+      |> Enum.map(fn {asserted_fact_template_name, _} ->
+        asserted_fact_template_name
+      end)
+      |> Enum.frequencies()
+
+    fact_template_to_rule_lhs_mapping = Mapper.get_fact_template_name_to_rule_lhs_mapping(mapper)
+    
     rules_filtered_by_lhs_and_asserted_fact_template_names =
-      filter_rules_by_rule_lhs_and_asserted_fact_template_names(facts, rules, mapper)
+      filter_rules_by_rule_lhs_and_asserted_fact_template_names(asserted_facts, fact_template_to_rule_lhs_mapping, rules)
 
     rules_filtered_by_rule_lhs_and_asserted_fact_multiplicity =
       filter_rules_by_rule_lhs_and_asserted_fact_multiplicity(
-        rules_filtered_by_lhs_and_asserted_fact_template_names,
-        facts,
-        rules
+        current_rules,
+        asserted_facts_template_name_frequencies, 
+        rules_filtered_by_lhs_and_asserted_fact_template_names
       )
 
     rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings =
       generate_rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings(
         rules_filtered_by_lhs_and_asserted_fact_template_names,
+        fact_template_to_rule_lhs_mapping,
         rules,
         mapper
       )
@@ -235,9 +250,7 @@ defmodule Talisman.InferenceEngine do
     |> Enum.flat_map(fn activation_info -> activation_info end)
   end
 
-  def filter_rules_by_rule_lhs_and_asserted_fact_template_names(facts, rules, mapper) do
-    asserted_facts = Facts.get_asserted_facts(facts)
-    fact_template_to_rule_lhs_mapping = Mapper.get_fact_template_name_to_rule_lhs_mapping(mapper)
+  def filter_rules_by_rule_lhs_and_asserted_fact_template_names(asserted_facts, fact_template_to_rule_lhs_mapping, rules) do
     asserted_fact_templates_names = get_asserted_fact_templates_names(asserted_facts)
     rule_lhs_fact_template_names = get_rule_lhs_fact_template_names(rules)
 
@@ -254,13 +267,12 @@ defmodule Talisman.InferenceEngine do
 
   def generate_rule_name_rule_pid_fact_template_name_asserted_fact_pid_mappings(
         rules_filtered_by_lhs_and_asserted_fact_template_names,
+        fact_template_to_rule_lhs_mapping,
         rules,
         mapper
       ) do
     fact_template_name_to_asserted_facts_mapping =
       Mapper.get_fact_template_name_to_asserted_facts_mapping(mapper)
-
-    fact_template_to_rule_lhs_mapping = Mapper.get_fact_template_name_to_rule_lhs_mapping(mapper)
 
     get_filtered_rules(rules, rules_filtered_by_lhs_and_asserted_fact_template_names)
     |> get_filtered_rules_information()
@@ -282,20 +294,10 @@ defmodule Talisman.InferenceEngine do
   end
 
   def filter_rules_by_rule_lhs_and_asserted_fact_multiplicity(
-        rules_filtered_by_lhs_and_asserted_fact_template_names,
-        facts,
-        rules
+        current_rules,
+        asserted_facts_template_name_frequencies,
+        rules_filtered_by_lhs_and_asserted_fact_template_names
       ) do
-    asserted_facts = Facts.get_asserted_facts(facts)
-    current_rules = Rules.get_rules(rules)
-
-    asserted_facts_template_name_frequencies =
-      asserted_facts
-      |> Map.values()
-      |> Enum.map(fn {asserted_fact_template_name, _} ->
-        asserted_fact_template_name
-      end)
-      |> Enum.frequencies()
 
     current_rules
     |> Map.take(rules_filtered_by_lhs_and_asserted_fact_template_names)
