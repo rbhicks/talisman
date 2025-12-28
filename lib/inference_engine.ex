@@ -200,9 +200,6 @@ defmodule Talisman.InferenceEngine do
     #       2) yes, it's possible that this could result in an infinite
     #          loop. however, this a rule logic problem and not a talisman
     #          problem.
-
-    #
-    
     rule_to_execute =
       activated_rules
       |> Enum.find(fn activated_rule ->
