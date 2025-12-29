@@ -20,10 +20,6 @@ defmodule Talisman.Rule do
     activations
   end
 
-  def execute_rule do
-    {:ok}
-  end
-
   def handle_call(
         :get_lhs_fact_template_names,
         _from,
