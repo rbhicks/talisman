@@ -130,7 +130,6 @@ defmodule Talisman do
     Facts.set_mapper(facts_pid, mapper_pid)
 
     Rules.set_rules_supervisor(rules_pid, rules_supervisor_pid)
-    Rules.set_inference_engine(rules_pid, inference_engine_pid)
 
     InferenceEngine.set_facts(inference_engine_pid, facts_pid)
     InferenceEngine.set_rules(inference_engine_pid, rules_pid)
