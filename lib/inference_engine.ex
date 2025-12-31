@@ -36,7 +36,7 @@ defmodule Talisman.InferenceEngine do
   # ???????????????
 
   def run(server) do
-    GenServer.call(server, :run, 80000)
+    GenServer.call(server, :run, 360000)
   end
 
   def clear(server) do
