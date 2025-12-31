@@ -21,11 +21,11 @@ defmodule Talisman.Rule do
   end
 
   def add_asserted_lhs_fact(server, lhs_fact_name, lhs_fact) do
-    GenServer.call(server, {:add_asserted_lhs_fact, lhs_fact_name, lhs_fact}, 20000)
+    GenServer.call(server, {:add_asserted_lhs_fact, lhs_fact_name, lhs_fact}, 40000)
   end
 
   def get_activations(server) do
-    {:ok, activations} = GenServer.call(server, :get_activations, 10000)
+    {:ok, activations} = GenServer.call(server, :get_activations, 40000)
     activations
   end
 
