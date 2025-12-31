@@ -20,23 +20,9 @@ defmodule Talisman.Rule do
     activations
   end
 
-  def add_asserted_lhs_fact(server, lhs_fact_name, lhs_fact) do
-    GenServer.call(server, {:add_asserted_lhs_fact, lhs_fact_name, lhs_fact}, 80000)
+  def execute_rule do
+    {:ok}
   end
-
-  def get_activations(server) do
-    {:ok, activations} = GenServer.call(server, :get_activations, 80000)
-    activations
-  end
-
-  def get_asserted_lhs_facts(server) do
-    {:ok, asserted_lhs_facts} = GenServer.call(server, :get_asserted_lhs_facts)
-    asserted_lhs_facts
-  end
-
-  #########################################################################
-  #########################################################################
-  #########################################################################
 
   def handle_call(
         :get_lhs_fact_template_names,
@@ -115,53 +101,6 @@ defmodule Talisman.Rule do
         :ok,
         activations
       },
-      state
-    }
-  end
-
-  def handle_call(
-    {:add_asserted_lhs_fact, lhs_fact_name, lhs_fact},
-        _from,
-        %{
-          asserted_lhs_facts: asserted_lhs_facts,
-          lhs_fact_template_names: lhs_fact_template_names,
-          get_rule_lhs_evaluation_and_rhs_execution_functions:
-            get_rule_lhs_evaluation_and_rhs_execution_functions
-        } = state
-      ) do
-    
-    updated_asserted_lhs_facts = update_asserted_lhs_facts(lhs_fact_name, lhs_fact, asserted_lhs_facts)
-    activations = generate_activations(updated_asserted_lhs_facts, lhs_fact_template_names, get_rule_lhs_evaluation_and_rhs_execution_functions)    
-    {
-      :reply,
-      :ok,
-      state
-      |> Map.put(:asserted_lhs_facts, updated_asserted_lhs_facts)
-      |> Map.put(:activations, activations)
-    }
-  end
-
-  def handle_call(
-    :get_activations,
-        _from,
-        %{activations: activations} = state
-      ) do
-    {
-      :reply,
-      {:ok, activations},
-      state
-      |> Map.put(:activations, [])
-    }
-  end
-
-  def handle_call(
-    :get_asserted_lhs_facts,
-        _from,
-        %{asserted_lhs_facts: asserted_lhs_facts} = state
-      ) do
-    {
-      :reply,
-      {:ok, asserted_lhs_facts},
       state
     }
   end
