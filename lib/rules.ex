@@ -17,6 +17,14 @@ defmodule Talisman.Rules do
     GenServer.call(server, {:add_rule, rule_name, rule})
   end
 
+  def create_fact_template_name_to_rule_association(server) do
+    GenServer.call(server, :create_fact_template_name_to_rule_association)
+  end
+
+  #########################################################################
+  #########################################################################
+  #########################################################################
+  
   def handle_call({:set_rules_supervisor, rules_supervisor}, _, state) do
     {
       :reply,
@@ -53,6 +61,18 @@ defmodule Talisman.Rules do
     )
   end
 
+  def handle_call(
+        :create_fact_template_name_to_rule_association,
+        _from,
+        state
+      ) do
+    {
+      :reply,
+      :ok,
+      state
+    }
+  end
+
   def handle_call(:get_rules, _from, %{rules: rules} = state) do
     {
       :reply,
@@ -61,6 +81,10 @@ defmodule Talisman.Rules do
     }
   end
 
+  #########################################################################
+  #########################################################################
+  #########################################################################
+  
   def start() do
     GenServer.start_link(__MODULE__, nil)
   end
@@ -70,8 +94,15 @@ defmodule Talisman.Rules do
       :ok,
       %{
         rules_supervisor: nil,
-        rules: %{}
+        rules: %{},
+        lhs_fact_template_names_to_rule: nil
       }
     }
   end
+
+  #########################################################################
+  #########################################################################
+  #########################################################################
+
+  
 end

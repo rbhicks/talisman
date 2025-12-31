@@ -4,6 +4,8 @@ defmodule Talisman.Facts do
   alias Talisman.Fact
   alias Talisman.Utilities
   alias Talisman.Mapper
+  alias Talisman.Rule
+  alias Talisman.Rules
 
   def set_facts_supervisor(server, facts_supervisor) do
     GenServer.call(server, {:set_facts_supervisor, facts_supervisor})
@@ -16,6 +18,11 @@ defmodule Talisman.Facts do
   def set_mapper(server, mapper) do
     GenServer.call(server, {:set_mapper, mapper})
   end
+
+  def set_rules(server, rules) do
+    GenServer.call(server, {:set_rules, rules})
+  end
+
 
   def assert(server, fact_template) do
     GenServer.call(server, {:assert, fact_template})
@@ -38,6 +45,10 @@ defmodule Talisman.Facts do
 
     asserted_facts
   end
+
+  #########################################################################
+  #########################################################################
+  #########################################################################
 
   def handle_call({:set_facts_supervisor, facts_supervisor}, _, state) do
     {
@@ -66,13 +77,23 @@ defmodule Talisman.Facts do
     }
   end
 
+  def handle_call({:set_rules, rules}, _, state) do
+    {
+      :reply,
+      :ok,
+      state
+      |> Map.put(:rules, rules)
+    }
+  end
+
   def handle_call(
         {:assert, %fact_template_name{} = fact_template},
         _from,
         %{
           facts_supervisor: facts_supervisor,
           asserted_facts: asserted_facts,
-          mapper: mapper
+          mapper: mapper,
+          rules: rules
         } =
           state
       ) do
@@ -108,6 +129,9 @@ defmodule Talisman.Facts do
       pid
     )
 
+    get_rule_pids_for_assert(fact_template_name, rules, mapper)
+    |> propagate_asserted_fact_rules(fact_template_name, fact_template)
+    
     response
   end
 
@@ -161,6 +185,10 @@ defmodule Talisman.Facts do
     }
   end
 
+  #########################################################################
+  #########################################################################
+  #########################################################################
+
   def start() do
     GenServer.start_link(__MODULE__, nil)
   end
@@ -172,8 +200,35 @@ defmodule Talisman.Facts do
         facts_supervisor: nil,
         inference_engine: nil,
         mapper: nil,
-        asserted_facts: %{}
+        asserted_facts: %{},
+        rules: nil
       }
     }
+  end
+
+  #########################################################################
+  #########################################################################
+  #########################################################################
+
+  def get_rule_pids_for_assert(fact_template_name, rules, mapper) do
+    if(Mapper.get_fact_template_name_to_rule_lhs_mapping(mapper)
+    |> Map.has_key?(fact_template_name)) do
+      defined_rules_info = Rules.get_rules(rules)
+
+      Mapper.get_fact_template_name_to_rule_lhs_mapping(mapper)
+      |> Map.get(fact_template_name)
+      |> Enum.map(fn rule_name ->
+        {_, rule_pid} = Map.get(defined_rules_info, rule_name)
+        rule_pid
+      end)
+    else
+      []
+    end
+  end
+  
+  def propagate_asserted_fact_rules(rule_pids_for_assert, fact_template_name, fact_template) do
+    for rule_pid <- rule_pids_for_assert do
+      Rule.add_asserted_lhs_fact(rule_pid, fact_template_name, fact_template)
+    end
   end
 end

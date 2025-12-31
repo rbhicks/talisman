@@ -111,28 +111,18 @@ defmodule Talisman.InferenceEngine do
         :run,
         _from,
         %{
-          facts: facts,
-          rules: rules,
-          mapper: mapper
+          rules: rules
         } = state
       ) do
-
-    asserted_facts = Facts.get_asserted_facts(facts)
-    current_rules = Rules.get_rules(rules)
-
-    asserted_facts_template_name_frequencies =
-      asserted_facts
-      |> Map.values()
-      |> Enum.map(fn {asserted_fact_template_name, _} ->
-        asserted_fact_template_name
+    
+    Rules.get_rules(rules)
+    |> Enum.map(fn {_key, {_rule_name, rule_pid}} ->
+      Rule.get_activations(rule_pid)
+      |> Enum.map(fn activation ->
+        activation.()
       end)
-      |> Enum.frequencies()
-
-    fact_template_to_rule_lhs_mapping = Mapper.get_fact_template_name_to_rule_lhs_mapping(mapper)
-
-    get_activated_rules(asserted_facts, current_rules, asserted_facts_template_name_frequencies, fact_template_to_rule_lhs_mapping, facts, rules, mapper)
-    |> activate_and_execute_rules(facts, rules, mapper, [], current_rules, asserted_facts_template_name_frequencies, fact_template_to_rule_lhs_mapping)
-
+    end)
+    
     {
       :reply,
       :ok,
