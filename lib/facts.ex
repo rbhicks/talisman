@@ -25,7 +25,7 @@ defmodule Talisman.Facts do
 
 
   def assert(server, fact_template) do
-    GenServer.call(server, {:assert, fact_template})
+    GenServer.call(server, {:assert, fact_template}, 10000)
   end
 
   def retract(server, fact_id) do
