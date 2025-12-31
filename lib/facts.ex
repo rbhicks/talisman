@@ -41,7 +41,7 @@ defmodule Talisman.Facts do
   end
 
   def get_asserted_facts(server) do
-    {:ok, asserted_facts} = GenServer.call(server, :get_asserted_facts, 10000)
+    {:ok, asserted_facts} = GenServer.call(server, :get_asserted_facts, 20000)
 
     asserted_facts
   end
