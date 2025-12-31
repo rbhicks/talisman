@@ -124,20 +124,6 @@ defmodule Talisman.InferenceEngine do
         :run,
         _from,
         %{
-<<<<<<< HEAD
-          rules: rules
-        } = state
-      ) do
-    
-    Rules.get_rules(rules)
-    |> Enum.map(fn {_key, {_rule_name, rule_pid}} ->
-      Rule.get_activations(rule_pid)
-      |> Enum.map(fn activation ->
-        activation.()
-      end)
-    end)
-    
-=======
           facts: facts,
           rules: rules,
           mapper: mapper,
@@ -145,7 +131,7 @@ defmodule Talisman.InferenceEngine do
         } = state
       ) do
 
-    #asserted_facts = Facts.get_asserted_facts(facts)
+    asserted_facts = Facts.get_asserted_facts(facts)
     current_rules = Rules.get_rules(rules)
 
     asserted_facts_template_name_frequencies =
@@ -161,7 +147,6 @@ defmodule Talisman.InferenceEngine do
     get_activated_rules(asserted_facts, current_rules, asserted_facts_template_name_frequencies, fact_template_to_rule_lhs_mapping, facts, rules, mapper)
     |> activate_and_execute_rules(facts, rules, mapper, [], current_rules, asserted_facts, asserted_facts_template_name_frequencies, fact_template_to_rule_lhs_mapping)
 
->>>>>>> parent of 0ba0a61 (backing optimization last attempt)
     {
       :reply,
       :ok,
