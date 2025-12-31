@@ -232,7 +232,6 @@ defmodule Talisman.Mapper do
       %{
         fact_template_names: MapSet.new(),
         rule_fact_template_names: [],
-        fact_template_name_to_rule_lhs_mapping: %{},
         # this mapping is created initially, unlike
         # fact_template_name_to_rule_lhs_mapping
         # as the semantics for this one are far

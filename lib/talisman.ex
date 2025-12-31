@@ -128,15 +128,13 @@ defmodule Talisman do
     Facts.set_facts_supervisor(facts_pid, facts_supervisor_pid)
     Facts.set_inference_engine(facts_pid, inference_engine_pid)
     Facts.set_mapper(facts_pid, mapper_pid)
-    Facts.set_rules(facts_pid, rules_pid)
 
     Rules.set_rules_supervisor(rules_pid, rules_supervisor_pid)
+    Rules.set_inference_engine(rules_pid, inference_engine_pid)
 
     InferenceEngine.set_facts(inference_engine_pid, facts_pid)
     InferenceEngine.set_rules(inference_engine_pid, rules_pid)
     InferenceEngine.set_mapper(inference_engine_pid, mapper_pid)
-
-    Rules.create_fact_template_name_to_rule_association(rules_pid)
   end
 
   def load(inference_engine_id, fact_load_modules) do
@@ -146,17 +144,26 @@ defmodule Talisman do
     |> InferenceEngine.load(fact_load_modules)
   end
   
-  def prepare_rules(rules, mapper) do
+  def compile_rules(rules_id, mapper_id) do
     for {_, {rule_name, rule_pid}} <-
-          Rules.get_rules(rules) do
+          Rules.get_rules(
+            Registry.lookup(Talisman.Registry, rules_id)
+            |> hd()
+            |> elem(1)
+          ) do
       Mapper.add_rule_fact_template_names(
-        mapper,
+        Registry.lookup(Talisman.Registry, mapper_id)
+        |> hd()
+        |> elem(1),
         rule_name,
         Rule.get_lhs_fact_template_names(rule_pid)
       )
     end
 
-    Mapper.create_fact_template_name_to_rule_lhs_mapping(mapper)
+    Registry.lookup(Talisman.Registry, mapper_id)
+    |> hd()
+    |> elem(1)
+    |> Mapper.create_fact_template_name_to_rule_lhs_mapping()    
   end
   
   def run(inference_engine_id) do

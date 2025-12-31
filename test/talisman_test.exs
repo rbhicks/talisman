@@ -18,8 +18,120 @@ defmodule TalismanTest do
   setup_all do
 
     Talisman.create_talisman_instance("talisman_test")
+    
+    Registry.lookup(Talisman.Registry, :talisman_test_facts)
+    |> hd()
+    |> elem(1)
+    |> Facts.assert(%MissileFactTemplate{
+      name: :minuteman_ii,
+      type: :icbm,
+      propulsion: :solid_propellant,
+      guidance: :ballistic_trajectory,
+      warhead: :mirv
+    })
 
-        Registry.lookup(Talisman.Registry, :talisman_test_rules)
+    Registry.lookup(Talisman.Registry, :talisman_test_facts)
+    |> hd()
+    |> elem(1)
+    |> Facts.assert(%MissileFactTemplate{
+      name: :minuteman_ii,
+      type: :icbm,
+      propulsion: :solid_propellant,
+      guidance: :ballistic_trajectory,
+      warhead: :mirv
+    })
+
+    Registry.lookup(Talisman.Registry, :talisman_test_facts)
+    |> hd()
+    |> elem(1)
+    |> Facts.assert(%MissileFactTemplate{
+      name: :aim_9c_sidewinder,
+      type: :air_to_air,
+      propulsion: :solid_propellant,
+      guidance: :semi_active_radar,
+      warhead: :continuous_rod
+    })
+
+    Registry.lookup(Talisman.Registry, :talisman_test_facts)
+    |> hd()
+    |> elem(1)
+    |> Facts.assert(%MissileFactTemplate{
+      name: :aim_9c_sidewinder,
+      type: :air_to_air,
+      propulsion: :solid_propellant,
+      guidance: :semi_active_radar,
+      warhead: :continuous_rod
+    })
+
+    Registry.lookup(Talisman.Registry, :talisman_test_facts)
+    |> hd()
+    |> elem(1)
+    |> Facts.assert(%BombFactTemplate{
+      name: :b61,
+      type: :gravity_bomb,
+      guidance: :glide,
+      warhead: :thermonuclear
+    })
+
+    Registry.lookup(Talisman.Registry, :talisman_test_facts)
+    |> hd()
+    |> elem(1)
+    |> Facts.assert(%BombFactTemplate{
+      name: :b61,
+      type: :gravity_bomb,
+      guidance: :glide,
+      warhead: :thermonuclear
+    })
+
+    Registry.lookup(Talisman.Registry, :talisman_test_facts)
+    |> hd()
+    |> elem(1)
+    |> Facts.assert(%BombFactTemplate{
+      name: :b61,
+      type: :gravity_bomb,
+      guidance: :glide,
+      warhead: :thermonuclear
+    })
+
+    Registry.lookup(Talisman.Registry, :talisman_test_facts)
+    |> hd()
+    |> elem(1)
+    |> Facts.assert(%BombFactTemplate{
+      name: :moab,
+      type: :gravity_bomb,
+      guidance: :gps,
+      warhead: :fae
+    })
+
+    Registry.lookup(Talisman.Registry, :talisman_test_facts)
+    |> hd()
+    |> elem(1)
+    |> Facts.assert(%BombFactTemplate{
+      name: :blu_109,
+      type: :gravity_bomb,
+      guidance: :gps,
+      warhead: :fae
+    })
+
+    Registry.lookup(Talisman.Registry, :talisman_test_facts)
+    |> hd()
+    |> elem(1)
+    |> Facts.assert(%PropulsionFactTemplate{
+      name: :"f107_wr_105/401",
+      type: :turbofan,
+      power: :"6.22_kN"
+    })
+
+    Registry.lookup(Talisman.Registry, :talisman_test_facts)
+    |> hd()
+    |> elem(1)
+    |> Facts.assert(%WarheadFactTemplate{
+      name: :W80,
+      type: :thermonuclear,
+      yield: :"21-628_TJ"
+    })
+
+    Registry.lookup(Talisman.Registry, :talisman_test_rules)
     |> hd()
     |> elem(1)
     |> DefRule.def_rule(:found_icbm, fn %MissileFactTemplate{} = missile ->
@@ -215,129 +327,6 @@ defmodule TalismanTest do
       end
     end)
 
-    mapper = Registry.lookup(Talisman.Registry, :talisman_test_mapper)
-    |> hd()
-    |> elem(1)
-
-    rules = Registry.lookup(Talisman.Registry, :talisman_test_rules)
-    |> hd()
-    |> elem(1)
-
-    Mapper.create_fact_template_name_to_rule_lhs_mapping(mapper)
-    Talisman.prepare_rules(rules, mapper)
-    
-    Registry.lookup(Talisman.Registry, :talisman_test_facts)
-    |> hd()
-    |> elem(1)
-    |> Facts.assert(%MissileFactTemplate{
-      name: :minuteman_ii,
-      type: :icbm,
-      propulsion: :solid_propellant,
-      guidance: :ballistic_trajectory,
-      warhead: :mirv
-    })
-
-    Registry.lookup(Talisman.Registry, :talisman_test_facts)
-    |> hd()
-    |> elem(1)
-    |> Facts.assert(%MissileFactTemplate{
-      name: :minuteman_ii,
-      type: :icbm,
-      propulsion: :solid_propellant,
-      guidance: :ballistic_trajectory,
-      warhead: :mirv
-    })
-
-    Registry.lookup(Talisman.Registry, :talisman_test_facts)
-    |> hd()
-    |> elem(1)
-    |> Facts.assert(%MissileFactTemplate{
-      name: :aim_9c_sidewinder,
-      type: :air_to_air,
-      propulsion: :solid_propellant,
-      guidance: :semi_active_radar,
-      warhead: :continuous_rod
-    })
-
-    Registry.lookup(Talisman.Registry, :talisman_test_facts)
-    |> hd()
-    |> elem(1)
-    |> Facts.assert(%MissileFactTemplate{
-      name: :aim_9c_sidewinder,
-      type: :air_to_air,
-      propulsion: :solid_propellant,
-      guidance: :semi_active_radar,
-      warhead: :continuous_rod
-    })
-
-    Registry.lookup(Talisman.Registry, :talisman_test_facts)
-    |> hd()
-    |> elem(1)
-    |> Facts.assert(%BombFactTemplate{
-      name: :b61,
-      type: :gravity_bomb,
-      guidance: :glide,
-      warhead: :thermonuclear
-    })
-
-    Registry.lookup(Talisman.Registry, :talisman_test_facts)
-    |> hd()
-    |> elem(1)
-    |> Facts.assert(%BombFactTemplate{
-      name: :b61,
-      type: :gravity_bomb,
-      guidance: :glide,
-      warhead: :thermonuclear
-    })
-
-    Registry.lookup(Talisman.Registry, :talisman_test_facts)
-    |> hd()
-    |> elem(1)
-    |> Facts.assert(%BombFactTemplate{
-      name: :b61,
-      type: :gravity_bomb,
-      guidance: :glide,
-      warhead: :thermonuclear
-    })
-
-    Registry.lookup(Talisman.Registry, :talisman_test_facts)
-    |> hd()
-    |> elem(1)
-    |> Facts.assert(%BombFactTemplate{
-      name: :moab,
-      type: :gravity_bomb,
-      guidance: :gps,
-      warhead: :fae
-    })
-
-    Registry.lookup(Talisman.Registry, :talisman_test_facts)
-    |> hd()
-    |> elem(1)
-    |> Facts.assert(%BombFactTemplate{
-      name: :blu_109,
-      type: :gravity_bomb,
-      guidance: :gps,
-      warhead: :fae
-    })
-
-    Registry.lookup(Talisman.Registry, :talisman_test_facts)
-    |> hd()
-    |> elem(1)
-    |> Facts.assert(%PropulsionFactTemplate{
-      name: :"f107_wr_105/401",
-      type: :turbofan,
-      power: :"6.22_kN"
-    })
-
-    Registry.lookup(Talisman.Registry, :talisman_test_facts)
-    |> hd()
-    |> elem(1)
-    |> Facts.assert(%WarheadFactTemplate{
-      name: :W80,
-      type: :thermonuclear,
-      yield: :"21-628_TJ"
-    })
-
     for {_, {rule_name, rule_pid}} <-
           Rules.get_rules(
             Registry.lookup(Talisman.Registry, :talisman_test_rules)
@@ -352,13 +341,16 @@ defmodule TalismanTest do
         Rule.get_lhs_fact_template_names(rule_pid)
       )
     end
-    
-    inference_engine = Registry.lookup(Talisman.Registry, :talisman_test_inference_engine)
+
+    Registry.lookup(Talisman.Registry, :talisman_test_mapper)
     |> hd()
     |> elem(1)
+    |> Mapper.create_fact_template_name_to_rule_lhs_mapping()
 
-    Mapper.create_fact_template_name_to_rule_lhs_mapping(mapper)
-    InferenceEngine.run(inference_engine)
+    Registry.lookup(Talisman.Registry, :talisman_test_inference_engine)
+    |> hd()
+    |> elem(1)
+    |> InferenceEngine.run()
 
     %{
       facts_supervisor:
@@ -373,14 +365,23 @@ defmodule TalismanTest do
         Registry.lookup(Talisman.Registry, :talisman_test_facts)
         |> hd()
         |> elem(1),
-      rules: rules,
-      inference_engine: inference_engine,
-      mapper: mapper
+      rules:
+        Registry.lookup(Talisman.Registry, :talisman_test_rules)
+        |> hd()
+        |> elem(1),
+      inference_engine:
+        Registry.lookup(Talisman.Registry, :talisman_test_inference_engine)
+        |> hd()
+        |> elem(1),
+      mapper:
+        Registry.lookup(Talisman.Registry, :talisman_test_mapper)
+        |> hd()
+        |> elem(1)
     }
   end
 
   describe "rule activations" do
-#    @tag :skip
+    # @tag :skip
     it "a simple rule works", %{facts: facts} do
       result_frequencies = get_result_frequencies(facts)
 
@@ -389,13 +390,13 @@ defmodule TalismanTest do
       assert result_frequencies.found_gravity_bomb == 1
     end
 
-    @tag :skip
+    # @tag :skip
     it "multiple facts of same type rule works", %{facts: facts} do
       result_frequencies = get_result_frequencies(facts)
       assert result_frequencies.found_f22_aim_9c_loadout == 1
     end
 
-#    @tag :skip
+    # @tag :skip
     it "rule that updates a fact works", %{facts: facts} do
       result_frequencies = get_result_frequencies(facts)
       asserted_facts = Facts.get_asserted_facts(facts)
@@ -419,14 +420,14 @@ defmodule TalismanTest do
       assert updated_gravity_bomb_field_values.name == :mop
     end
 
-#    @tag :skip
+    # @tag :skip
     it "two different fact template LHS works", %{facts: facts} do
       result_frequencies = get_result_frequencies(facts)
 
       assert result_frequencies.found_jet_powered_missile == 4
     end
 
-#    @tag :skip
+    # @tag :skip
     it "three different fact template LHS works", %{facts: facts} do
       result_frequencies = get_result_frequencies(facts)
 
@@ -445,7 +446,7 @@ defmodule TalismanTest do
 
       assert Facts.get_asserted_facts(facts) == %{}
     end
-#    @tag :skip
+
     it "lhs/asserted fact rule filtering works", %{facts: facts, rules: rules, mapper: mapper} do
       sorted_expected_rules = [
         :found_air_to_air,
@@ -471,7 +472,7 @@ defmodule TalismanTest do
       assert sorted_expected_rules ==
                sorted_rules_filtered_by_lhs_and_asserted_fact_template_names
     end
-#    @tag :skip
+
     it "rule name/rule pid/fact template name/asserted fact pid mapping works", %{
       facts: facts,
       rules: rules,
@@ -598,12 +599,6 @@ defmodule TalismanTest do
     end
   end
 
-  describe "china lake" do
-    @tag :skip
-    it "fzzzzt", %{rules: _rules} do
-    end
-  end
-
   #############################################################################
   ############################## helper functions###############################
   #############################################################################
@@ -633,5 +628,5 @@ defmodule TalismanTest do
        end)}
     end)
     |> Enum.sort()
-  end  
+  end
 end
