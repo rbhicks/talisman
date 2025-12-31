@@ -25,7 +25,7 @@ defmodule Talisman.Rule do
   end
 
   def get_activations(server) do
-    {:ok, activations} = GenServer.call(server, :get_activations)
+    {:ok, activations} = GenServer.call(server, :get_activations, 10000)
     activations
   end
 
